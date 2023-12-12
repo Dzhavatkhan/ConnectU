@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Category::factory(10)->create();
         \App\Models\User_category::factory(10)->create();
         \App\Models\Personal_chat::factory(10)->create();
-
+        \App\Models\Message::factory(100)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

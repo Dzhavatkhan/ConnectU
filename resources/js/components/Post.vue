@@ -34,7 +34,7 @@ const getPost = async () => {
 }
 const like = async () => {
     let response = await axios.get(`/api/like/${props.id}`)
-    console.log(response.data.like);
+    console.log(response.data.post);
     getPost()
 }
 </script>

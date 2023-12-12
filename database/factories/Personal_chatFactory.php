@@ -18,9 +18,8 @@ class Personal_chatFactory extends Factory
     public function definition(): array
     {
         return [
-                "user_id" => User::factory(),
-                "participant_id" => User::factory(),
-                "message" => fake()->realText(),
-                 ];
+            "name" => fake()->text(),
+            "participants" => User::factory()
+        ];
     }
 }

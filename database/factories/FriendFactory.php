@@ -18,8 +18,7 @@ class FriendFactory extends Factory
     public function definition(): array
     {
         return [
-            "user_1_id" => User::factory(),
-            "user_2_id" => User::factory()
+            "friends" => User::factory()
         ];
     }
 }

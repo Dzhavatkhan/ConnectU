@@ -3,6 +3,7 @@ import Home from '../components/Home.vue'
 import notFound from '../components/notFound.vue'
 import Chat from '../components/Chat.vue';
 import Post from '../components/Post.vue';
+import UserPage from '../components/UserPage.vue'
 
 
 let routes = [
@@ -17,9 +18,15 @@ let routes = [
         name: notFound
     },
     {
+        path: "/user/id:id",
+        component: UserPage,
+        name: UserPage,
+        props: true
+    },
+    {
         path: "/chat/id:id",
-        component: Chat,
-        name: Chat,
+        component: UserPage,
+        name: UserPage,
         props: true
     },
     {

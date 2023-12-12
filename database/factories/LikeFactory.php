@@ -21,7 +21,6 @@ class LikeFactory extends Factory
         return [
             "user_id" => User::factory(),
             "post_id" => Posts::factory(),
-            "quantity" => fake()->numberBetween(0, 70)
         ];
     }
 }

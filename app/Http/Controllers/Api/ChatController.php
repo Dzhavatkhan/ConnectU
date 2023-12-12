@@ -14,13 +14,20 @@ class ChatController extends Controller
     public function index()
     {
         // айди не настоящийЮ взял чисто для теста
-        $id = 71;
+        $id = 83;
         $chats = Personal_chat::query()
-        ->join("users",'personal_chats.participant_id' , 'users.id')
-        ->where('personal_chats.user_id', $id)
-        ->selectRaw("personal_chats.*, users.name AS 'participant'")
+        ->distinct()
+        ->join("messages", 'personal_chats.id', 'messages.chat_id')
+        ->join("users", 'messages.sender_id', 'users.id')
+        ->whereRaw("FIND_IN_SET($id, participants)")
+        ->selectRaw("personal_chats.name,personal_chats.id, messages.message, users.name AS 'participant'")
         ->get();
-
+        // $recipient = Personal_chat::query()
+        // ->join("messages", 'personal_chats.id', 'messages.chat_id')
+        // ->join("users", 'messages.sender_id', 'users.id')
+        // ->where('messages.sender_id', $id)
+        // ->selectRaw("users.name AS 'recipient'")
+        // ->get();
         return response()->json([
             "chats" => $chats
         ], 200)->header("Content-type","application/json");

@@ -17,7 +17,7 @@ class PostController extends Controller
         $posts = Posts::query()
         ->join('likes', 'posts.id', 'likes.post_id')
         ->join("users", "posts.user_id", "users.id")
-        ->selectRaw("posts.*, users.name as 'user', likes.quantity AS 'like'")
+        ->selectRaw("posts.*, users.name as 'user'")
         ->get();
         return response()->json([
             "posts" => $posts
@@ -39,7 +39,7 @@ class PostController extends Controller
         ->where("user_id", $user_id)
         ->first();
 
-        if ($post_like->quantity = 0 || $post_like->quantity == null ) {
+        if ($post_like == null ) {
             Like::create([
                 "user_id" => $user_id,
                 "post_id" => $id,
@@ -47,16 +47,22 @@ class PostController extends Controller
             ]);
         }
         else{
-            $like = $post_like->like;
+            $like = $post_like->quantity;
             $like = $like - 1;
+            if($like < 0){
+                $post_like = Like::query()
+                ->where("post_id", $id)
+                ->where("user_id", $user_id)
+                ->delete();
+            }
             $post_like = Like::query()
             ->where("post_id", $id)
             ->where("user_id", $user_id)
             ->update(["quantity" => $like]);
         }
-    
+
         return response()->json([
-            "like" => "have"
+            "post" => $post_like
         ])->header("Content-type", "application/json");
     }
 
@@ -68,7 +74,7 @@ class PostController extends Controller
         $post = Posts::query()
         ->join('likes', 'posts.id', 'likes.post_id')
         ->join("users", "posts.user_id", "users.id")
-        ->selectRaw("posts.*, users.name as 'user', likes.quantity AS 'like'")
+        ->selectRaw("posts.*, users.name as 'user'")
         ->where("posts.id", $id)
         ->get();
         return response()->json([
