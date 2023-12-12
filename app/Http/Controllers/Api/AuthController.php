@@ -3,47 +3,103 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequests\LoginRequest;
+use App\Http\Requests\UserRequests\ReqisterRequest;
+use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function register(ReqisterRequest $request) {
+        try {
+            $user = User::create([
+                'name' => $request->get('name'),
+                'surname' => $request->get('surname'),
+                'login' => $request->get('login'),
+                'email' => $request->get('email'),
+                'password' => Hash::make($request->get('password'))
+            ]);
+
+            $token = $user->createToken('user_token')->plainTextToken;
+
+            return response()->json([
+                'user' => $user,
+                'token' => $token
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'message' => 'Smth went wrong in AuthController.register'
+            ], 403);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function login(LoginRequest $request) {
+        try {
+
+            $user = User::where('login', $request->get('login'))->firstOrFail();
+
+            if(!Hash::check($request->get('password', $user->password))) {
+
+                return response()->json([
+                    'error' => 'Password wrong! :(',
+                    'message' => 'Error in AuthController.login'
+                ], 403);
+
+            } else {
+
+                $token = $user->createToken('user_token')->plainTextToken;
+
+                return response()->json([
+                    'user' => $user,
+                    'token' => $token
+                ], 200);
+
+            }
+
+        } catch (\Exception $e) {
+
+            if ($e instanceof ModelNotFoundException) {
+
+                return response()->json([
+                    'error_code' => 1,
+                    'error' => $e->getMessage(),
+                    'message' => 'Smth went wrong in AuthController.login'
+                ], 403);
+
+            } else {
+
+                return response()->json([
+                    'error' => $e->getMessage(),
+                    'message' => 'Smth went wrong in AuthController.login'
+                ], 403);
+
+            }
+
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    public function logout() {
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        try {
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            $user = User::findOrFail(Auth::id());
+
+            $user->tokens()->delete();
+
+            return response()->json('Выход выполнен!', 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'message' => 'Smth went wrong in AuthController.logout'
+            ], 403);
+
+        }
+
     }
 }
