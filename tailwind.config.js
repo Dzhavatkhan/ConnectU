@@ -9,9 +9,9 @@ module.exports = {
   theme: {
     extend: {
         colors: {
-          'orange': '#DF910B',
-          'light-orange': '#EAB55C',
-          'grey': '#817777'
+          'light-black': '#373737',
+          'grey': '#535353',
+          'light-grey': '#989898'
         },
         backgroundImage: {
           'hero-pattern': "url('./src/assets/icons/magnifier_black.png')",
@@ -59,6 +59,9 @@ module.exports = {
             swimY: "swimY 0.8s alternate infinite",
         },
     },
+    fontFamily: {
+        'display': ['Montserrat']
+    }
 },
 plugins: [
     plugin(function({ addBase, theme }) {

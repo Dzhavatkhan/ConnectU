@@ -1,10 +1,13 @@
 <template>
-    <div class="w-10 h-10 bg-black">
+    <header>
+        <nav-bar />
+    </header>
 
-    </div>
-    <router-view/>
+    <main>
+        <router-view/>
+    </main>
 </template>
 
 <script setup>
-console.log("vue");
+import NavBar from './components/structure/NavBar.vue';
 </script>

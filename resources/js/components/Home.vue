@@ -1,9 +1,9 @@
-<template>
-    <div class="search">
+<!-- <template> -->
+    <!-- <div class="search">
         <div class="search-form">
-            <input type="search" v-bind:class="{'focused': form.search}" v-on:keyup="searching" name="search" v-model="form.search" id="">
+            <input type="search" v-bind:class="{'focused': form.search}" v-on:keyup="searching" name="search" v-model="form.search" id=""> -->
             <!-- <input type="submit" @click="searching()"> -->
-        </div>
+        <!-- </div>
         <div class="search-result" v-for="result in results" :key="result.id">
             <p @click="getUser(result.id)">{{ result.name}}</p>
         </div>
@@ -14,10 +14,10 @@
             <h2 class="name" @click="getPost(post.id)">{{ post.text }}</h2>
             <p class="lalo">{{ post.like }}</p>
         </div>
-    </div>
-</template>
+    </div> -->
+<!-- </template> -->
 
-<script setup>
+<!-- <script setup>
 import { onMounted, ref } from "vue";
 import {useRouter} from 'vue-router'
 
@@ -69,4 +69,4 @@ let router = useRouter();
         width:500px;
         overflow:hidden;
     }
-</style>
+</style> -->
