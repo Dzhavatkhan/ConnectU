@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('personal_chats', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("participants");
+            $table->text("participants");
             $table->timestamps();
         });
     }
