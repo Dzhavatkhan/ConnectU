@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input :type="inputType" :placeholder="placeholder" v-model="inputComputed" class="w-full text-white placeholder:text-white bg-inherit focus:outline-none">
+        <input :type="inputType" :placeholder="placeholder" v-model="inputComputed" class="w-full text-white placeholder:text-white border-light-grey border-b bg-inherit focus:outline-none">
         <div>{{ error }}</div>
     </div>
 </template>
