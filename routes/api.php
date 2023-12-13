@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
@@ -20,7 +21,6 @@ Route::get('posts', [PostController::class, 'index'])->name('posts');
 Route::get('like/{id}', [PostController::class, 'like'])->name('like');
 Route::get('post/id{id}', [PostController::class, 'show'])->name('post');
 
-Route::get('chats', [ChatController::class, 'index'])->name("chats");
 Route::get('chat/id{id}', [ChatController::class, 'show'])->name("chat");
 
 Route::get("user/id{id}", [UserController::class, 'show'])->name('user_show');
@@ -28,6 +28,11 @@ Route::get("user/id{id}", [UserController::class, 'show'])->name('user_show');
 Route::post("search_people", [UserController::class, 'search'])->name('search_people');
 Route::post("addFriend", [UserController::class, 'store'])->name("addFriend");
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', [AuthController::class, 'login']);
+Route::post('registration', [AuthController::class, 'register']);
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('chats', [ChatController::class, 'index'])->name("chats");
+    Route::post('createChat/id{id}', [ChatController::class, 'createChat']);
+    Route::post("messager", [ChatController::class, 'message']);
 });

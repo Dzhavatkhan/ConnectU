@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Message;
 use App\Models\Personal_chat;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
@@ -14,13 +17,14 @@ class ChatController extends Controller
     public function index()
     {
         // айди не настоящийЮ взял чисто для теста
-        $id = 83;
+        $id = Auth::id();
         $chats = Personal_chat::query()
-        ->distinct()
-        ->join("messages", 'personal_chats.id', 'messages.chat_id')
-        ->join("users", 'messages.sender_id', 'users.id')
+        ->leftJoin("messages", 'personal_chats.id', 'messages.chat_id')
+        ->leftJoin("users", 'messages.recipient_id', 'users.id')
         ->whereRaw("FIND_IN_SET($id, participants)")
         ->selectRaw("personal_chats.name,personal_chats.id, messages.message, users.name AS 'participant'")
+        ->orderByDesc("messages.created_at")
+        ->groupBy("personal_chats.id")
         ->get();
         // $recipient = Personal_chat::query()
         // ->join("messages", 'personal_chats.id', 'messages.chat_id')
@@ -39,6 +43,43 @@ class ChatController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function createChat($id)
+    {
+        $user = Auth::user();
+        $chat_user = User::query()->where("id", $id)->first();
+        $createChat = Personal_chat::create([
+            "name" => "$user->name,$chat_user->name",
+            "participants" => "$user->id,$chat_user->id"
+        ]);
+        return response()->json([
+            "chat" => $createChat
+        ])->header("Content-type", "application/json");
+    }
+
+    public function message(Request $request)
+    {
+        $data = $request->only([
+            "recipient_id",
+            "chat_id",
+            "message",
+        ]);
+        $message = Message::create([
+            "sender_id" => Auth::id(),
+            "recipient_id" => $data['recipient_id'],
+            "chat_id" => $data['chat_id'],
+            "status" => "Отправлено",
+            "message" => $data['message']
+        ]);
+        $msg = Message::query()
+        ->leftJoin('users', 'messages.recipient_id', 'users.id')
+        ->selectRaw("messages.*, users.name")
+        ->where("messages.sender_id", Auth::id())
+        ->get();
+        return response()->json([
+            "message" => $msg
+        ]);
     }
 
     /**

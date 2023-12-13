@@ -24,13 +24,19 @@ let props = defineProps({
     }
 })
 onMounted( async() => [
-    getPost()
+    getPost(),
+    getID()
 ])
 
 const getPost = async () => {
     let response = await axios.get(`/api/post/id${props.id}`)
     console.log(props.id, response);
     post.value = response.data.post[0]
+}
+
+const getID = async () => {
+    let response = await axios.get('/api/chats')
+    console.log(response);
 }
 const like = async () => {
     let response = await axios.get(`/api/like/${props.id}`)
