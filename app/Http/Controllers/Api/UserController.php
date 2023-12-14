@@ -32,10 +32,11 @@ class UserController extends Controller
         $user_id = $request->user_id;
         $new_friend = User::where("id", $user_id)->first();
         Friend::create([
-            "friends" => "$auth,$user_id"
+            "friends" => "$auth,$user_id",
+            "status" => "Отправлена"
         ]);
         return response()->json([
-            "message" => "$new_friend->name, добавлен в друзья"
+            "message" => "Заявка отправлена"
         ]);
     }
     public function search( Request $request)

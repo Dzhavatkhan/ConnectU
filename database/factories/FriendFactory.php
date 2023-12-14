@@ -18,7 +18,8 @@ class FriendFactory extends Factory
     public function definition(): array
     {
         return [
-            "friends" => User::factory()
+            "friends" => User::factory(),
+            "status" => fake()->text()
         ];
     }
 }

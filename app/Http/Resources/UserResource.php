@@ -16,7 +16,8 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         $id = $this->id;
-        $friends = Friend::query()->whereRaw("FIND_IN_SET($id,friends)")->count();
+        $friends = Friend::query()->whereRaw("FIND_IN_SET($id,friends)")->where("status", "Принята")->count();
+        $push = Friend::query()->whereRaw("FIND_IN_SET($id,friends)")->where("status", "Отправлена");
         return [
             'id' => $id,
             "email" => $this->email,
@@ -24,7 +25,8 @@ class UserResource extends JsonResource
             "login" => $this->login,
             'surname' => $this->surname,
             "name" => $this->name,
-            "friends" => $friends
+            "friends" => $friends,
+            "push" => $push
         ];
     }
 }
