@@ -5,12 +5,20 @@ import Chat from '../components/Chat.vue';
 import Post from '../components/Post.vue';
 import UserPage from '../components/UserPage.vue'
 
+import FeedView from '../views/FeedView.vue'
+import FriendsView from '../views/FriendsView.vue'
+
 
 let routes = [
     {
         path: "/",
-        component: Home,
-        name: Home
+        component: FeedView,
+        name: 'feed'
+    },
+    {
+        path: "/friends",
+        component: FriendsView,
+        name: "friends"
     },
     {
         path: "/:patchMatch(.*)*",

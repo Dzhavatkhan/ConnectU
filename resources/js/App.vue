@@ -1,13 +1,22 @@
 <template>
     <header>
-        <nav-bar />
+        <nav-bar-header />
     </header>
 
     <main>
-        <router-view/>
+        <section class="max-lg:p-3 lg:px-72 lg:mt-48">
+            <div class="container m-auto">
+                <div class="flex justify-between lg:mt-10 lg:gap-20">
+                        <nav-bar-aside />
+                    <router-view/>
+                </div>
+            </div>
+        </section>
+        
     </main>
 </template>
 
 <script setup>
-import NavBar from './components/structure/NavBar.vue';
+import NavBarAside from './components/structure/NavBarAside.vue';
+import NavBarHeader from './components/structure/NavBarHeader.vue';
 </script>

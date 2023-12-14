@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute inset-x-0 px-3 py-6 bg-light-black">
+    <div class="relative max-lg:inset-x-0 z-10 lg:right-0 px-3 py-6 bg-light-black">
         <div @click="toggleModal(1)" class="py-3 text-white text-center border-white border rounded-lg">Войти</div>
 
         <div @click="toggleModal(2)" class="mt-5 py-3 text-white text-center border-white border rounded-lg">Зарегистрироваться</div>
@@ -8,7 +8,7 @@
     <SignInModal v-if="modals[0].visible" @closeModal="toggleModal(1, true)" />
     <SignUpModal v-if="modals[1].visible" @closeModal="toggleModal(2, true)" />
 
-    <Cover v-if="idOpenModal" />
+    <Cover @click="idOpenModal ? toggleModal(idOpenModal, true) : $emit('closeModal')" />
 </template>
 
 <script setup>
