@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed inset-0 flex flex-col text-white">
+    <div class="fixed inset-0 z-10 flex flex-col text-white">
         <div @click="$emit('closeModal')" class="p-2 bg-light-black">
             <svg width="25" viewBox="0 0 18 18" fill="none" class="m-auto">
                 <path d="M15.072 17.3952L9.26367 11.5868L3.4553 17.3952C3.1472 17.7033 2.72933 17.8764 2.29362 17.8764C1.8579 17.8764 1.44004 17.7033 1.13194 17.3952C0.823848 17.0871 0.650761 16.6692 0.650761 16.2335C0.650761 15.7978 0.823849 15.3799 1.13194 15.0718L6.94032 9.26346L1.13194 3.45508C0.823848 3.14698 0.650762 2.72912 0.650762 2.2934C0.650762 1.85769 0.823848 1.43982 1.13194 1.13173C1.44004 0.823633 1.85791 0.650547 2.29362 0.650547C2.72933 0.650547 3.1472 0.823633 3.45529 1.13173L9.26367 6.94011L15.072 1.13173C15.3801 0.823633 15.798 0.650546 16.2337 0.650546C16.6694 0.650546 17.0873 0.823632 17.3954 1.13173C17.7035 1.43982 17.8766 1.85769 17.8766 2.2934C17.8766 2.72912 17.7035 3.14698 17.3954 3.45508L11.587 9.26346L17.3954 15.0718C17.7035 15.3799 17.8766 15.7978 17.8766 16.2335C17.8766 16.6692 17.7035 17.0871 17.3954 17.3952C17.0873 17.7033 16.6694 17.8764 16.2337 17.8764C15.798 17.8764 15.3801 17.7033 15.072 17.3952Z" fill="#535353"/>
@@ -20,7 +20,7 @@
             <div class=" font-display">
                 <div class="p-3 flex items-center gap-3 border-light-grey border-b">
                     <div>
-                        <img src="../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="rounded-full">
+                        <img src="../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 rounded-full">
                     </div>
 
                     <div class="flex items-center gap-2">
@@ -46,7 +46,7 @@
 
                 <div class="p-3 flex items-center gap-3 border-light-grey border-b">
                     <div>
-                        <img src="../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="rounded-full">
+                        <img src="../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 rounded-full">
                     </div>
 
                     <div class="flex items-center gap-2">
