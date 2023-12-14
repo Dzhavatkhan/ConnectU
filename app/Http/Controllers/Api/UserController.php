@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Friend;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,7 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        return response()->json([
+            "profile" => $user
+        ]);
     }
 
     /**
@@ -58,7 +62,7 @@ class UserController extends Controller
         $user = User::query()->where("id", $id)->get();
         $friends = Friend::query()
         ->whereRaw("FIND_IN_SET($id, friends)");
-        
+
         if($friends == null){
             $friends = 0;
         }

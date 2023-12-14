@@ -35,4 +35,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('chats', [ChatController::class, 'index'])->name("chats");
     Route::post('createChat/id{id}', [ChatController::class, 'createChat']);
     Route::post("messager", [ChatController::class, 'message']);
+    Route::get('posts/my', [PostController::class, 'my']);
+    Route::get('profile', [UserController::class, 'index']);
+
 });

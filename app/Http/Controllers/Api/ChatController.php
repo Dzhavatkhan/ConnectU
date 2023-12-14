@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChatResource;
 use App\Models\Message;
 use App\Models\Personal_chat;
 use App\Models\User;
@@ -16,24 +17,25 @@ class ChatController extends Controller
      */
     public function index()
     {
-        // айди не настоящийЮ взял чисто для теста
         $id = Auth::id();
-        $chats = Personal_chat::query()
-        ->leftJoin("messages", 'personal_chats.id', 'messages.chat_id')
-        ->leftJoin("users", 'messages.recipient_id', 'users.id')
-        ->whereRaw("FIND_IN_SET($id, participants)")
-        ->selectRaw("personal_chats.name,personal_chats.id, messages.message, users.name AS 'participant'")
-        ->orderByDesc("messages.created_at")
-        ->groupBy("personal_chats.id")
-        ->get();
-        // $recipient = Personal_chat::query()
-        // ->join("messages", 'personal_chats.id', 'messages.chat_id')
-        // ->join("users", 'messages.sender_id', 'users.id')
-        // ->where('messages.sender_id', $id)
-        // ->selectRaw("users.name AS 'recipient'")
-        // ->get();
+        // $chats = Personal_chat::query()
+        // ->leftJoin("messages", 'personal_chats.id', 'messages.chat_id')
+        // ->whereRaw("FIND_IN_SET($id, participants)")
+        // ->selectRaw("personal_chats.name,personal_chats.id")
+        // ->get()
+        // ->first();
+        // $messages = Message::query()
+        // ->where("chat_id", $chats->id)
+        // ->orderByDesc("messages.created_at")
+        // ->selectRaw("messages.message, messages.created_at")
+        // ->get()
+        // ->first();
+
+        $chats = ChatResource::collection(Personal_chat::whereRaw("FIND_IN_SET($id, participants)")->orderByDesc('created_at')->get());
         return response()->json([
-            "chats" => $chats
+            "chats" => [
+                $chats
+            ]
         ], 200)->header("Content-type","application/json");
     }
 
