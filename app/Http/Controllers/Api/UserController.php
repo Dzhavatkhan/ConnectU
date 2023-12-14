@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\Friend;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $id = Auth::id();
+        $user = UserResource::collection(User::where('id', $id)->get());
         return response()->json([
             "profile" => $user
         ]);
@@ -26,13 +28,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $auth = 71;
+        $auth = Auth::id();
         $user_id = $request->user_id;
+        $new_friend = User::where("id", $user_id)->first();
         Friend::create([
             "friends" => "$auth,$user_id"
         ]);
         return response()->json([
-            "addFriend" => "Добавлен в друзья"
+            "message" => "$new_friend->name, добавлен в друзья"
         ]);
     }
     public function search( Request $request)
@@ -58,7 +61,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $auth = 71;
+        $auth = Auth::user()->id;
         $user = User::query()->where("id", $id)->get();
         $friends = Friend::query()
         ->whereRaw("FIND_IN_SET($id, friends)");
@@ -98,8 +101,18 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
-        //
+        $delete = User::query()->where('id', Auth::id())->delete();
+        if ($delete) {
+            return response()->json([
+                "message" => "Вы удалены"
+            ], 200);
+        }
+        else{
+            return response()->json([
+                "message" => "Не удалость удалить свой аккаунт"
+            ], 200);
+        }
     }
 }

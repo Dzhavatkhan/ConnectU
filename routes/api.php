@@ -26,7 +26,6 @@ Route::get('chat/id{id}', [ChatController::class, 'show'])->name("chat");
 Route::get("user/id{id}", [UserController::class, 'show'])->name('user_show');
 
 Route::post("search_people", [UserController::class, 'search'])->name('search_people');
-Route::post("addFriend", [UserController::class, 'store'])->name("addFriend");
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('registration', [AuthController::class, 'register']);
@@ -37,5 +36,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post("messager", [ChatController::class, 'message']);
     Route::get('posts/my', [PostController::class, 'my']);
     Route::get('profile', [UserController::class, 'index']);
+    Route::post("addFriend", [UserController::class, 'store'])->name("addFriend");
 
 });
