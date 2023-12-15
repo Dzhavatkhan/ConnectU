@@ -1,20 +1,14 @@
 <!-- <template> -->
     <!-- <div class="search">
         <div class="search-form">
-            <input type="search" v-bind:class="{'focused': form.search}" v-on:keyup="searching" name="search" v-model="form.search" id=""> -->
-            <!-- <input type="submit" @click="searching()"> -->
-        <!-- </div>
+            <input type="search" v-bind:class="{'focused': form.search}" v-on:keyup="searching" name="search" v-model="form.search" id="">
+            <input type="submit" @click="searching()">
+         </div>
         <div class="search-result" v-for="result in results" :key="result.id">
             <p @click="getUser(result.id)">{{ result.name}}</p>
         </div>
-    </div>
-    <div>
-
-        <div class="chat" v-for="post in posts" :key=post.id>
-            <h2 class="name" @click="getPost(post.id)">{{ post.text }}</h2>
-            <p class="lalo">{{ post.like }}</p>
-        </div>
     </div> -->
+
 <!-- </template> -->
 
 <!-- <script setup>
