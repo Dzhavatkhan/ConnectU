@@ -31,7 +31,7 @@ class ChatController extends Controller
         // ->get()
         // ->first();
 
-        $chats = ChatResource::collection(Chat::where('id', 1)->get());
+        $chats = ChatResource::collection(Chat::all());
         return response()->json([
             "chats" => [
                 $chats

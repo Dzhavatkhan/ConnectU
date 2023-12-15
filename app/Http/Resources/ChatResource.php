@@ -19,11 +19,17 @@ class ChatResource extends JsonResource
     {
         $msg = Message::where("chat_id", $this->id)->latest()->limit(1)->pluck('message');
         $msg_date = Message::where("chat_id", $this->id)->latest()->limit(1)->pluck('created_at');
-        $msgg = Message::find(1);
+        $user_name = [];
+
+        $msgs = Message::all();
+
+        for ($index = 0; $index < count($msgs); $index++) {
+            $user_name[] = $msgs[$index]->user->name;
+        }
 
         return [
             "id" => $this->id,
-            "name" => $msgg->user->name,
+            "name" => $user_name,
             "messages" => $msg,
             "created_at" => $msg_date
         ];
