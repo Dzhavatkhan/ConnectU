@@ -60,6 +60,7 @@ module.exports = {
         },
     },
     fontFamily: {
+        'sans': ['Junegull'],
         'display': ['Montserrat']
     }
 },

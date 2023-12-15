@@ -30,7 +30,7 @@
                     Aывфывфывыфвыфвфы Aывфывфывыфвыфвфы
                 </div>
 
-                <img src="../../../../../storage/app/public/img/green.jpg" alt="" class="block w-full mt-4 lg:mt-10 rounded-md lg:rounded-xl">
+                <img src="../../../../../storage/app/public/img/new_year.jpg" alt="" class="block w-full mt-4 lg:mt-10 rounded-md lg:rounded-xl">
 
                 <div class="flex gap-2 lg:gap-3 mt-4 lg:mt-10 lg:text-3xl">
                     <svg viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10">

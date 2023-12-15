@@ -5,12 +5,16 @@
 @layer base {
     body {
         background-color: #373737;
-        font-family: 'Junegull';
+    }
+
+    @font-face {
+        font-family: "Bellota";
+        src: url(../fonts/Bellota-Regular.ttf);
     }
 
     @font-face {
         font-family: "Junegull";
-        src: url(../fonts/JUNEGULL-RG.TTF) format("TTF");
+        src: url(../fonts/JUNEGULL-RG.TTF) ;
     }
 
     @font-face {
