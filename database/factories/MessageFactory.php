@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Personal_chat;
+use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,9 +19,8 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         return [
-            "sender_id" => User::factory(),
-            "recipient_id" => User::factory(),
-            "chat_id" => Personal_chat::factory(),
+            "user_id" => User::factory(),
+            "chat_id" => Chat::factory(),
             "message" => fake()->realText(),
             "status" => fake()->text()
 

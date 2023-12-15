@@ -9,18 +9,18 @@
     }
 
     @font-face {
-        font-family: Junegull;
-        src: url(../fonts/JUNEGULL\ RG.TTF) format("TTF");
+        font-family: "Junegull";
+        src: url(../fonts/JUNEGULL-RG.TTF) format("TTF");
     }
 
     @font-face {
-        font-family: Montserrat;
+        font-family: "Montserrat";
         font-weight: 500;
         src: url(../fonts/MONTSERRAT-MEDIUM.TTF) format("TTF");
     }
 
     @font-face {
-        font-family: Montserrat;
+        font-family: "Montserrat";
         font-weight: 400;
         src: url(../fonts/MONTSERRAT-REGULAR.TTF) format("TTF");
     }

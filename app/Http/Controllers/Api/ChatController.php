@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatResource;
 use App\Models\Message;
-use App\Models\Personal_chat;
+use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,10 +18,10 @@ class ChatController extends Controller
     public function index()
     {
         $id = Auth::id();
-        // $chats = Personal_chat::query()
-        // ->leftJoin("messages", 'personal_chats.id', 'messages.chat_id')
+        // $chats = Chat::query()
+        // ->leftJoin("messages", 'Chats.id', 'messages.chat_id')
         // ->whereRaw("FIND_IN_SET($id, participants)")
-        // ->selectRaw("personal_chats.name,personal_chats.id")
+        // ->selectRaw("Chats.name,Chats.id")
         // ->get()
         // ->first();
         // $messages = Message::query()
@@ -31,7 +31,7 @@ class ChatController extends Controller
         // ->get()
         // ->first();
 
-        $chats = ChatResource::collection(Personal_chat::whereRaw("FIND_IN_SET($id, participants)")->orderByDesc('created_at')->get());
+        $chats = ChatResource::collection(Chat::where('id', 1)->get());
         return response()->json([
             "chats" => [
                 $chats
@@ -51,7 +51,7 @@ class ChatController extends Controller
     {
         $user = Auth::user();
         $chat_user = User::query()->where("id", $id)->first();
-        $createChat = Personal_chat::create([
+        $createChat = Chat::create([
             "name" => "$user->name,$chat_user->name",
             "participants" => "$user->id,$chat_user->id"
         ]);
@@ -93,10 +93,10 @@ class ChatController extends Controller
         // айди текущего пользователя (примерный)
         $user_id = 71;
         //получаем нужный чат
-        $chat = Personal_chat::query()
-        ->leftJoin("users",'personal_chats.participant_id' , 'users.id')
-        ->where('personal_chats.id', $id)
-        ->selectRaw("personal_chats.*, users.name AS 'participant'")
+        $chat = Chat::query()
+        ->leftJoin("users",'Chats.participant_id' , 'users.id')
+        ->where('Chats.id', $id)
+        ->selectRaw("Chats.*, users.name AS 'participant'")
         ->get();
 
         return response()->json([
