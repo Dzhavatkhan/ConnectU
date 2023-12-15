@@ -10,11 +10,10 @@ class Message extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "sender_id",
+        "user_id",
         "message",
         "status",
         "chat_id",
-        "recipient_id"
     ];
 
     public function user(): BelongsTo

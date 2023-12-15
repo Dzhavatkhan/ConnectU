@@ -22,13 +22,17 @@ class User extends Authenticatable
         'name',
         'surname',
         'login',
-        "image",
         'email',
+        'image',
         'password',
     ];
 
-    public function msgs(): HasMany {
+    public function messages(): HasMany {
         return $this->hasMany(Message::class);
+    }
+
+    public function chats() {
+        return $this->belongsToMany(Chat::class);
     }
 
     /**
