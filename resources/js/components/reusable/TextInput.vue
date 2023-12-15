@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-full">
         <input :type="inputType" :placeholder="placeholder" v-model="inputComputed" :class="'w-full lg:text-3xl text-white placeholder:text-white border-light-grey border-b bg-inherit focus:outline-none ' + stylesInput">
         <div>{{ error }}</div>
     </div>

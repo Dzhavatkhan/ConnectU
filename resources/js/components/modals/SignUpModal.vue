@@ -67,8 +67,8 @@
                 Зарегистрироваться
             </div>
 
-            <div class="flex gap-2 text-[12px] leading-4 text-white mt-4 font-display">
-                <input type="checkbox" class="">
+            <div class="flex gap-3 text-sm leading-4 text-white mt-5 font-display">
+                <input id="box" type="checkbox" class="w-7 bg-black">
                 <div>Согласие на обработку персональных данных</div>
             </div>
         </div>

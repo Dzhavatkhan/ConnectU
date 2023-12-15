@@ -8,7 +8,7 @@
             Создать пост
         </div>
 
-        <div class="mt-4 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
+        <div class="mt-8 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
             <div class="p-3 lg:p-6 lg:px-8 flex items-center gap-3 lg:gap-5 border-light-grey border-b">
                 <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-10 lg:w-20 block rounded-full">
 

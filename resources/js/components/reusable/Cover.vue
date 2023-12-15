@@ -1,5 +1,5 @@
 <template>
-    <div :class="'absolute inset-0 bg-zinc-800/90 ' + stylesInput"></div>
+    <div :class="'fixed h-screen inset-x-0 bg-zinc-800/90 ' + stylesInput"></div>
 </template>
 
 <script setup>
