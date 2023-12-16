@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequests\LoginRequest;
 use App\Http\Requests\UserRequests\ReqisterRequest;
 use App\Models\User;
+use App\Services\ImageService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,8 @@ class AuthController extends Controller
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->get('password'))
             ]);
+
+            (new ImageService)->updateImage($user, $request, '../storage/app/public/avatars/', 'store');
 
             $token = $user->createToken('user_token')->plainTextToken;
 

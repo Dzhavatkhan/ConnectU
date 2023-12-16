@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import Home from '../components/Home.vue'
+// import Home from '../components/Home.vue'
 import notFound from '../components/notFound.vue'
-import Chat from '../components/Chat.vue';
+// import Chat from '../components/Chat.vue';
 import Post from '../components/Post.vue';
 import UserPage from '../components/UserPage.vue'
 

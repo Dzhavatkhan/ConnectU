@@ -18,7 +18,8 @@ class ReqisterRequest extends FormRequest
             'surname' => 'required|string',
             'login' => 'required|string|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            // 'image' => 'required'
         ];
     }
 }
