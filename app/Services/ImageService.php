@@ -26,7 +26,7 @@ class ImageService {
         $extension = $file->getClientOriginalExtension();
 
         $name = uniqid() . '.' . $extension;
-        $image->toJpeg()->save($path . $name);
+        $image->toJpeg()->save(public_path() . $path . $name);
 
         // if ($methodType === 'store') {
         //     $model->user_id = $request->get('user_id');

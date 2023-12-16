@@ -45,11 +45,15 @@
                         </div>
                     </div>
 
-                    <div @click="modals[1].visible ? toggleModal(2, true) : toggleModal(2)" class="py-[6px] lg:p-0 px-2 max-lg:bg-white rounded-md">
-                        <svg viewBox="0 0 33 42" fill="none" class="w-6 lg:w-9">
+                    <div @click="modals[1].visible ? toggleModal(2, true) : toggleModal(2)" :class="userStore.id ? '' : 'py-[6px] lg:p-0 px-2  max-lg:bg-white rounded-md'">
+                        <svg v-if="!userStore.id" viewBox="0 0 33 42" fill="none" class="w-6 lg:w-9">
                             <path d="M16.4999 18.6999C21.6637 18.6999 25.8498 14.5138 25.8498 9.34996C25.8498 4.18612 21.6637 0 16.4999 0C11.336 0 7.1499 4.18612 7.1499 9.34996C7.1499 14.5138 11.336 18.6999 16.4999 18.6999Z" fill="#373737" class="lg:fill-white"/>
                             <path d="M16.5 20.9C7.38732 20.9 0 28.2874 0 37.3999C0 39.83 1.96999 41.7999 4.40002 41.7999H28.6C31.03 41.7999 33 39.83 33 37.3999C32.9999 28.2874 25.6126 20.9 16.5 20.9Z" fill="#373737" class="lg:fill-white"/>
                         </svg>
+
+                        <div v-else class="">
+                            <img :src="userStore.image" alt="" class="w-8 lg:w-16 rounded-full border-white border-2">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,6 +75,10 @@ import { ref } from 'vue'
 import Cover from '../reusable/Cover.vue'
 import SearchModal from '../modals/SearchModal.vue';
 import UserModal from '../modals/UserModal.vue';
+import { useUserStore } from '@/store/user-store';
+
+const userStore = useUserStore()
+
 
 let idOpenModal = ref(0);
 

@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'image',
         'password',
+        'role_id'
     ];
 
     public function messages(): HasMany {
@@ -33,6 +34,10 @@ class User extends Authenticatable
 
     public function chats() {
         return $this->belongsToMany(Chat::class);
+    }
+
+    public function role() {
+        return $this->belongsTo(Role::class);
     }
 
     /**

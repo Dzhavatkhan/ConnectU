@@ -21,10 +21,11 @@ class AuthController extends Controller
                 'surname' => $request->get('surname'),
                 'login' => $request->get('login'),
                 'email' => $request->get('email'),
-                'password' => Hash::make($request->get('password'))
+                'password' => Hash::make($request->get('password')),
+                'role_id' => 1
             ]);
 
-            (new ImageService)->updateImage($user, $request, '../storage/app/public/avatars/', 'store');
+            (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
 
             $token = $user->createToken('user_token')->plainTextToken;
 

@@ -100,6 +100,9 @@ import TextInput from '../reusable/TextInput.vue';
 import CroppedImage from '../reusable/CroppedImage.vue';
 import CropperModal from '../modals/CropperModal.vue';
 import axios from 'axios';
+import { useUserStore } from '@/store/user-store';
+
+const userStore = useUserStore()
 
 let name = ref(null)
 let surname = ref(null)
@@ -142,6 +145,8 @@ let register = async() => {
 
     try {
         let res = await axios.post('http://127.0.0.1:8000/api/registration', data)
+        userStore.setUserDetails(res)
+
         console.log(res)
     } catch (err) {
         console.log(err)
