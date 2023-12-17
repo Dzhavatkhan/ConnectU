@@ -22,7 +22,7 @@ class AuthController extends Controller
                 'login' => $request->get('login'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->get('password')),
-                'role_id' => 1
+                'role_id' => 2
             ]);
 
             (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');

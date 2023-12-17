@@ -1,6 +1,6 @@
 <template>
     <nav class="relative lg:fixed lg:inset-x-0 lg:top-0 z-20 lg:flex lg:flex-col bg-light-black px-3 lg:px-72 ">
-        <div class="lg:relative container m-auto py-3 lg:py-9 ">
+        <div class="lg:relative container m-auto py-3 lg:py-9">
             <div class="flex justify-between items-center">
                 <div>
                     <svg viewBox="0 0 134 118" fill="none" class="w-[50px] lg:w-24">

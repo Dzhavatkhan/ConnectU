@@ -15,15 +15,17 @@
                 <TextInput
                     placeholder="Логин"
                     v-model:input="login"
+                    :error="errors.login ? errors.login[0] : ''"
                 />
 
                 <TextInput
                     placeholder="Пароль"
                     v-model:input="password"
+                    :error="errors.password ? errors.password[0] : ''"
                 />
             </form>
 
-            <div class="mt-7 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg">
+            <div @click="signIn()" class="mt-7 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg">
                 Войти
             </div>
         </div>
@@ -33,8 +35,30 @@
 <script setup>
 import { ref } from 'vue';
 import TextInput from '../reusable/TextInput.vue';
+import axios from 'axios';
+import { useUserStore } from '@/store/user-store';
+
+const userStore = useUserStore()
 
 let login = ref(null)
 let password = ref(null)
 
+let errors = ref([])
+
+let signIn = async() => {
+    console.log('wewe')
+    try {
+        let res = await axios.post('http://127.0.0.1:8000/api/login', {
+            login: login.value,
+            password: password.value
+        })
+
+        userStore.setUserDetails(res)
+
+        console.log(res)
+    } catch (err) {
+        console.log(err)
+        errors.value = err.response.data.errors
+    }
+}
 </script>

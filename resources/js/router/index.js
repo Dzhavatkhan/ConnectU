@@ -7,11 +7,12 @@ import UserPage from '../components/UserPage.vue'
 
 import FeedView from '../views/FeedView.vue'
 import FriendsView from '../views/FriendsView.vue'
-
+import MessangerView from '../views/MessangerView.vue'
+import ChatSection from '../components/sections/MessangerView/ChatSection.vue'
 
 let routes = [
     {
-        path: "/",
+        path: "/feed",
         component: FeedView,
         name: 'feed'
     },
@@ -19,6 +20,16 @@ let routes = [
         path: "/friends",
         component: FriendsView,
         name: "friends"
+    },
+    {
+        path: "/messanger",
+        component: MessangerView,
+        name: "messanger",
+    },
+    {
+        path: '/messanger/chat:id',
+        component: ChatSection,
+        name: 'chat'
     },
     {
         path: "/:patchMatch(.*)*",

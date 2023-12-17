@@ -60,6 +60,8 @@ export const useUserStore = defineStore('user', {
         this.$state.surname = null
         this.$state.login = null
         this.$state.email = null
+        this.$state.image = null
+        this.$state.roleId = null
     }
   },
   persist: true,

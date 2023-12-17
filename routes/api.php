@@ -39,5 +39,5 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('posts/my', [PostController::class, 'my']);
     Route::get('profile', [UserController::class, 'index']);
     Route::post("addFriend", [UserController::class, 'store'])->name("addFriend");
-
+    Route::get('logout', [AuthController::class, 'logout']);
 });
