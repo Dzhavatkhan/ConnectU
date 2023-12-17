@@ -31,7 +31,7 @@ let routes = [
         name: "messanger",
     },
     {
-        path: '/messanger/chat:id',
+        path: '/messanger',
         component: ChatSection,
         name: 'chat'
     },

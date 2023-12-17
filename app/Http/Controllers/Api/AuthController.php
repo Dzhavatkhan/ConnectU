@@ -44,7 +44,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request) {
         try {
 
-            $user = User::where('login', $request->get('login'))->firstOrFail();
+            $user = User::with('chats')->where('login', $request->get('login'))->firstOrFail();
 
             if(!Hash::check($request->get('password'), $user->password)) {
 
