@@ -30,9 +30,10 @@ class ChatController extends Controller
         // ->selectRaw("messages.message, messages.created_at")
         // ->get()
         // ->first();
-        $chats = User::findOrFail(Auth::id())->chats()->get();
-        // $chats = ChatResource::collection($user->chats);
 
+        // $chats = User::findOrFail(Auth::id())->chats()->get();
+
+        $chats = ChatResource::collection(Chat::distinct()->orderByDesc('created_at')->get());
         return response()->json([
             $chats
         ], 200)->header("Content-type","application/json");
@@ -50,10 +51,7 @@ class ChatController extends Controller
     {
         $user = Auth::user();
         $chat_user = User::query()->where("id", $id)->first();
-        $createChat = Chat::create([
-            "name" => "$user->name,$chat_user->name",
-            "participants" => "$user->id,$chat_user->id"
-        ]);
+        $createChat = Chat::create();
         return response()->json([
             "chat" => $createChat
         ])->header("Content-type", "application/json");
@@ -62,24 +60,19 @@ class ChatController extends Controller
     public function message(Request $request)
     {
         $data = $request->only([
-            "recipient_id",
+            "user_id",
             "chat_id",
             "message",
         ]);
         $message = Message::create([
-            "sender_id" => Auth::id(),
-            "recipient_id" => $data['recipient_id'],
+            "user_id" => Auth::id(),
             "chat_id" => $data['chat_id'],
             "status" => "Отправлено",
             "message" => $data['message']
         ]);
-        $msg = Message::query()
-        ->leftJoin('users', 'messages.recipient_id', 'users.id')
-        ->selectRaw("messages.*, users.name")
-        ->where("messages.sender_id", Auth::id())
-        ->get();
+
         return response()->json([
-            "message" => $msg
+            "message" => $message
         ]);
     }
 
