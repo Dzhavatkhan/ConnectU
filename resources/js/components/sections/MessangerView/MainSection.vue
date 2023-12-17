@@ -58,6 +58,32 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import TextInput from '../../reusable/TextInput.vue';
+import axios from 'axios';
+import { useUserStore } from '../../../store/user-store.js'
 
+let userStore = useUserStore()
+
+onMounted(async() => {
+    await getChats()
+})
+
+let chats = ref(null)
+
+let getChats = async() => {
+    try {
+        let res = await axios('http://127.0.0.1:8000/api/chats', {
+            headers: {
+                Authorization: `Bearer ${userStore.token}`
+            }
+        })
+
+        chats.value = res.data
+
+        console.log(res)
+    } catch (err) {
+        console.log(err)
+    }
+}
 </script>

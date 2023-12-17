@@ -30,12 +30,11 @@ class ChatController extends Controller
         // ->selectRaw("messages.message, messages.created_at")
         // ->get()
         // ->first();
+        $chats = User::findOrFail(Auth::id())->chats()->get();
+        // $chats = ChatResource::collection($user->chats);
 
-        $chats = ChatResource::collection(Chat::all());
         return response()->json([
-            "chats" => [
-                $chats
-            ]
+            $chats
         ], 200)->header("Content-type","application/json");
     }
 

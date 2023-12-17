@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,15 +26,16 @@ Route::get('chat/id{id}', [ChatController::class, 'show'])->name("chat");
 
 Route::get("user/id{id}", [UserController::class, 'show'])->name('user_show');
 
-Route::post("search_people", [UserController::class, 'search'])->name('search_people');
+Route::post("search", [SearchController::class, 'index'])->name('search');
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('registration', [AuthController::class, 'register']);
 
-Route::get('chats', [ChatController::class, 'index'])->name("chats");
 
 
 Route::middleware('auth:sanctum')->group(function() {
+    Route::get('chats', [ChatController::class, 'index'])->name("chats");
+
     Route::post('createChat/id{id}', [ChatController::class, 'createChat']);
     Route::post("messager", [ChatController::class, 'message']);
     Route::get('posts/my', [PostController::class, 'my']);
