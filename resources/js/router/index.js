@@ -12,6 +12,10 @@ import ChatSection from '../components/sections/MessangerView/ChatSection.vue'
 
 let routes = [
     {
+        path: '/',
+        redirect: '/feed'
+    },
+    {
         path: "/feed",
         component: FeedView,
         name: 'feed'

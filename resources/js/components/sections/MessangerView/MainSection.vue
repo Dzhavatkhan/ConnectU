@@ -12,47 +12,47 @@
                 />
             </div>
 
-            <router-link to="/messanger/chat1" class="p-3 lg:p-8 flex items-center gap-4 border-light-grey border-b">
+            <router-link to="/messanger/chat1" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
                 <div>
-                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-24 rounded-full">
+                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-20 rounded-full">
                 </div>
 
-                <div class="max-lg:w-2/3 grow font-medium">
+                <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
                     Джаватхан Джаватханов
                 </div>
 
-                <div class="text-[12px]">
+                <div class="text-[12px] lg:text-lg">
                     11.12.23
                 </div>
             </router-link>
 
-            <div class="p-3 lg:p-8 flex items-center gap-4 border-light-grey border-b">
+            <router-link to="/messanger/chat1" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
                 <div>
-                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-24 rounded-full">
+                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-20 rounded-full">
                 </div>
 
-                <div class="max-lg:w-2/3 grow font-medium">
+                <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
                     Джаватхан Джаватханов
                 </div>
 
-                <div class="text-[12px]">
+                <div class="text-[12px] lg:text-lg">
                     11.12.23
                 </div>
-            </div>
+            </router-link>
 
-            <div class="p-3 lg:p-8 flex items-center gap-4 border-light-grey">
+            <router-link to="/messanger/chat1" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey">
                 <div>
-                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-24 rounded-full">
+                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-20 rounded-full">
                 </div>
 
-                <div class="max-lg:w-2/3 grow font-medium">
+                <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
                     Джаватхан Джаватханов
                 </div>
 
-                <div class="text-[12px]">
+                <div class="text-[12px] lg:text-lg">
                     11.12.23
                 </div>
-            </div>
+            </router-link>
         </div>
     </div>
 </template>
