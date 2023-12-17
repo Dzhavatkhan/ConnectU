@@ -15,39 +15,41 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Posts::query()
-        ->join('likes', 'posts.id', 'likes.post_id')
-        ->join("users", "posts.user_id", "users.id")
-        ->selectRaw("posts.*, users.name as 'user'")
-        ->orderByDesc("posts.created_at")
-        ->get();
-        if ($posts->count() == 0) {
-            return response()->json([
-                "posts" => "Постов нет"
-            ], 404);
-        }
-        return response()->json([
-            "posts" => $posts
-        ], 201)->header("Content-type","application/json");
+        // $posts = Posts::query()
+        // ->join('likes', 'posts.id', 'likes.post_id')
+        // ->join("users", "posts.user_id", "users.id")
+        // ->selectRaw("posts.*, users.name as 'user'")
+        // ->orderByDesc("posts.created_at")
+        // ->get();
+        // if ($posts->count() == 0) {
+        //     return response()->json([
+        //         "posts" => "Постов нет"
+        //     ], 404);
+        // }
+        // return response()->json([
+        //     "posts" => $posts
+        // ], 201)->header("Content-type","application/json");
+
+        // $posts
     }
-    public function my()
-    {
-        $posts = Posts::query()
-        ->join('likes', 'posts.id', 'likes.post_id')
-        ->join("users", "posts.user_id", "users.id")
-        ->where('posts.user_id', Auth::id())
-        ->selectRaw("posts.*, users.name as 'user'")
-        ->orderByDesc("posts.created_at")
-        ->get();
-        if ($posts->count() == 0) {
-            return response()->json([
-                "posts" => "Постов нет"
-            ], 404);
-        }
-        return response()->json([
-            "posts" => $posts
-        ], 201)->header("Content-type","application/json");
-    }
+    // public function my()
+    // {
+    //     $posts = Posts::query()
+    //     ->join('likes', 'posts.id', 'likes.post_id')
+    //     ->join("users", "posts.user_id", "users.id")
+    //     ->where('posts.user_id', Auth::id())
+    //     ->selectRaw("posts.*, users.name as 'user'")
+    //     ->orderByDesc("posts.created_at")
+    //     ->get();
+    //     if ($posts->count() == 0) {
+    //         return response()->json([
+    //             "posts" => "Постов нет"
+    //         ], 404);
+    //     }
+    //     return response()->json([
+    //         "posts" => $posts
+    //     ], 201)->header("Content-type","application/json");
+    // }
 
     /**
      * Store a newly created resource in storage.

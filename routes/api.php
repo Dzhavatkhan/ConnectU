@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('posts', [PostController::class, 'index'])->name('posts');
 Route::get('like/{id}', [PostController::class, 'like'])->name('like');
 Route::get('post/id{id}', [PostController::class, 'show'])->name('post');
+
+Route::get('categories', [CategoryController::class, 'index']);
 
 Route::get('chat/id{id}', [ChatController::class, 'show'])->name("chat");
 
