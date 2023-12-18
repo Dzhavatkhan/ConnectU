@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Message;
 use App\Models\User;
+use App\Models\UserChats;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,9 @@ class ChatResource extends JsonResource
     public function toArray(Request $request)
     {
         $msg = Message::where("chat_id", $this->id)->latest()->limit(1)->pluck('message');
-        $msg_date = Message::where("chat_id", $this->id)->first()->created_at;
+        $msg_date = Message::where("chat_id", $this->id)->orderByDesc('created_at')->pluck('created_at');
+        // $msg_date = Message::where("chat_id", $this->id)->orderByDesc('created_at')->first()->created_at;
+
 
         //work with date
         $msg_day = date('d', strtotime($msg_date));
@@ -65,12 +68,18 @@ class ChatResource extends JsonResource
         $msg_date = "$msg_day $msg_month";
 
 
-        $user = DB::table('users_chats')
-        ->where('users_chats.chat_id', $this->id)
-        ->where("users_chats.user_id", '!=', Auth::id())
-        ->first();
-        $user = $user->user_id;
-        $user = User::findOrFail($user);
+        // $user = UserChats::query()
+        // ->where('user_chats.chat_id', $this->id)
+        // ->where("user_chats.user_id", '!=', Auth::id())
+        // ->first();
+        // $user = $user->user_id;
+
+        $chat = UserChats::query()
+        ->where('chat_id', $this->id)
+        ->where("user_id", '!=', $this->user_id)
+        ->first()->user_id;
+
+        $user = User::findOrFail($chat);
         $user = $user->name;
         $user_name = [];
 
@@ -87,5 +96,6 @@ class ChatResource extends JsonResource
             "time" => $msg_time,
             "created_at" => $msg_date
         ];
+
     }
 }

@@ -96,7 +96,23 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        //данные нужно отвалидировать
+        $data = $request->validate([
+            "name",
+            "login",
+            "categories_id"
+        ]);
+
+        $update = User::where('id', $id)->update($data);
+        if ($update) {
+            return response()
+            ->json([
+                "update" => "Ваш профиль отредактирован"
+            ])
+            ->header("content-type", 'application/json');
+        }
+
+
     }
 
     /**

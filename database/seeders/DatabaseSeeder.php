@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Role::factory()->create([
+            'id' => 2,
             'name' => 'user',
         ]);
         \App\Models\User::factory(10)->create();
