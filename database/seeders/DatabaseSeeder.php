@@ -17,10 +17,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Role::factory()->create([
-            'id' => 2,
-            'name' => 'user',
-        ]);
+
+        // \App\Models\Role::factory()->create([
+        //     'id' => 1,
+        //     'name' => 'admin',
+        // ]);
+
+        // \App\Models\Role::factory()->create([
+        //     'id' => 2,
+        //     'name' => 'user',
+        // ]);
         \App\Models\User::factory(10)->create();
         \App\Models\Like::factory(10)->create();
         \App\Models\Friend::factory(10)->create();
