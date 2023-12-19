@@ -26,18 +26,37 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        $auth = Auth::id();
-        $user_id = $request->user_id;
-        $new_friend = User::where("id", $user_id)->first();
-        Friend::create([
-            "friends" => "$auth,$user_id",
-            "status" => "Отправлена"
+        $auth = Auth::user()->id;
+        $checkIsFriend = Friend::whereIn('user_id', ["$auth", "$id"])
+        ->whereIn('recipient_id', ["$auth", "$id"])
+        ->where("status", "Принята");
+        $checkIsRequest = Friend::whereIn('user_id', ["$auth", "$id"])
+        ->whereIn('recipient_id', ["$auth", "$id"])
+        ->where("status", "Отправлена");
+
+        if ($checkIsFriend->count() > 0) {
+            return response()->json([
+                "message" => "Данный пользователь уже у Вас в друзьях",
+            ]);
+        }
+        if ($checkIsRequest->count() > 0) {
+            return response()->json([
+                "message" => "Заявка уже была отправлена"
+            ]);
+        }
+        $new_friend = Friend::create([
+
+            "user_id"      => $auth,
+            "recipient_id" => $id,
+            "status"       => "Отправлена"
         ]);
+
         return response()->json([
             "message" => "Заявка отправлена"
         ]);
+
     }
     public function search( Request $request)
     {
@@ -63,32 +82,14 @@ class UserController extends Controller
     public function show(string $id)
     {
         $auth = Auth::user()->id;
-        $user = User::query()->where("id", $id)->get();
-        $friends = Friend::query()
-        ->whereRaw("FIND_IN_SET($id, friends)");
-
-        if($friends == null){
-            $friends = 0;
-        }
-        else{
-            $friends = $friends->count();
-
-        }
-        if (Friend::query()
-            ->whereRaw("FIND_IN_SET($id, friends)")
-            ->whereRaw("FIND_IN_SET($auth, friends)")
-            ->count() > 0
-        ) {
-            $isFriend = 1;
-        }
-        else{
-            $isFriend = 0;
-        }
-        return response()->json([
-            "user" => $user,
-            "friends" => $friends,
-            "isFriend" => $isFriend
-        ]);
+        $checkIsReq = Friend::whereIn('recipient_id', ["$auth", "$id"])
+        ->where('status', "Отправлена")
+        ->count();
+        // return response()->json([
+        //     "user" => $user,
+        //     "friends" => $friends,
+        //     "isFriend" => $isFriend
+        // ]);
     }
 
     /**

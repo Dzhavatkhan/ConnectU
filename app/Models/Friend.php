@@ -9,6 +9,8 @@ class Friend extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "friends"
+        "user_id",
+        "recipient_id",
+        "status"
     ];
 }
