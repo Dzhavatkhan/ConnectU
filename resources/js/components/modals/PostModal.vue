@@ -33,7 +33,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-7 flex flex-wrap gap-2">
+                    <div v-if="activeCategories.length" class="mt-7 flex flex-wrap gap-2">
                         <div v-for="category in activeCategories" :key="category.id" class="flex gap-2 p-2 border-white border-2 text-white rounded-md">
                             {{ category.name }}
 
@@ -44,15 +44,19 @@
                     </div>
                 </div>
 
-                <div class=" flex justify-center">
-                    <input id="img" type="file" @change="getUploadedImage" class="hidden" multiple>
+                <div class="">
+                    <input id="img" type="file" ref="fileInput" @change="getUploadedImage" class="hidden">
 
-                    <label for="img">
-                        <svg viewBox="0 0 35 35" fill="none" class="w-8">
-                            <path d="M3.88889 35C2.81944 35 1.90426 34.6195 1.14333 33.8586C0.382408 33.0977 0.0012963 32.1818 0 31.1111V3.88889C0 2.81944 0.381111 1.90426 1.14333 1.14333C1.90556 0.382407 2.82074 0.0012963 3.88889 0H21.3889V3.88889H3.88889V31.1111H31.1111V13.6111H35V31.1111C35 32.1806 34.6195 33.0964 33.8586 33.8586C33.0977 34.6208 32.1819 35.0013 31.1111 35H3.88889ZM27.2222 11.6667V7.77778H23.3333V3.88889H27.2222V0H31.1111V3.88889H35V7.77778H31.1111V11.6667H27.2222ZM5.83333 27.2222H29.1667L21.875 17.5L16.0417 25.2778L11.6667 19.4444L5.83333 27.2222Z" fill="white"/>
+                    <label for="img" class="block relative z-10 py-2 lg:py-4 lg:text-3xl text-center bg-white rounded-lg lg:rounded-xl">
+                        Добавить фото
+
+                        <svg viewBox="0 0 20 26" fill="none" class="w-[14px] lg:w-5 inline-block ml-2 lg:ml-4">
+                            <path d="M2.85716 12.9999L10 20.2221M10 20.2221L17.1429 12.9999M10 20.2221V1.44434M1.42859 24.5554H18.5714" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </label>
                 </div>
+
+                <iframe src="https://rutube.ru/video/248f13df0be8ccec31485acea6b4926d/?r=plwd" frameborder="0"></iframe>
 
                 <img v-for="img in  uploadedImages" :key="img" :src="img" alt="" class="rounded-lg">
             </form>
