@@ -58,34 +58,21 @@ class PostController extends Controller
     {
         //
     }
-    public function like(Request $request, $id)
+    public function like($id)
     {
-        $user_id = 71;
-        $post_like = Like::query()
-        ->where("post_id", $id)
-        ->where("user_id", $user_id)
-        ->first();
+        $user = Auth::user();
+        $checkLike = Like::where('user_id', $user->id)
+        ->where('post_id', $id)
+        ->get();
 
-        if ($post_like == null ) {
-            Like::create([
-                "user_id" => $user_id,
-                "post_id" => $id,
-                "quantity" => 1
+        if ($checkLike == null) {
+            $post_like = Like::create([
+                "user_id" => $user->id,
+                "post_id" => $id
             ]);
         }
         else{
-            $like = $post_like->quantity;
-            $like = $like - 1;
-            if($like < 0){
-                $post_like = Like::query()
-                ->where("post_id", $id)
-                ->where("user_id", $user_id)
-                ->delete();
-            }
-            $post_like = Like::query()
-            ->where("post_id", $id)
-            ->where("user_id", $user_id)
-            ->update(["quantity" => $like]);
+            $checkLike->delete();
         }
 
         return response()->json([

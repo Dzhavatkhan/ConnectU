@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\Friend;
 use App\Models\User;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use function Laravel\Prompts\password;
 
 class UserController extends Controller
 {
@@ -81,10 +84,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $auth = Auth::user()->id;
-        $checkIsReq = Friend::whereIn('recipient_id', ["$auth", "$id"])
-        ->where('status', "Отправлена")
-        ->count();
+        return UserResource::collection(User::where('id', $id)->get());
         // return response()->json([
         //     "user" => $user,
         //     "friends" => $friends,
@@ -97,19 +97,36 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $user = Auth::user();
         //данные нужно отвалидировать
         $data = $request->validate([
             "name",
             "login",
+            "image",
+            'password',
             "categories_id"
         ]);
+
+        if (isset($data['image'])) {
+            (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
+        }
+        else{
+            if (file_exists(storage_path('images/avatars/'.$user->image))) {
+                $data['image'] = $user->image;
+            }
+            else{
+                return response()->json([
+                    "message" => "Ваш аватар не найден"
+                ], 404);
+            }
+        }
 
         $update = User::where('id', $id)->update($data);
         if ($update) {
             return response()
             ->json([
                 "update" => "Ваш профиль отредактирован"
-            ])
+            ], 201)
             ->header("content-type", 'application/json');
         }
 
