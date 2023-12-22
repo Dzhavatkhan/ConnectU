@@ -42,7 +42,9 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('createChat/id{id}', [ChatController::class, 'createChat']);
     Route::post("message/chat/id{id}", [ChatController::class, 'message']);
+
     Route::get('posts/my', [PostController::class, 'my']);
+    Route::get('update/post/id{id}', [PostController::class, 'update']);
 
     Route::get('profile', [UserController::class, 'index']);
     Route::put('profile/id{id}/update/', [UserController::class, 'update']);
