@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResources;
+use App\Models\Attachment;
 use App\Models\Like;
 use App\Models\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Nette\Utils\Random;
 
 class PostController extends Controller
 {
@@ -22,7 +24,7 @@ class PostController extends Controller
         // ->selectRaw("posts.*, users.name as 'user'")
         // ->orderByDesc("posts.created_at")
         // ->get();
-        $posts = PostResources::collection(Posts::all());
+        $posts = PostResources::collection(Posts::orderByDesc('created_at')->get());
         if ($posts->count() == 0) {
             return response()->json([
                 "posts" => "Постов нет"
@@ -36,13 +38,14 @@ class PostController extends Controller
     }
     public function my()
     {
-        $posts = Posts::query()
-        ->join('likes', 'posts.id', 'likes.post_id')
-        ->join("users", "posts.user_id", "users.id")
-        ->where('posts.user_id', Auth::id())
-        ->selectRaw("posts.*, users.name as 'user'")
-        ->orderByDesc("posts.created_at")
-        ->get();
+        // $posts = Posts::query()
+        // ->join('likes', 'posts.id', 'likes.post_id')
+        // ->join("users", "posts.user_id", "users.id")
+        // ->where('posts.user_id', Auth::id())
+        // ->selectRaw("posts.*, users.name as 'user'")
+        // ->orderByDesc("posts.created_at")
+        // ->get();
+        $posts = PostResources::collection(Posts::where('user_id', Auth::id())->get());
         if ($posts->count() == 0) {
             return response()->json([
                 "posts" => "Постов нет"
@@ -59,14 +62,34 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $user_id = Auth::id();
+        $attachment = $request->attachment;
         $post_content = $request->validate([
             "text" => ["sometimes", "string"],
         ]);
+
+        if (!isset($attachment)) {
+            $post_content = $request->validate([
+                "text" => ["required", "string"],
+            ]);
+        }
+
         $post = Posts::create([
             "user_id" => $user_id,
             "text" => $post_content['text'],
         ]);
         if ($post) {
+            if ($attachment->extension() != "png" || $attachment->extension() != "jpg" || $attachment->extension() != "jpeg") {
+                Attachment::create([
+                    "post_id" => $post->id,
+                    "name" => $attachment,
+                    "type" => "video"
+                ]);
+            }
+            Attachment::create([
+                "post_id" => $post->id,
+                "name" => $attachment,
+                "type" => "photo"
+            ]);
             return response()->json([
                 "post" => $post
             ], 201);
@@ -116,9 +139,17 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         $post = Posts::findOrFail($id);
-        $upd_content = $request->validate([
-            "text" => ['string', 'sometimes']
+        //примерно
+        $attachments = $request->image;
+        return extension_loaded($attachments);
+        Attachment::create([
+            "name" => "$attachments",
+            "type" => ""
         ]);
+        $upd_content = $request->validate([
+            "text" => ['string', 'sometimes'],
+        ]);
+
         $update = $post->update([
             "text" => $upd_content['text']
         ]);

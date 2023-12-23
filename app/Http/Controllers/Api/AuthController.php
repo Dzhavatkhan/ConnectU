@@ -25,7 +25,9 @@ class AuthController extends Controller
                 'role_id' => 2
             ]);
 
-            (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
+            if (isset($request->image)) {
+                (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
+            }
 
             $token = $user->createToken('user_token')->plainTextToken;
 

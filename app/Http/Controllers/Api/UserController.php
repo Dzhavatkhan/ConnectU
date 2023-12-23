@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FriendsResource;
 use App\Http\Resources\UserResource;
 use App\Models\Friend;
 use App\Models\User;
@@ -60,6 +61,10 @@ class UserController extends Controller
             "message" => "Заявка отправлена"
         ]);
 
+    }
+
+    public function friends(){
+        return  FriendsResource::collection(Friend::where("user_id", Auth::id())->orWhere("recipient_id", Auth::id())->get());
     }
     public function search( Request $request)
     {

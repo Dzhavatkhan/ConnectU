@@ -44,9 +44,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post("message/chat/id{id}", [ChatController::class, 'message']);
 
     Route::get('posts/my', [PostController::class, 'my']);
+    Route::post('posts/create', [PostController::class, 'store']);
     Route::get('update/post/id{id}', [PostController::class, 'update']);
 
     Route::get('profile', [UserController::class, 'index']);
+    Route::get('profile/friends', [UserController::class, 'friends']);
     Route::put('profile/id{id}/update/', [UserController::class, 'update']);
     Route::post("send-friend/id{id}", [UserController::class, 'store'])->name("addFriend");
     Route::get('logout', [AuthController::class, 'logout']);
