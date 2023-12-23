@@ -44,6 +44,11 @@
                     </div>
                 </div>
 
+                <TextInput 
+                    placeholder="Добавить ссылку на видео"
+                    stylesInput="p-2 border-2 rounded-lg"
+                />
+
                 <div class="">
                     <input id="img" type="file" ref="fileInput" @change="getUploadedImage" class="hidden">
 
@@ -56,7 +61,9 @@
                     </label>
                 </div>
 
-                <iframe src="https://rutube.ru/video/248f13df0be8ccec31485acea6b4926d/?r=plwd" frameborder="0"></iframe>
+                <!-- <iframe src="https://rutube.ru/video/248f13df0be8ccec31485acea6b4926d/?r=plwd" frameborder="0"></iframe> -->
+
+                <iframe id="my-iframe" height="1200" src="https://www.youtube.com/embed/MuGmbQ_2j88" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
                 <img v-for="img in  uploadedImages" :key="img" :src="img" alt="" class="rounded-lg">
             </form>
@@ -73,6 +80,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
 import TextArea from '../reusable/TextArea.vue';
+import TextInput from '../reusable/TextInput.vue';
 
 const userStore = useUserStore()
 
@@ -125,4 +133,27 @@ let activeCategoriesPush = (category) => {
         console.log(err)
     }
 }
+
+// document.querySelectorAll('iframe').forEach( item =>
+//     console.log(item)
+// )
+
+
+// const iframe = document.getElementById('my-iframe');
+
+// console.log(iframe)
+
+// iframe.addEventListener('load', () => {
+//   if (iframe.contentDocument) {
+//     // The iframe has content
+//   } else {
+//     // The iframe is empty
+//   }
+
+//   if (iframe.contentWindow.document.readyState === 'complete') {
+//     // The iframe has finished loading
+//   } else {
+//     // The iframe is still loading
+//   }
+// });
 </script>
