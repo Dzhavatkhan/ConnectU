@@ -74,8 +74,7 @@ class ChatController extends Controller
     {
         $recipient_id = $id;
         $user_id = Auth::id();
-        $check = UserChats::distinct()
-        ->whereIn('user_chats.chat_id', [$id])
+        $check = UserChats::whereIn('user_chats.user_id', [$id])
         ->where('user_id', '!=', $user_id)
         ->first();
         if ($check) {
