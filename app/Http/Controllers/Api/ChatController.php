@@ -143,16 +143,6 @@ class ChatController extends Controller
 
 
         //получаем нужный чат
-<<<<<<< HEAD
-        $chat = Chat::query()
-            ->leftJoin('user_chats', 'chats.id', 'user_chats.chat_id')
-            ->leftJoin('messages', 'chats.id', 'messages.user_id')
-            ->leftJoin('users', 'users.id', 'messages.user_id')
-            ->selectRaw("chats.id, users.name, messages.message, messages.created_at, messages.status")
-            ->where('messages.chat_id', $id)
-            ->orderBy('messages.created_at')
-            ->get();
-=======
         // $chat = Chat::query()
         //     ->selectRaw("chats.id, users.name, messages.message, messages.created_at, messages.status")
         //     ->leftJoin('user_chats', 'chats.id', 'user_chats.chat_id')
@@ -161,7 +151,6 @@ class ChatController extends Controller
         //     ->where('messages.chat_id', $id)
         //     ->orderBy('messages.created_at')
         //     ->get();
->>>>>>> 07d12acf9163e6e41ead9f11c73c3809212bddbb
 
         $chat = MessangerResource::collection(
             // Chat::query()
