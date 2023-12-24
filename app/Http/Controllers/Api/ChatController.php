@@ -143,10 +143,10 @@ class ChatController extends Controller
 
         //получаем нужный чат
         $chat = Chat::query()
-            ->selectRaw("chats.id, users.name, messages.message, messages.created_at, messages.status")
             ->leftJoin('user_chats', 'chats.id', 'user_chats.chat_id')
             ->leftJoin('messages', 'chats.id', 'messages.user_id')
             ->leftJoin('users', 'users.id', 'messages.user_id')
+            ->selectRaw("chats.id, users.name, messages.message, messages.created_at, messages.status")
             ->where('messages.chat_id', $id)
             ->orderBy('messages.created_at')
             ->get();

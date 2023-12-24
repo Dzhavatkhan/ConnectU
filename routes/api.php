@@ -26,11 +26,9 @@ Route::get('post/id{id}', [PostController::class, 'show'])->name('post');
 
 Route::get('categories', [CategoryController::class, 'index']);
 
-Route::get('chat/id{id}', [ChatController::class, 'show'])->name("chat");
 
 Route::get("user/id{id}", [UserController::class, 'show'])->name('user_show');
 
-Route::post("search", [SearchController::class, 'index'])->name('search');
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('registration', [AuthController::class, 'register']);
@@ -39,6 +37,9 @@ Route::post('registration', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('chats', [ChatController::class, 'index'])->name("chats");
+    Route::get('chat/id{id}', [ChatController::class, 'show'])->name("chat");
+
+    Route::post("search", [SearchController::class, 'index'])->name('search');
 
     Route::post('createChat/id{id}', [ChatController::class, 'createChat']);
     Route::post("message/chat/id{id}", [ChatController::class, 'message']);

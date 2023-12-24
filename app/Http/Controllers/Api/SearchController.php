@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Friend;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
@@ -15,8 +16,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $users = DB::table('users')->where(DB::raw("concat(name,' ',surname)"), "like", "%" . $request->get('search') . "%")->get();
-
+        $users = DB::table('users')->where(DB::raw("concat(name,' ',surname)"), "like", "%" . $request->get('search') . "%")->where('id', '<>', Auth::id())->get();
         return response()->json($users, 200);
     }
 

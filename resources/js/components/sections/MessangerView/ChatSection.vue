@@ -135,10 +135,11 @@
         <div class="p-3 lg:p-6 lg:px-8 flex justify-between items-center gap-3 lg:gap-5 border-light-grey border-t">
             <Textinput
                 placeholder="Написать сообщение..."
+                v-model:input="message"
                 stylesInput="border-b-0 placeholder:text-light-grey text-sm"
             />
 
-            <div>
+            <div @click="sendMessage()">
                 <svg viewBox="0 0 32 32" fill="none" class="w-5 lg:w-8">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M0.553585 0.392092C0.792391 0.184632 1.08733 0.0526268 1.40114 0.0127582C1.71494 -0.0271104 2.03352 0.0269479 2.31661 0.168101L31.1138 14.5675C31.38 14.7002 31.604 14.9045 31.7605 15.1575C31.9171 15.4104 32 15.702 32 15.9995C32 16.297 31.9171 16.5886 31.7605 16.8415C31.604 17.0944 31.38 17.2987 31.1138 17.4314L2.31661 31.8309C2.03354 31.9725 1.71482 32.027 1.40077 31.9875C1.08673 31.9479 0.791475 31.8161 0.552375 31.6086C0.313275 31.4012 0.141075 31.1275 0.057564 30.8222C-0.0259467 30.5168 -0.0170141 30.1936 0.0832313 29.8934L4.18203 17.5994H12.8004C13.2247 17.5994 13.6316 17.4309 13.9316 17.1308C14.2317 16.8308 14.4002 16.4238 14.4002 15.9995C14.4002 15.5752 14.2317 15.1682 13.9316 14.8682C13.6316 14.5681 13.2247 14.3996 12.8004 14.3996H4.18203L0.0816312 2.10563C-0.0180977 1.8055 -0.0266437 1.48254 0.0570727 1.17755C0.140789 0.87257 0.314612 0.599239 0.553585 0.392092Z" fill="#989898"/>
                 </svg>
@@ -148,12 +149,56 @@
 </template>
 
 <script setup>
-import Textinput from '../../reusable/textinput.vue'; 
+import { onMounted, ref } from 'vue'
+import axios from 'axios';
+import Textinput from '../../reusable/textinput.vue';
 import { useRoute } from 'vue-router'
+import { useUserStore } from '../../../store/user-store';
+
+let userStore = useUserStore()
 
 let route = useRoute()
 
 console.log(route.query.sel)
 
+let message = ref(null)
 
+onMounted(async() => {
+    await getMessages()
+})
+
+let getMessages = async(e) => {
+    try {
+        let res = await axios('http://127.0.0.1:8000/api/chat/id' + route.query.sel, {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+
+        console.log(res.data)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+let sendMessage = async () => {
+    try {
+        let res = await axios.post('http://127.0.0.1:8000/api/message/chat/id' + route.query.sel, {
+            message: message.value
+        },
+        {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+
+        console.log(res.data)
+
+        await getMessages()
+    } catch (err) {
+        console.log(err)
+    }
+}
 </script>
