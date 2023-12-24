@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatResource;
+use App\Http\Resources\MessangerResource;
 use App\Models\Message;
 use App\Models\Chat;
 use App\Models\User;
@@ -142,15 +143,30 @@ class ChatController extends Controller
 
 
         //получаем нужный чат
-        $chat = Chat::query()
-            ->selectRaw("chats.id, users.name, messages.message, messages.created_at, messages.status")
-            ->leftJoin('user_chats', 'chats.id', 'user_chats.chat_id')
-            ->leftJoin('messages', 'chats.id', 'messages.user_id')
-            ->leftJoin('users', 'users.id', 'messages.user_id')
-            ->where('messages.chat_id', $id)
-            ->orderBy('messages.created_at')
-            ->get();
+        // $chat = Chat::query()
+        //     ->selectRaw("chats.id, users.name, messages.message, messages.created_at, messages.status")
+        //     ->leftJoin('user_chats', 'chats.id', 'user_chats.chat_id')
+        //     ->leftJoin('messages', 'chats.id', 'messages.user_id')
+        //     ->leftJoin('users', 'users.id', 'messages.user_id')
+        //     ->where('messages.chat_id', $id)
+        //     ->orderBy('messages.created_at')
+        //     ->get();
 
+        $chat = MessangerResource::collection(
+            // Chat::query()
+            // ->selectRaw("chats.id, users.name, messages.message, messages.created_at, messages.status")
+            // ->leftJoin('user_chats', 'chats.id', 'user_chats.chat_id')
+            // ->leftJoin('messages', 'chats.id', 'messages.user_id')
+            // ->leftJoin('users', 'users.id', 'messages.user_id')
+            // ->where('messages.chat_id', $id)
+            // ->orderBy('messages.created_at')
+            Message::query()
+            // ->join('chats', 'messages.chat_id', 'chats.id')
+            // ->join("user_chats", "chats.id", "user_chats.chat_id")
+            ->where('messages.chat_id', $id)
+            ->distinct('messages.id')
+            ->get()
+        );
 
         return response()->json([
             "chat" => $chat

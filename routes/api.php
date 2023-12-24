@@ -39,9 +39,9 @@ Route::post('registration', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('chats', [ChatController::class, 'index'])->name("chats");
+    Route::get('chat/id{id}', [ChatController::class, 'show'])->name("chats");
 
-    Route::post('createChat/id{id}', [ChatController::class, 'createChat']);
-    Route::post("message/chat/id{id}", [ChatController::class, 'message']);
+    Route::post("message/sel_{id}", [ChatController::class, 'message']);
 
     Route::get('posts/my', [PostController::class, 'my']);
     Route::post('posts/create', [PostController::class, 'store']);
