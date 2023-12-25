@@ -27,8 +27,11 @@ class FriendsResource extends JsonResource
         // $friend = User::where("id", "!=", Auth::id())->get();
         return [
             "id" => $this->id,
-            "avatar" => $this->image,
-            "friend" => $friend->name
+            "recipient_id" => $this->recipient_id,
+            "user_id" => $this->user_id,
+            "avatar" => $friend->image,
+            "friend" => $friend->name,
+            "status" => $this->status
         ];
     }
 }
