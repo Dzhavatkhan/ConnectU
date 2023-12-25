@@ -80,9 +80,10 @@ class ChatResource extends JsonResource
         ->first()->user_id;
 
         $user = User::findOrFail($chat);
-        $user = $user->name;
-        $user_name = [];
-
+        $avatar = $user->image;
+        // if ($avatar == null) {
+        //     $avatar = 
+        // }
         // $msgs = Message::all();
 
         // for ($index = 0; $index < count($msgs); $index++) {
@@ -91,7 +92,9 @@ class ChatResource extends JsonResource
 
         return [
             "id" => $this->id,
-            "name" => $user,
+            "name" => "$user->name $user->surname",
+            "sel_user" => $user->id,
+            "avatar" => $avatar,
             "messages" => $msg,
             "time" => $msg_time,
             "created_at" => $msg_date

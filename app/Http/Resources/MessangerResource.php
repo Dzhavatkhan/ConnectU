@@ -62,13 +62,18 @@ class MessangerResource extends JsonResource
         $time = 1;
         $user = User::findOrFail($this->user_id);
         $recipient_avatar = User::where('id', "!=", Auth::id())->first()->image;
-        $recipient = User::where('id', "!=", Auth::id())->first()->recipient;
+        $recipient_name = User::where('id', "!=", Auth::id())->first()->name;
+        $recipient_surname = User::where('id', "!=", Auth::id())->first()->surname;
+        if($recipient_avatar == null){
+            $recipient_avatar = "default.jpg";
+        }
+
         return [
             "id" => $this->id,
             "avatar" => $recipient_avatar,
             //user_id for checking in chat
             "user_id" => $this->user_id,
-            "recipient"   => $recipient,
+            "recipient"   => "$recipient_name $recipient_surname",
             "message"   => $this->message,
             "status"   => $this->status,
             "time"   => $msg_time,

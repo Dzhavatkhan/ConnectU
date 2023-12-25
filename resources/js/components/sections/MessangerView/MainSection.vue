@@ -12,45 +12,17 @@
                 />
             </div>
 
-            <router-link to="/messanger/chat1" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
+            <router-link v-for="chat in chats" :key="chat.id" :to="{name: 'chat', path: '/messanger', query: { sel: chat.id }}" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
                 <div>
-                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-20 rounded-full">
+                    <img :src="'http://127.0.0.1:8000/images/avatars/' + chat.avatar" alt="" class="w-14 lg:w-20 rounded-full">
                 </div>
 
                 <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
-                    Джаватхан Джаватханов
+                    {{ chat.name }}
                 </div>
 
                 <div class="text-[12px] lg:text-lg">
-                    11.12.23
-                </div>
-            </router-link>
-
-            <router-link to="/messanger/chat1" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
-                <div>
-                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-20 rounded-full">
-                </div>
-
-                <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
-                    Джаватхан Джаватханов
-                </div>
-
-                <div class="text-[12px] lg:text-lg">
-                    11.12.23
-                </div>
-            </router-link>
-
-            <router-link to="/messanger/chat1" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey">
-                <div>
-                    <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-20 rounded-full">
-                </div>
-
-                <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
-                    Джаватхан Джаватханов
-                </div>
-
-                <div class="text-[12px] lg:text-lg">
-                    11.12.23
+                    {{ chat.time }}
                 </div>
             </router-link>
         </div>
@@ -79,11 +51,12 @@ let getChats = async() => {
             }
         })
 
-        chats.value = res.data
+        chats.value = res.data.chats
 
         console.log(res)
     } catch (err) {
         console.log(err)
     }
 }
+
 </script>

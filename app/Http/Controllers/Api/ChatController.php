@@ -43,9 +43,8 @@ class ChatController extends Controller
             ->get()
         );
         return response()->json([
-            "chats" => [
-                $chats
-            ]
+            "chats" => $chats
+            
         ], 200)->header("Content-type","application/json");
     }
 
@@ -79,6 +78,7 @@ class ChatController extends Controller
         ->first();
         if ($check) {
             $chat_id = $check->chat_id;
+            dd($chat_id);
             $data = $request->only([
                 "message",
             ]);

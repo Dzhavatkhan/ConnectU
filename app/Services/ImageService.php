@@ -9,32 +9,44 @@ class ImageService {
     public function updateImage($model, $request, $path, $methodType) {
         // return 'aweaeaweawe';
         $manager = new ImageManager(new Driver());
-
         $file = $request->file('image');
 
-        $image = $manager->read($file);
-        // return print_r($image);
-        // $extension = $image->getClientOriginalExtension();
+        if (!isset($file)){
+            $file = "default.jpg";
 
-        $image->crop(
-            $request->width,
-            $request->height,
-            $request->left,
-            $request->top
-        );
+            $model->image = $file;
 
-        $extension = $file->getClientOriginalExtension();
+            $model->save();
 
-        $name = uniqid() . '.' . $extension;
-        $image->toJpeg()->save(public_path() . $path . $name);
+        } 
+        else {
 
-        // if ($methodType === 'store') {
-        //     $model->user_id = $request->get('user_id');
-        // }
+        
 
-        $model->image = $name;
+            $image = $manager->read($file);
+            // return print_r($image);
+            // $extension = $image->getClientOriginalExtension();
 
-        $model->save();
+            $image->crop(
+                $request->width,
+                $request->height,
+                $request->left,
+                $request->top
+            );
+
+            $extension = $file->getClientOriginalExtension();
+
+            $name = uniqid() . '.' . $extension;
+            $image->toJpeg()->save(public_path() . $path . $name);
+
+            // if ($methodType === 'store') {
+            //     $model->user_id = $request->get('user_id');
+            // }
+
+            $model->image = $name;
+
+            $model->save();
+        }
     }
 }
 

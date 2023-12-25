@@ -175,7 +175,7 @@ let getMessages = async(e) => {
         console.log(err)
     }
 }
-
+console.log(route.query.sel)
 let sendMessage = async () => {
     try {
         let res = await axios.post('http://127.0.0.1:8000/api/message/chat/id' + route.query.sel, {
