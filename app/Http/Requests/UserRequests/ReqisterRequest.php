@@ -14,9 +14,9 @@ class ReqisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'surname' => 'required|string',
-            'login' => 'required|string|unique:users',
+            'name' => 'required|string|alpha_dash',
+            'surname' => 'required|string|alpha_dash',
+            'login' => 'required|string|alpha|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
             // 'image' => 'required'
