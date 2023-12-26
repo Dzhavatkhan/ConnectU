@@ -39,7 +39,7 @@ class ChatController extends Controller
             ->leftJoin('user_chats', 'chats.id', 'user_chats.chat_id')
             ->where('user_chats.user_id', Auth::id())
             ->selectRaw("chats.id, user_chats.user_id AS 'user_id'")
-            // ->orderByDesc('created_at')
+            ->orderByDesc('chats.created_at')
             ->get()
         );
         return response()->json([
@@ -55,6 +55,25 @@ class ChatController extends Controller
     {
         //
     }
+    public function write($id)
+    {
+
+        $user = Auth::user();
+        $chats = UserChats::where('user_id', $user->id)->pluck("chat_id");
+
+        for ($i=0; $i < count($chats); $i++) { 
+            $recipient = User::find($id);
+            $chatWithMe = UserChats::where("chat_id", $chats[$i])
+            ->where('user_id', $id)
+            ->get();
+            
+            // $chatWithMe = ChatResource::collection($chatWithMe);
+        }
+
+        // return User::with('chats')->findOrFail($id)->chats->where('user_id', Auth::id());
+
+    }
+
 
     public function createChat($id)
     {

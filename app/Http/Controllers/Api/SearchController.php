@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Friend;
 use App\Models\User;
+use App\Models\UserChats;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +17,26 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $users = DB::table('users')->where(DB::raw("concat(name,' ',surname)"), "like", "%" . $request->get('search') . "%")->where('id', '<>', Auth::id())->get();
-        return response()->json($users, 200);
+        $user = Auth::user();
+        $users = User::with('chats')->where(DB::raw("concat(name,' ',surname)"), "like", "%" . $request->get('search') . "%")->where('id', '<>', Auth::id())->get();
+        $findChats = DB::table('users')->where(DB::raw("concat(name,' ',surname)"), "like", "%" . $request->get('search') . "%")->where('id', '<>', Auth::id())
+        ->pluck('id');
+        if ($findChats != null) {
+        $findChats = $findChats[0];
+        $findChats = UserChats::where('user_id', $findChats)
+        ->where("user_id", "!=", $user->id)
+        ->first();
+        if ($findChats != null) {
+            $chat_id = $findChats->chat_id;
+            return response()->json([
+                'users' => $users,
+                'chat_id' => $chat_id
+            ], 200);
+        }
+    }
+
+        return response()->json(['users' => $users], 200);
+
     }
 
     /**

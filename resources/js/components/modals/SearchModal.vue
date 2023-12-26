@@ -94,7 +94,8 @@ let search = async() => {
             }
         })
 
-        users.value = res.data
+        console.log(res.data.users)
+        users.value = res.data.users
     } catch (err) {
         console.log(err)
     }
