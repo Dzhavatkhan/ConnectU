@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="mt-3 lg:mt-5 flex flex-col gap-3">
-                    <div class="lg:w-max p-2 lg:p-4 break-all bg-light-black rounded-md">
+                    <div class=" p-2 lg:p-4 break-all bg-light-black rounded-md">
                         <div class="lg:text-2xl">
                             {{ msg.message }}
                         </div>
