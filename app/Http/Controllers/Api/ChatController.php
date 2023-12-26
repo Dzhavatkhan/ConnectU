@@ -44,7 +44,7 @@ class ChatController extends Controller
         );
         return response()->json([
             "chats" => $chats
-            
+
         ], 200)->header("Content-type","application/json");
     }
 

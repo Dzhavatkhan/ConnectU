@@ -21,7 +21,7 @@
                 <img :src="'http://127.0.0.1:8000/images/avatars/' + msg.avatar" alt="" class="sticky top-0 inline-block w-8 lg:w-16 rounded-full">
 
                 <div class="absolute left-12 lg:left-[90px] top-1 lg:top-4 lg:text-2xl">
-                    Джаватхан Джаватханов
+                    {{msg.recipient}}
                 </div>
 
                 <div class="mt-3 lg:mt-5 flex flex-col gap-3">
@@ -175,7 +175,7 @@ let getMessages = async(e) => {
         console.log(err)
     }
 }
-
+    console.log("user_id " + route.query.sel_user);
 let sendMessage = async () => {
     try {
         let res = await axios.post('http://127.0.0.1:8000/api/message/chat/id' + route.query.sel_user, {

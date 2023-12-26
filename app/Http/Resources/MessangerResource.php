@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\User;
+use App\Models\UserChats;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -61,9 +62,13 @@ class MessangerResource extends JsonResource
                 $msg_date = "$msg_day $msg_month";
         $time = 1;
         $user = User::findOrFail($this->user_id);
-        $recipient_avatar = User::where('id', "!=", Auth::id())->first()->image;
-        $recipient_name = User::where('id', "!=", Auth::id())->first()->name;
-        $recipient_surname = User::where('id', "!=", Auth::id())->first()->surname;
+        $findRecipient = UserChats::where('chat_id', $this->chat_id)
+                        ->where("user_id", "<>", Auth::id())
+                        ->first();
+        $recipient_id = $findRecipient->id;
+        $recipient_avatar = User::where('id', $recipient_id)->first()->image;
+        $recipient_name = User::where('id', $recipient_id)->first()->name;
+        $recipient_surname = User::where('id', $recipient_id)->first()->surname;
         if($recipient_avatar == null){
             $recipient_avatar = "default.jpg";
         }
@@ -72,6 +77,7 @@ class MessangerResource extends JsonResource
             "id" => $this->id,
             "avatar" => $recipient_avatar,
             //user_id for checking in chat
+            "chat_id" => $this->chat_id,
             "user_id" => $this->user_id,
             "recipient"   => "$recipient_name $recipient_surname",
             "message"   => $this->message,

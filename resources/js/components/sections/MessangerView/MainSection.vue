@@ -12,21 +12,21 @@
                 />
             </div>
 
-            <router-link v-for="chat in chats" :key="chat" :to="{name: 'chat', path: '/messanger', query: { sel: chat.id }}" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
+            <router-link v-for="chat in chats" :key="chat" :to="{name: 'chat', path: '/messanger', query: { sel: chat.id,sel_user: chat.sel_user }}" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
                 <div>
                     <img :src="'http://127.0.0.1:8000/images/avatars/' + chat.avatar" alt="" class="w-14 lg:w-20 rounded-full">
                 </div>
 
                 <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
                     {{chat.name}}
-                    
+
                 </div>
 
                 <div class="text-[12px] lg:text-lg">
                     {{chat.time}}
                 </div>
             </router-link>
-            
+
         </div>
     </div>
 </template>
