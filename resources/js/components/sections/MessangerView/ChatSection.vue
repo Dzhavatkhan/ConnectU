@@ -21,11 +21,11 @@
                 <img :src="'http://127.0.0.1:8000/images/avatars/' + msg.avatar" alt="" class="sticky top-0 inline-block w-8 lg:w-16 rounded-full">
 
                 <div class="absolute left-12 lg:left-[90px] top-1 lg:top-4 lg:text-2xl">
-                    {{msg.recipient}}
+                    {{msg.you}}
                 </div>
 
                 <div class="mt-3 lg:mt-5 flex flex-col gap-3">
-                    <div class="lg:w-max p-2 lg:p-4 break-all bg-light-black rounded-md">
+                    <div class=" p-2 lg:p-4 break-all bg-light-black rounded-md">
                         <div class="lg:text-2xl">
                             {{ msg.message }}
                         </div>

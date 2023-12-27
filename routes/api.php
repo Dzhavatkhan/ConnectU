@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ChatController;
@@ -34,6 +35,9 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('registration', [AuthController::class, 'register']);
 
 
+Route::get('categories', [AdminController::class, 'index']);
+Route::post('categories/delete/id{id}', [AdminController::class, 'destroy']);
+
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('chats', [ChatController::class, 'index'])->name("chats");
@@ -43,11 +47,13 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('createChat/id{id}', [ChatController::class, 'createChat']);
     Route::post("message/chat/id{id}", [ChatController::class, 'message']);
-    Route::get("write_{id}", [ChatController::class, 'write']);
+    Route::get("message/delete/id{id}", [ChatController::class, 'destroy']);
 
     Route::get('posts/my', [PostController::class, 'my']);
     Route::post('posts/create', [PostController::class, 'store']);
     Route::get('update/post/id{id}', [PostController::class, 'update']);
+
+    // Route::get('categories', [AdminController::class, 'index']);
 
     Route::get('profile', [UserController::class, 'index']);
     Route::get('profile/friends', [UserController::class, 'friends']);

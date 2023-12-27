@@ -81,6 +81,7 @@ class MessangerResource extends JsonResource
             "rec_id" => $recipient_id,
             "user_id" => $this->user_id,
             "recipient"   => "$recipient_name $recipient_surname",
+            "you" => Auth::user()->name,
             "message"   => $this->message,
             "status"   => $this->status,
             "time"   => $msg_time,

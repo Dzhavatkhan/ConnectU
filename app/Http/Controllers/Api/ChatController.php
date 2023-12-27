@@ -61,11 +61,19 @@ class ChatController extends Controller
         $user = Auth::user();
         $chats = UserChats::where('user_id', $user->id)->pluck("chat_id");
 
+<<<<<<< HEAD
         for ($i = 0; $i < count($chats); $i++) {
             $recipient = User::find($id);
             $chatWithMe = UserChats::where("chat_id", $chats[$i])
                 ->where('user_id', $id)
                 ->get();
+=======
+        for ($i=0; $i < count($chats); $i++) {
+            $recipient = User::find($id);
+            $chatWithMe = UserChats::where("chat_id", $chats[$i])
+            ->where('user_id', $id)
+            ->get();
+>>>>>>> a5421e256efb0262cbe3bdea475c3ce1fab5d3dc
 
             // $chatWithMe = ChatResource::collection($chatWithMe);
         }
@@ -202,6 +210,10 @@ class ChatController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $message = Message::findOrFail($id);
+        $message->delete();
+        return response()->json([
+            "message" => "Сообщение удалено"
+        ]);
     }
 }
