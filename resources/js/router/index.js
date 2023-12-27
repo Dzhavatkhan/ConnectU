@@ -5,6 +5,7 @@ import notFound from '../components/notFound.vue'
 import Post from '../components/Post.vue';
 import UserPage from '../components/UserPage.vue'
 
+import ProfileView from '../views/ProfileView.vue'
 import FeedView from '../views/FeedView.vue'
 import FriendsView from '../views/FriendsView.vue'
 import MessangerView from '../views/MessangerView.vue'
@@ -14,6 +15,11 @@ let routes = [
     {
         path: '/',
         redirect: '/feed'
+    },
+    {
+        path: '/profile',
+        component: ProfileView,
+        name: 'profile'
     },
     {
         path: "/feed",
@@ -59,7 +65,6 @@ let routes = [
         props: true
     }
 ]
-
 
 let router = createRouter({
     history: createWebHistory(),
