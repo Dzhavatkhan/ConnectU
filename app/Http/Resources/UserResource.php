@@ -29,7 +29,7 @@ class UserResource extends JsonResource
                 $push = "$requester хочет добавить Вас в друзья!";            }
 
         }
-        
+
         return [
             'id' => $id,
             "email" => $this->email,
@@ -37,7 +37,7 @@ class UserResource extends JsonResource
             "login" => $this->login,
             'surname' => $this->surname,
             "name" => $this->name,
-            "friends" => $this->friends,
+            "friends" => $friend_count,
             "chats" => $this->chats->count(),
             "push" => $push
         ];
