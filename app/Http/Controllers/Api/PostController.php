@@ -75,21 +75,31 @@ class PostController extends Controller
                     "attachment" => ['image', 'mimes:png,jpg']
                 ]);
 
-
-
                 $post = Posts::create([
                     "user_id" => $user_id,
                     "text" => $post_content['text'],
                 ]);
+
                 if ($post) {
+                    
                     $post->categories()->attach($category_id);
                     if (isset($attachment)) {
+                        // for ($image=0; $image < count($attachment); $image++) { 
+                        //     (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
+                        //     Attachment::create([
+                        //         "post_id" => $post->id,
+                        //         "name" => $attachment[$image],
+                        //         "type" => "photo"
+                        //     ]);                        
+                        // }
+
                         (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
                         Attachment::create([
                             "post_id" => $post->id,
                             "name" => $attachment,
                             "type" => "photo"
                         ]);
+
                     }
 
                     if (isset($post_content['link'])) {

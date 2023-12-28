@@ -46,6 +46,7 @@
 
                 <TextInput 
                     placeholder="Добавить ссылку на видео"
+                    v-model:input="link"
                     stylesInput="p-2 border-2 rounded-lg"
                 />
 
@@ -65,7 +66,7 @@
 
                 <iframe id="my-iframe" height="1200" src="https://www.youtube.com/embed/MuGmbQ_2j88" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-                <img v-for="img in  uploadedImages" :key="img" :src="img" alt="" class="rounded-lg">
+                <img v-for="img in uploadedImages" :key="img" :src="img" alt="" class="rounded-lg">
             </form>
 
             <div @click="signIn()" class="mt-5 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg">
@@ -87,6 +88,7 @@ const userStore = useUserStore()
 let openCategories = ref(false)
 
 let post = ref(null)
+let link = ref(null)
 let categories = ref(null)
 let activeCategories = ref([])
 
@@ -108,9 +110,14 @@ let errors = ref([])
 
 let getCategories = async() => {
     try {
-        let res = await axios('http://127.0.0.1:8000/api/categories')
+        let res = await axios('http://127.0.0.1:8000/api/categories', {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
 
-        categories.value = res.data
+        categories.value = res.data.categories
 
         console.log(res)
     } catch (err) {
@@ -130,6 +137,29 @@ let activeCategoriesPush = (category) => {
             activeCategoriesId.value.splice(activeCategoriesId.value.indexOf(category.id), 1)
         }
     } catch (err) {
+        console.log(err)
+    }
+}
+
+let sendPost = async() => {
+
+    let data = new FormData();
+
+    data.append('post', post.value || '')
+    data.append('link', link.value || '')
+    data.append('attachment', uploadedImages.value[0] || '')
+    data.append('category_id', activeCategoriesId.value[0] || '')
+
+    try {
+        let res = await axios.post('http://127.0.0.1:8000/api/posts/create', data, {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+
+        console.log(res.data)
+    } catch(err) {
         console.log(err)
     }
 }

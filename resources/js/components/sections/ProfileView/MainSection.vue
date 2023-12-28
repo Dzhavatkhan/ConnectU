@@ -22,8 +22,8 @@
                     Друзья
                 </div>
 
-                <div>
-
+                <div v-if="profile">
+                    {{ profile[0].friends }}
                 </div>
             </div>
         </div>
@@ -75,13 +75,20 @@
 </template>
 
 <script setup>
-import {ref, watch} from 'vue'
+import axios from 'axios';
+import {onMounted, ref, watch} from 'vue'
 import { useUserStore } from '../../../store/user-store';
 import PostModal from '../../modals/PostModal.vue'
 
 let userStore = useUserStore()
 
 let open = ref(false)
+
+let profile = ref(null)
+
+onMounted(async() => {
+    await getUser()
+})
 
 watch(open, (newValue) => {
     if (newValue) {
@@ -90,4 +97,22 @@ watch(open, (newValue) => {
         document.body.style.overflow = '';
     }
 })
+
+let getUser = async () => {
+    try {
+        let res = await axios('http://127.0.0.1:8000/api/profile', {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+
+        profile.value = res.data.profile
+
+        console.log(res.data.profile)
+
+    } catch (err) {
+        consoloe.log(err)
+    }
+}
 </script>
