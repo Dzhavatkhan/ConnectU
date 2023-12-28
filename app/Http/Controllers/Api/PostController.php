@@ -7,6 +7,7 @@ use App\Http\Resources\PostResources;
 use App\Models\Attachment;
 use App\Models\Like;
 use App\Models\Posts;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nette\Utils\Random;
@@ -61,39 +62,58 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = Auth::id();
-        $attachment = $request->attachment;
-        $post_content = $request->validate([
-            "text" => ["sometimes", "string"],
-        ]);
 
-        if (!isset($attachment)) {
-            $post_content = $request->validate([
-                "text" => ["required", "string"],
-            ]);
-        }
 
-        $post = Posts::create([
-            "user_id" => $user_id,
-            "text" => $post_content['text'],
-        ]);
-        if ($post) {
-            if ($attachment->extension() != "png" || $attachment->extension() != "jpg" || $attachment->extension() != "jpeg") {
-                Attachment::create([
-                    "post_id" => $post->id,
-                    "name" => $attachment,
-                    "type" => "video"
+            try {
+                $user_id = Auth::id();
+                $attachment = $request->attachment;
+                $category_id = $request->category_id;
+                $post_content = $request->validate([
+                    "text" => ["sometimes", "string"],
+                    "link" => ['string', "sometimes", "active_url"],
+                    "category_id" => ['string', 'required'],
+                    "attachment" => ['image', 'mimes:png,jpg']
                 ]);
+
+
+
+                $post = Posts::create([
+                    "user_id" => $user_id,
+                    "text" => $post_content['text'],
+                ]);
+                if ($post) {
+                    $post->categories()->attach($category_id);
+                    if (isset($attachment)) {
+                        (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
+                        Attachment::create([
+                            "post_id" => $post->id,
+                            "name" => $attachment,
+                            "type" => "photo"
+                        ]);
+                    }
+
+                    if (isset($post_content['link'])) {
+                        Attachment::create([
+                            "post_id" => $post->id,
+                            "name" => $post_content['link'],
+                            "type" => "video"
+                        ]);
+                    }
+
+
+                    return response()->json([
+                        "post" => $post
+                    ], 201);
+                }
+                } catch (\Exception $exception) {
+                    return response()->json([
+                        "message" => $exception->getMessage(),
+                        "error" => "Error in PostController"
+                    ], 201);
             }
-            Attachment::create([
-                "post_id" => $post->id,
-                "name" => $attachment,
-                "type" => "photo"
-            ]);
-            return response()->json([
-                "post" => $post
-            ], 201);
-        }
+
+
+
     }
     public function like($id)
     {
@@ -139,20 +159,35 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         $post = Posts::findOrFail($id);
+        $post_img = Attachment::where("post_id", $post->id)
+        ->where("type", "photo")
+        ->first()->name;
         //примерно
         $attachments = $request->image;
-        return extension_loaded($attachments);
-        Attachment::create([
-            "name" => "$attachments",
-            "type" => ""
-        ]);
+        $link = $request->link;
         $upd_content = $request->validate([
             "text" => ['string', 'sometimes'],
+            "link" => ['string', 'sometimes', "active_url"]
         ]);
+            $update = $post->update([
+                "text" => $upd_content['text'],
+            ]);
+            if (isset($attachments)) {
+                if (file_exists(public_path("posts/". $post_img))) {
+                    unlink(public_path("posts/". $post_img));
+                    (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
+                    $post->update([
+                        "name" => $attachments,
+                        "type" => "photo"
 
-        $update = $post->update([
-            "text" => $upd_content['text']
-        ]);
+                    ]);
+                }
+        }
+
+
+
+
+
 
     }
 
@@ -161,6 +196,13 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Attachment::where("post_id", $id)->delete();
+        Like::where("post_id",$id)->delete();
+        Posts::findOrFail($id)->categories()->detach();
+        Posts::findOrFail($id)->delete();
+
+        return response()->json([
+            "post" => "post is delete."
+        ], 200);
     }
 }

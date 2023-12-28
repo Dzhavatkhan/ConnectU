@@ -35,8 +35,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('registration', [AuthController::class, 'register']);
 
 
-Route::get('categories', [AdminController::class, 'index']);
-Route::post('categories/delete/id{id}', [AdminController::class, 'destroy']);
+
 
 
 Route::middleware('auth:sanctum')->group(function() {
@@ -49,10 +48,15 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post("message/chat/id{id}", [ChatController::class, 'message']);
     Route::get("message/delete/id{id}", [ChatController::class, 'destroy']);
 
+
+    Route::get('categories', [AdminController::class, 'index']);
+    Route::post('categories/delete/id{id}', [AdminController::class, 'destroy']);
+
     Route::get('myfriends', [UserController::class, 'friends']);
 
     Route::get('posts/my', [PostController::class, 'my']);
     Route::post('posts/create', [PostController::class, 'store']);
+    Route::post('posts/delete/id{id}', [PostController::class, 'destroy']);
     Route::get('update/post/id{id}', [PostController::class, 'update']);
 
     // Route::get('categories', [AdminController::class, 'index']);

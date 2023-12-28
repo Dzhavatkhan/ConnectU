@@ -18,7 +18,8 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         $id = $this->id;
-        $friends = Friend::query()->where('user_id', $id)->orWhere("recipient_id", $id)->where("status", "Принята")->count();
+        $friend_count = Friend::query()->where('user_id', $id)->orWhere("recipient_id", $id)->where("status", "Принята")->count();
+
         $push = Friend::query()->where("recipient_id", $id)->where("status", "Отправлена")->latest();
         if ($push->count() > 0) {
 
@@ -28,6 +29,7 @@ class UserResource extends JsonResource
                 $push = "$requester хочет добавить Вас в друзья!";            }
 
         }
+        
         return [
             'id' => $id,
             "email" => $this->email,
@@ -35,7 +37,7 @@ class UserResource extends JsonResource
             "login" => $this->login,
             'surname' => $this->surname,
             "name" => $this->name,
-            "friends" => $friends,
+            "friends" => $this->friends,
             "chats" => $this->chats->count(),
             "push" => $push
         ];

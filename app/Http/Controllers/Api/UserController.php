@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index()
     {
         $id = Auth::id();
-        $user = UserResource::collection(User::where('id', $id)->get());
+        $user = UserResource::collection(User::with('friends')->where('id', $id)->get());
         return response()->json([
             "profile" => $user
         ]);
