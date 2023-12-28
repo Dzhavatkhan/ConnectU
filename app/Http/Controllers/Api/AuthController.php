@@ -26,9 +26,11 @@ class AuthController extends Controller
             ]);
 
             (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
-           
+
 
             $token = $user->createToken('user_token')->plainTextToken;
+
+
 
             return response()->json([
                 'user' => $user,

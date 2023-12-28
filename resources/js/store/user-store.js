@@ -25,6 +25,7 @@ export const useUserStore = defineStore('user', {
         this.$state.email = res.data.user.email
         this.$state.roleId = res.data.user.role_id
         this.$state.chats = res.data.user.chats
+        this.$state.friends = res.data.user.friends
         if (res.data.user.image) {
           this.$state.image = 'http://127.0.0.1:8000/images/avatars/' + res.data.user.image
         } else {
@@ -63,6 +64,7 @@ export const useUserStore = defineStore('user', {
         this.$state.image = null
         this.$state.roleId = null
         this.$state.chats = null
+        this.$state.friends = null
     }
   },
   persist: true,
