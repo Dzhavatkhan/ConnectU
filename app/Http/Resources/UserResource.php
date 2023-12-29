@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserChats;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class UserResource extends JsonResource
 {
@@ -19,7 +20,10 @@ class UserResource extends JsonResource
     {
         $id = $this->id;
         $friend_count = Friend::query()->where('user_id', $id)->orWhere("recipient_id", $id)->where("status", "Принята")->count();
-
+        $counts = DB::select("SELECT COUNT(*) as 'friends' FROM `friends` WHERE (user_id = $id OR user_id = $id) AND status = 'Принята';");
+        foreach ($counts as $friend_count) {
+            $friend_count = $friend_count->friends;
+        }
         $push = Friend::query()->where("recipient_id", $id)->where("status", "Отправлена")->latest();
         if ($push->count() > 0) {
 

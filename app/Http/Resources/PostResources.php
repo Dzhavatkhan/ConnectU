@@ -107,7 +107,7 @@ class PostResources extends JsonResource
 
         return [
             "id" => $this->id,
-            "author" => $user->name,
+            "author" => $user->name." ".$user->surname,
             "avatar" => $user->image,
             "text" => $this->text,
             "attachment" => $attachment,

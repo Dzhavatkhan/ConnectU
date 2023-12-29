@@ -12,7 +12,7 @@
                 {{ msgs[0].recipient }}
             </div>
 
-            <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-8 lg:w-16 block rounded-full">
+            <img :src="'http://127.0.0.1:8000/images/avatars/' + msgs[0].avatar"  alt="" class="w-8 lg:w-16 block rounded-full">
 
         </div>
 
@@ -96,7 +96,6 @@ let getMessages = async(e) => {
         })
 
         console.log(res.data.chat)
-
         msgs.value = res.data.chat
     } catch (err) {
         console.log(err)
@@ -116,7 +115,6 @@ let sendMessage = async () => {
         })
 
         console.log(res.data)
-
         await getMessages()
     } catch (err) {
         console.log(err)

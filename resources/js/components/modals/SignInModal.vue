@@ -19,6 +19,7 @@
                 />
 
                 <TextInput
+                    inputType="password"
                     placeholder="Пароль"
                     v-model:input="password"
                     :error="errors.password ? errors.password[0] : ''"

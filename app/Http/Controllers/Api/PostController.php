@@ -47,7 +47,7 @@ class PostController extends Controller
         // ->selectRaw("posts.*, users.name as 'user'")
         // ->orderByDesc("posts.created_at")
         // ->get();
-        $posts = PostResources::collection(Posts::where('user_id', Auth::id())->get());
+        $posts = PostResources::collection(Posts::where('user_id', Auth::id())->orderByDesc("created_at")->get());
         if ($posts->count() == 0) {
             return response()->json([
                 "posts" => "Постов нет"
@@ -65,7 +65,7 @@ class PostController extends Controller
     {
             try {
                 $user_id = Auth::id();
-                $attachment = $request->attachment;
+                $attachment = $request->image;
                 $category_id = $request->category_id;
 
                 $link = $request->get('link');
@@ -79,16 +79,10 @@ class PostController extends Controller
 
                     $post->categories()->attach($category_id);
                     if (isset($attachment)) {
-                        // for ($image=0; $image < count($attachment); $image++) {
-                        //     (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
-                        //     Attachment::create([
-                        //         "post_id" => $post->id,
-                        //         "name" => $attachment[$image],
-                        //         "type" => "photo"
-                        //     ]);
-                        // }
+
 
                         (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
+                        
                         Attachment::create([
                             "post_id" => $post->id,
                             "name" => $attachment,
