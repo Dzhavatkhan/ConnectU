@@ -16,7 +16,7 @@
 
         </div>
 
-        <div class="p-3 lg:p-8 flex flex-col gap-8 grow overflow-auto">
+        <div class="p-3 lg:p-8 flex flex-col gap-8 grow overflow-auto" id="chat">
             <div v-for="msg in msgs" :key="msg" class="relative flex flex-col " :class="userStore.id != msg.user_id ? 'items-start' : 'items-end'">
                 <img v-if="userStore.id != msg.user_id" :src="'http://127.0.0.1:8000/images/avatars/' + msg.avatar" alt="" class="inline-block w-8 lg:w-16 rounded-full">
                 <img v-else :src="userStore.image" alt="" class="inline-block w-8 lg:w-16 rounded-full">
@@ -84,6 +84,8 @@ onMounted(async() => {
             sendMessage()
         }
     })
+
+    await scrollToBottom()
 })
 
 onUnmounted(() => {
@@ -91,6 +93,11 @@ onUnmounted(() => {
 })
 
 let timerId = setInterval(async() => await getMessages(), 2000);
+
+function scrollToBottom(){
+    let block = document.getElementById("chat")
+    block.scrollTop = block.scrollHeight;
+}
 
 let getMessages = async(e) => {
     try {
