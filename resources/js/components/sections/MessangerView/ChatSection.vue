@@ -18,7 +18,8 @@
 
         <div class="p-3 lg:p-8 flex flex-col gap-8 grow overflow-auto">
             <div v-for="msg in msgs" :key="msg" class="relative flex flex-col " :class="userStore.id != msg.user_id ? 'items-start' : 'items-end'">
-                <img :src="'http://127.0.0.1:8000/images/avatars/' + msg.avatar" alt="" class="inline-block w-8 lg:w-16 rounded-full">
+                <img v-if="userStore.id != msg.user_id" :src="'http://127.0.0.1:8000/images/avatars/' + msg.avatar" alt="" class="inline-block w-8 lg:w-16 rounded-full">
+                <img v-else :src="userStore.image" alt="" class="inline-block w-8 lg:w-16 rounded-full">
 
                 <div v-if="userStore.id != msg.user_id" class="absolute left-12 lg:left-[90px] top-1 lg:top-4 lg:text-2xl">
                     {{msg.recipient}}
@@ -43,7 +44,7 @@
             </div>
         </div>
 
-        <div class="p-3 lg:p-6 lg:px-8 flex justify-between items-center gap-3 lg:gap-5 border-light-grey border-t">
+        <div id="enter" class="p-3 lg:p-6 lg:px-8 flex justify-between items-center gap-3 lg:gap-5 border-light-grey border-t">
             <Textinput
                 placeholder="Написать сообщение..."
                 v-model:input="message"
@@ -78,6 +79,11 @@ let msgs = ref(null)
 
 onMounted(async() => {
     await getMessages()
+    await document.addEventListener('keydown', function(e) {
+        if(e.code == 'Enter'){
+            sendMessage()
+        }
+    })
 })
 
 onUnmounted(() => {
@@ -116,8 +122,17 @@ let sendMessage = async () => {
 
         console.log(res.data)
         await getMessages()
+        message.value = ''
     } catch (err) {
         console.log(err)
     }
 }
+
+const key_press = (e) => {
+    e.preventDefault();
+    sendMessage();
+}
+
+
+
 </script>
