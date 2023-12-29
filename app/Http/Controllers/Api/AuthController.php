@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequests\LoginRequest;
 use App\Http\Requests\UserRequests\ReqisterRequest;
 use App\Models\User;
+use App\Models\User_category;
 use App\Services\ImageService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -25,12 +26,14 @@ class AuthController extends Controller
                 'role_id' => 2
             ]);
 
+            User_category::create([
+                'user_id' => $user->id,
+                'category_id' => $request->get('categoryId')
+            ]);
+
             (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
 
-
             $token = $user->createToken('user_token')->plainTextToken;
-
-
 
             return response()->json([
                 'user' => $user,

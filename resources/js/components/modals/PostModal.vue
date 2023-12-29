@@ -14,14 +14,20 @@
             <form class="mt-6 lg:mt-[50px] flex flex-col gap-5 lg:gap-10 font-display overflow-auto">
                 <TextArea
                     placeholder="Расскажите что-нибудь..."
-                    v-model:input="post"
-                    :error="errors.post ? errors.post[0] : ''"
+                    v-model:input="text"
+                    :error="errors.text ? errors.text[0] : ''"
                 />
 
                 <div>
-                    <div @click="(openCategories = !openCategories) && (openCategories ? getCategories() : '')" class=" p-2 lg:py-5 text-center lg:text-3xl font-medium text-grey bg-white rounded-lg">
+                    <div @click="(openCategories = !openCategories) && (openCategories ? getCategories() : '')" class="flex justify-center gap-4 p-2 lg:py-5 text-center lg:text-3xl font-medium text-grey bg-white rounded-lg">
                         Выбор категорий
+
+                        <svg viewBox="0 0 50 26" fill="none" class="w-[17px] lg:w-7">
+                            <path d="M46.5295 0.582918L24.9978 21.3046L3.46612 0.582918C3.08142 0.211941 2.56499 0.00425292 2.02723 0.00425292C1.48946 0.00425292 0.973036 0.211941 0.588336 0.582918C0.402065 0.763102 0.254083 0.978169 0.15306 1.21553C0.0520356 1.45288 0 1.70776 0 1.96522C0 2.22268 0.0520356 2.47755 0.15306 2.7149C0.254083 2.95226 0.402065 3.16733 0.588336 3.34751L23.4943 25.3962C23.8965 25.7833 24.4361 26 24.9978 26C25.5595 26 26.099 25.7833 26.5013 25.3962L49.4073 3.35177C49.5948 3.17145 49.7439 2.95585 49.8457 2.71771C49.9476 2.47957 50 2.2237 50 1.96522C50 1.70673 49.9476 1.45086 49.8457 1.21272C49.7439 0.974578 49.5948 0.758983 49.4073 0.578663C49.0226 0.207686 48.5061 0 47.9684 0C47.4306 0 46.9142 0.207686 46.5295 0.578663V0.582918Z" fill="black"/>
+                        </svg>
                     </div>
+
+
 
                     <div v-if="openCategories" class="mt-2 bg-white rounded-lg text-center">
                         <div v-for="category in categories" :key="category.id" @click="activeCategoriesPush(category)" class="relative flex justify-center items-center py-2 border-grey border-b-2 last:border-b-0">
@@ -42,12 +48,17 @@
                             </svg>
                         </div>
                     </div>
+
+                    <div v-if="errors.category_id" class="mt-2 text-red-500">
+                        {{ errors.category_id[0] }}
+                    </div>
                 </div>
 
-                <TextInput 
+                <TextInput
                     placeholder="Добавить ссылку на видео"
                     v-model:input="link"
                     stylesInput="p-2 border-2 rounded-lg"
+                    :error="errors.link ? errors.link[0] : ''"
                 />
 
                 <div class="">
@@ -64,12 +75,12 @@
 
                 <!-- <iframe src="https://rutube.ru/video/248f13df0be8ccec31485acea6b4926d/?r=plwd" frameborder="0"></iframe> -->
 
-                <iframe id="my-iframe" height="1200" src="https://www.youtube.com/embed/MuGmbQ_2j88" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <!-- <iframe id="my-iframe" height="1200" src="https://www.youtube.com/embed/MuGmbQ_2j88" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
 
                 <img v-for="img in uploadedImages" :key="img" :src="img" alt="" class="rounded-lg">
             </form>
 
-            <div @click="signIn()" class="mt-5 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg">
+            <div @click="sendPost()" class="mt-5 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg">
                 Опубликовать
             </div>
         </div>
@@ -77,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps, onMounted, toRefs } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
 import TextArea from '../reusable/TextArea.vue';
@@ -85,16 +96,39 @@ import TextInput from '../reusable/TextInput.vue';
 
 const userStore = useUserStore()
 
-let openCategories = ref(false)
+onMounted(() => {
+    if (post.value) {
+        console.log(post.value.text)
+        getPostById()
+    }
+})
 
-let post = ref(null)
+let props = defineProps(['post'])
+
+let { post } = toRefs(props)
+
+
+
+let text = ref(null)
 let link = ref(null)
 let categories = ref(null)
 let activeCategories = ref([])
 
+let openCategories = ref(false)
+
 let activeCategoriesId = ref([])
 
 let uploadedImages = ref([])
+
+let getPostById = () => {
+    try {
+        text.value = post.value.text
+        console.log(text.value)
+        // activeCategories.value = post.categories
+    } catch (err) {
+console.log(err)
+    }
+}
 
 let getUploadedImage = (e) => {
     const files = e.target.files
@@ -145,7 +179,7 @@ let sendPost = async() => {
 
     let data = new FormData();
 
-    data.append('post', post.value || '')
+    data.append('text', text.value || '')
     data.append('link', link.value || '')
     data.append('attachment', uploadedImages.value[0] || '')
     data.append('category_id', activeCategoriesId.value[0] || '')
@@ -161,6 +195,7 @@ let sendPost = async() => {
         console.log(res.data)
     } catch(err) {
         console.log(err)
+        errors.value = err.response.data.errors
     }
 }
 

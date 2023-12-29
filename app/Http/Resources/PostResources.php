@@ -102,7 +102,7 @@ class PostResources extends JsonResource
 
 
         $category = Category::join('posts_categories', 'categories.id', 'posts_categories.category_id')
-        ->where('posts_categories.post_id', $this->post_id)
+        ->where('posts_categories.posts_id', $this->post_id)
         ->get();
 
         return [

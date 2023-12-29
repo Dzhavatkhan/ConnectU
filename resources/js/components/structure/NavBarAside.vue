@@ -60,7 +60,7 @@
 console.log(window.location.pathname)
 </script>
 
-<style>
+<style scoped>
     .router-link-active {
         background-color: white;
         border-top: 2px solid white;

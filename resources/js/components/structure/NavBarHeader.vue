@@ -67,6 +67,7 @@
             <UserModal v-if="modals[1].visible" @closeModal="toggleModal(2, true)" />
         </div>
 
+        <LogOrReg v-if="!userStore.id" />
     </nav>
 </template>
 
@@ -76,6 +77,7 @@ import Cover from '../reusable/Cover.vue'
 import SearchModal from '../modals/SearchModal.vue';
 import UserModal from '../modals/UserModal.vue';
 import { useUserStore } from '@/store/user-store';
+import LogOrReg from '../modals/LogOrReg.vue';
 
 const userStore = useUserStore()
 

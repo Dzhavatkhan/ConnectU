@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\postreq;
 use App\Http\Resources\PostResources;
 use App\Models\Attachment;
 use App\Models\Like;
@@ -60,37 +61,31 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(postreq $request)
     {
-
-
             try {
                 $user_id = Auth::id();
                 $attachment = $request->attachment;
                 $category_id = $request->category_id;
-                $post_content = $request->validate([
-                    "text" => ["sometimes", "string"],
-                    "link" => ['string', "sometimes", "active_url"],
-                    "category_id" => ['string', 'required'],
-                    "attachment" => ['image', 'mimes:png,jpg']
-                ]);
+
+                $link = $request->get('link');
 
                 $post = Posts::create([
                     "user_id" => $user_id,
-                    "text" => $post_content['text'],
+                    "text" => $request->get('text'),
                 ]);
 
                 if ($post) {
-                    
+
                     $post->categories()->attach($category_id);
                     if (isset($attachment)) {
-                        // for ($image=0; $image < count($attachment); $image++) { 
+                        // for ($image=0; $image < count($attachment); $image++) {
                         //     (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
                         //     Attachment::create([
                         //         "post_id" => $post->id,
                         //         "name" => $attachment[$image],
                         //         "type" => "photo"
-                        //     ]);                        
+                        //     ]);
                         // }
 
                         (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
@@ -102,10 +97,10 @@ class PostController extends Controller
 
                     }
 
-                    if (isset($post_content['link'])) {
+                    if (isset($link)) {
                         Attachment::create([
                             "post_id" => $post->id,
-                            "name" => $post_content['link'],
+                            "name" => $link,
                             "type" => "video"
                         ]);
                     }

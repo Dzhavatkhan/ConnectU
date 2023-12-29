@@ -8,8 +8,8 @@
                 </svg>
             </router-link>
 
-            <div class="text-center text-sm lg:text-3xl font-medium">
-                Джаватхан Джаватханов
+            <div v-if="msgs" class="text-center text-sm lg:text-3xl font-medium">
+                {{ msgs[0].recipient }}
             </div>
 
             <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-8 lg:w-16 block rounded-full">
@@ -17,10 +17,14 @@
         </div>
 
         <div class="p-3 lg:p-8 flex flex-col gap-8 grow overflow-auto">
-            <div  v-for="msg in msgs" :key="msg" class="relative flex flex-col items-start">
-                <img :src="'http://127.0.0.1:8000/images/avatars/' + msg.avatar" alt="" class="sticky top-0 inline-block w-8 lg:w-16 rounded-full">
+            <div v-for="msg in msgs" :key="msg" class="relative flex flex-col " :class="userStore.id != msg.user_id ? 'items-start' : 'items-end'">
+                <img :src="'http://127.0.0.1:8000/images/avatars/' + msg.avatar" alt="" class="inline-block w-8 lg:w-16 rounded-full">
 
-                <div class="absolute left-12 lg:left-[90px] top-1 lg:top-4 lg:text-2xl">
+                <div v-if="userStore.id != msg.user_id" class="absolute left-12 lg:left-[90px] top-1 lg:top-4 lg:text-2xl">
+                    {{msg.recipient}}
+                </div>
+
+                <div v-else class="absolute right-12 lg:right-[90px] top-1 lg:top-4 lg:text-2xl">
                     {{msg.you}}
                 </div>
 
@@ -56,7 +60,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import axios from 'axios';
 import Textinput from '../../reusable/textinput.vue';
 import { useRoute } from 'vue-router'
@@ -75,6 +79,12 @@ let msgs = ref(null)
 onMounted(async() => {
     await getMessages()
 })
+
+onUnmounted(() => {
+    clearInterval(timerId)
+})
+
+let timerId = setInterval(async() => await getMessages(), 2000);
 
 let getMessages = async(e) => {
     try {

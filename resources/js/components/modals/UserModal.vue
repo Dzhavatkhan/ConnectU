@@ -1,12 +1,6 @@
 <template>
-    <div v-if="!idOpenModal && !userStore.id" class="absolute max-lg:inset-x-0 z-10 lg:right-0 lg:text-2xl px-3 lg:p-10 py-6  bg-light-black rounded-b-xl">
-        <div @click="toggleModal(1)" class="py-3 lg:py-4 text-white text-center border-white border rounded-lg">Войти</div>
-
-        <div @click="toggleModal(2)" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg">Зарегистрироваться</div>
-    </div>
-
     <div v-if="!idOpenModal && userStore.id" class="absolute max-lg:inset-x-0 z-10 lg:right-0 lg:text-2xl px-3 lg:p-10 py-6  bg-light-black rounded-b-xl">
-        <router-link to="" class="block py-3 lg:py-4 text-white text-center border-white border rounded-lg">Настройки</router-link>
+        <router-link to="" class="block py-3 lg:py-4 lg:px-5 text-white text-center border-white border rounded-lg">Настройки</router-link>
 
         <div @click="logout()" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg">Выйти</div>
     </div>

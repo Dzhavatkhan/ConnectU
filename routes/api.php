@@ -34,7 +34,7 @@ Route::get("user/id{id}", [UserController::class, 'show'])->name('user_show');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('registration', [AuthController::class, 'register']);
 
-
+Route::get('categories', [AdminController::class, 'index']);
 
 
 
@@ -49,7 +49,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get("message/delete/id{id}", [ChatController::class, 'destroy']);
 
 
-    Route::get('categories', [AdminController::class, 'index']);
     Route::post('categories/delete/id{id}', [AdminController::class, 'destroy']);
 
     Route::get('myfriends', [UserController::class, 'friends']);
