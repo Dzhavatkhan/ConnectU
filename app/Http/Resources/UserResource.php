@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Friend;
 use App\Models\User;
+use App\Models\User_category;
 use App\Models\UserChats;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -33,6 +34,7 @@ class UserResource extends JsonResource
                 $push = "$requester хочет добавить Вас в друзья!";            }
 
         }
+        $category = User_category::where("user_id", $this->id)->pluck("name");
 
         return [
             'id' => $id,
@@ -41,6 +43,8 @@ class UserResource extends JsonResource
             "login" => $this->login,
             'surname' => $this->surname,
             "name" => $this->name,
+            "password" => bcrypt($this->password),
+            "category" => $category,
             "friends" => $friend_count,
             "chats" => $this->chats->count(),
             "push" => $push
