@@ -65,7 +65,9 @@ class PostController extends Controller
     {
             try {
                 $user_id = Auth::id();
-                $attachment = $request->image;
+                $attachments = $request->file("attachment");
+                // $attachment =
+                // $attachment = "$attachment".".".$attachment->extension();
                 $category_id = $request->category_id;
 
                 $link = $request->get('link');
@@ -79,10 +81,11 @@ class PostController extends Controller
 
                     $post->categories()->attach($category_id);
                     if (isset($attachment)) {
+                        dd($attachment);
+                        $attachment = $attachment->getClientOriginalName();
+                        $request->file('attachment')->move(public_path('images/attachments/'), $attachment);
+                        // (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store');
 
-
-                        (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
-                        
                         Attachment::create([
                             "post_id" => $post->id,
                             "name" => $attachment,
@@ -101,7 +104,8 @@ class PostController extends Controller
 
 
                     return response()->json([
-                        "post" => $post
+                        "post" => $post,
+                        "attachments" => $attachment
                     ], 201);
                 }
                 } catch (\Exception $exception) {

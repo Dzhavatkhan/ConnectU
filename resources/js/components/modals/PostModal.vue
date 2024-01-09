@@ -11,7 +11,7 @@
                 Создание поста
             </div>
 
-            <form class="mt-6 lg:mt-[50px] flex flex-col gap-5 lg:gap-10 font-display overflow-auto">
+            <form class="mt-6 lg:mt-[50px] flex flex-col gap-5 lg:gap-10 font-display overflow-auto" enctype="multipart/form-data">
                 <TextArea
                     placeholder="Расскажите что-нибудь..."
                     v-model:input="text"
@@ -62,7 +62,7 @@
                 />
 
                 <div class="">
-                    <input id="img" type="file" ref="fileInput" @change="getUploadedImage" class="hidden">
+                    <input id="img" type="file" ref="fileInput" @change="getUploadedImage" multiple class="hidden">
 
                     <label for="img" class="block relative z-10 py-2 lg:py-4 lg:text-3xl text-center bg-white rounded-lg lg:rounded-xl">
                         Добавить фото
@@ -77,7 +77,7 @@
 
                 <!-- <iframe id="my-iframe" height="1200" src="https://www.youtube.com/embed/MuGmbQ_2j88" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
 
-                <img v-for="img in uploadedImages" :key="img" :src="img" alt="" class="rounded-lg">
+                <img v-for="img in viewImages" :key="img" :src="img" alt="" class="rounded-lg">
             </form>
 
             <div @click="sendPost()" class="mt-5 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg">
@@ -122,6 +122,7 @@ let openCategories = ref(false)
 let activeCategoriesId = ref([])
 
 let uploadedImages = ref([])
+let viewImages = ref([])
 
 let getPostById = () => {
     try {
@@ -137,7 +138,9 @@ let getUploadedImage = (e) => {
     const files = e.target.files
 
     for (let index = 0; index < files.length; index++) {
-        uploadedImages.value.push(URL.createObjectURL(files[index]))
+        uploadedImages.value.push(files[index])
+        viewImages.value.push(URL.createObjectURL(files[index]))
+
     }
 
     console.log(uploadedImages.value)
@@ -184,10 +187,11 @@ let sendPost = async() => {
 
     data.append('text', text.value || '')
     data.append('link', link.value || '')
-    data.append('attachment', uploadedImages.value[0] || '')
+    data.append('attachment', uploadedImages.value)
     data.append('category_id', activeCategoriesId.value[0] || '')
 
     try {
+        console.log(uploadedImages.value);
         let res = await axios.post('http://127.0.0.1:8000/api/posts/create', data, {
             headers:
             {

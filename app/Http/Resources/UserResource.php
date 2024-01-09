@@ -44,7 +44,7 @@ class UserResource extends JsonResource
             "login" => $this->login,
             'surname' => $this->surname,
             "name" => $this->name,
-            "password" => bcrypt($this->password),
+            "password" => $this->password,
             "category" => $category,
             "friends" => $friend_count,
             "chats" => $this->chats->count(),

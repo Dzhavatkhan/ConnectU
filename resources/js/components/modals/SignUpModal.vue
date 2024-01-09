@@ -202,6 +202,8 @@ let register = async() => {
     data.append('categoryId', activeCategoriesId.value[0] || '')
     data.append('image', image.value || '')
 
+    console.log(image.value);
+
     if (imageData) {
         data.append('image', imageData.file || '')
         data.append('height', imageData.height || '')
