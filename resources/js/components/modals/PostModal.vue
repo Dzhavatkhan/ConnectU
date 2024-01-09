@@ -85,6 +85,8 @@
             </div>
         </div>
     </div>
+
+    <Cover @click="$emit('closeModal')" stylesInput="fixed z-20 top-0"/>
 </template>
 
 <script setup>
@@ -93,6 +95,7 @@ import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
 import TextArea from '../reusable/TextArea.vue';
 import TextInput from '../reusable/TextInput.vue';
+import Cover from '../reusable/Cover.vue';
 
 const userStore = useUserStore()
 

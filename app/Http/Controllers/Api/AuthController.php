@@ -62,10 +62,11 @@ class AuthController extends Controller
             } else {
 
                 $token = $user->createToken('user_token')->plainTextToken;
-
+                $password = Hash::needsRehash($user->password);
                 return response()->json([
                     'user' => $user,
-                    'token' => $token
+                    'token' => $token,
+                    'password' => $password
                 ], 200);
 
             }

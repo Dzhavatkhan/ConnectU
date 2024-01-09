@@ -10,6 +10,7 @@ import FeedView from '../views/FeedView.vue'
 import FriendsView from '../views/FriendsView.vue'
 import MessangerView from '../views/MessangerView.vue'
 import ChatSection from '../components/sections/MessangerView/ChatSection.vue'
+import SettingSection from '../components/sections/ProfileView/SettingSection.vue'
 
 let routes = [
     {
@@ -20,6 +21,11 @@ let routes = [
         path: '/profile',
         component: ProfileView,
         name: 'profile'
+    },
+    {
+        path: '/profile/setting',
+        component: SettingSection,
+        name: 'profile_setting'
     },
     {
         path: "/feed",

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequests\UpdateUserRequest;
 use App\Http\Resources\FriendsResource;
 use App\Http\Resources\UserResource;
 use App\Models\Friend;
@@ -10,6 +11,7 @@ use App\Models\User;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use function Laravel\Prompts\password;
 
@@ -100,36 +102,39 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        $user = Auth::user();
-        //данные нужно отвалидировать
-        $data = $request->validate([
-            "name",
-            "login",
-            "image",
-            'password',
-            "categories_id"
-        ]);
+        $user = User::findOrFail($id);
 
-        if (isset($data['image'])) {
-            (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
-        }
-        else{
-            if (file_exists(storage_path('images/avatars/'.$user->image))) {
-                $data['image'] = $user->image;
-            }
-            else{
-                return response()->json([
-                    "message" => "Ваш аватар не найден"
-                ], 404);
-            }
-        }
+        $data = [
+            'name' => $request->get('name'),
+            'surname' => $request->get('surname'),
+            'login' => $request->get('login'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
+            'image' => $request->file('email'),
+        ];
+
+        (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
+        // else{
+        //     if (file_exists(storage_path('images/avatars/'.$user->image))) {
+        //         $data['image'] = $user->image;
+        //     }
+        //     else{
+        //         return response()->json([
+        //             "message" => "Ваш аватар не найден"
+        //         ], 404);
+        //     }
+        // }
 
         $update = User::where('id', $id)->update($data);
+        $user->save();
+        $user = User::findOrFail($id);
+
         if ($update) {
             return response()
             ->json([
+                'user' => $user,
                 "update" => "Ваш профиль отредактирован"
             ], 201)
             ->header("content-type", 'application/json');

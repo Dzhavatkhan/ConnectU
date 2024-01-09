@@ -11,14 +11,19 @@ export const useUserStore = defineStore('user', {
     email: null,
     image: null,
     roleId: null,
-    chats: null
+    chats: null,
+    friends: null,
+    password: null
   }),
   // could also be defined as
   // state: () => ({ count: 0 })
   actions: {
     async setUserDetails(res) {
+        if (!this.$state.id) {
+            this.$state.token = res.data.token
+        }
+
         this.$state.id = res.data.user.id
-        this.$state.token = res.data.token
         this.$state.name = res.data.user.name
         this.$state.surname = res.data.user.surname
         this.$state.login = res.data.user.login
@@ -26,10 +31,12 @@ export const useUserStore = defineStore('user', {
         this.$state.roleId = res.data.user.role_id
         this.$state.chats = res.data.user.chats
         this.$state.friends = res.data.user.friends
+        this.$state.password = res.data.password
+
         if (res.data.user.image) {
           this.$state.image = 'http://127.0.0.1:8000/images/avatars/' + res.data.user.image
         } else {
-          this.$state.image = 'http://127.0.0.1:8000/images/avatars/default.png'
+          this.$state.image = 'http://127.0.0.1:8000/images/avatars/default.jpg'
         }
     },
 
