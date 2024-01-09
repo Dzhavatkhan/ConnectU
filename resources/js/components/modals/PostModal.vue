@@ -124,6 +124,8 @@ let activeCategoriesId = ref([])
 let uploadedImages = ref([])
 let viewImages = ref([])
 
+import eventBus from '@/eventBus';
+
 let getPostById = () => {
     try {
         text.value = post.value.text
@@ -187,7 +189,10 @@ let sendPost = async() => {
 
     data.append('text', text.value || '')
     data.append('link', link.value || '')
-    data.append('attachment', uploadedImages.value)
+    for (let index = 0; index < uploadedImages.value.length; index++) {
+        data.append(`attachment${index}`, uploadedImages.value[index])
+    }
+    console.log(uploadedImages.value)
     data.append('category_id', activeCategoriesId.value[0] || '')
 
     try {
@@ -196,10 +201,12 @@ let sendPost = async() => {
             headers:
             {
                 Authorization: `Bearer ${userStore.token}`,
+                'Content-Type': 'multipart/form-data'
             }
         })
 
         console.log(res.data)
+        eventBus.emit('addPost', '')
     } catch(err) {
         console.log(err)
         errors.value = err.response.data.errors

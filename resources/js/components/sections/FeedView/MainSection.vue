@@ -83,6 +83,7 @@ import {ref, watch, onMounted} from 'vue'
 import PostModal from '../../modals/PostModal.vue'
 import { useUserStore } from '../../../store/user-store';
 let userStore = useUserStore()
+import eventBus from '@/eventBus';
 
 let open = ref(false)
 
@@ -97,7 +98,12 @@ watch(open, (newValue) => {
 })
 
 onMounted(async() => {
+    eventBus.on('addPost', async()=>{
+        await getPosts()
+    })
+
     await getPosts()
+
 })
 
 let getPosts = async() => {

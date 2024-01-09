@@ -65,7 +65,10 @@ class PostController extends Controller
     {
             try {
                 $user_id = Auth::id();
-                $attachments = $request->file("attachment");
+                // dd($request->file('attachment0'));
+
+
+
                 // $attachment =
                 // $attachment = "$attachment".".".$attachment->extension();
                 $category_id = $request->category_id;
@@ -80,17 +83,23 @@ class PostController extends Controller
                 if ($post) {
 
                     $post->categories()->attach($category_id);
-                    if (isset($attachment)) {
-                        dd($attachment);
-                        $attachment = $attachment->getClientOriginalName();
-                        $request->file('attachment')->move(public_path('images/attachments/'), $attachment);
+                    $attachments = $request->file('attachment0');
+                    if (isset($attachments)) {
+                        for ($index = 0; $request->file('attachment' . $index); $index++) {
+                            $attachment = $request->file('attachment' . $index);
+                            $attachment = $attachment->getClientOriginalName();
+
+                            $request->file('attachment'. $index)->move(public_path('images/attachments/'), $attachment);
+                            Attachment::create([
+                                "post_id" => $post->id,
+                                "name" => $attachment,
+                                "type" => "photo"
+                            ]);
+
+                        }
+
                         // (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store');
 
-                        Attachment::create([
-                            "post_id" => $post->id,
-                            "name" => $attachment,
-                            "type" => "photo"
-                        ]);
 
                     }
 
@@ -105,7 +114,7 @@ class PostController extends Controller
 
                     return response()->json([
                         "post" => $post,
-                        "attachments" => $attachment
+                        "attachments" => $attachments
                     ], 201);
                 }
                 } catch (\Exception $exception) {
