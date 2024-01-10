@@ -193,7 +193,16 @@ let sendPost = async() => {
         data.append(`attachment${index}`, uploadedImages.value[index])
     }
     console.log(uploadedImages.value)
-    data.append('category_id', activeCategoriesId.value[0] || '')
+    let cat = [];
+    for (let category = 0; category < activeCategories.value.length; category++) {
+
+        // data.append(`category_id${category}`, activeCategoriesId.value[category] || '')
+        cat.push(activeCategoriesId.value[category])
+        console.log(cat)
+        data.append('category_id', cat || '')
+
+    }
+    // data.append('category_id', activeCategoriesId.value[0] || '')
 
     try {
         console.log(uploadedImages.value);

@@ -11,6 +11,7 @@ use App\Models\Posts;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Nette\Utils\Random;
 
 class PostController extends Controller
@@ -73,6 +74,9 @@ class PostController extends Controller
                 // $attachment = "$attachment".".".$attachment->extension();
                 $category_id = $request->category_id;
 
+
+
+
                 $link = $request->get('link');
 
                 $post = Posts::create([
@@ -81,8 +85,23 @@ class PostController extends Controller
                 ]);
 
                 if ($post) {
+                    
+                    for ($category=0; $category < count($category_id); $category++) {
 
-                    $post->categories()->attach($category_id);
+                        $category = $request->category_id;
+                        $created_cat = DB::table("posts_categories")->insert([
+                            "posts_id" => $post->id,
+                            "category_id" => $category
+                        ]);
+                        // if ($created_cat == false) {
+                            // $post->categories()->attach($category);
+                        // }
+
+                    }
+
+
+
+
                     $attachments = $request->file('attachment0');
                     if (isset($attachments)) {
                         for ($index = 0; $request->file('attachment' . $index); $index++) {
