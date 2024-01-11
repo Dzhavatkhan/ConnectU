@@ -85,19 +85,24 @@ class PostController extends Controller
                 ]);
 
                 if ($post) {
-                    
-                    for ($category=0; $category < count($category_id); $category++) {
 
-                        $category = $request->category_id;
-                        $created_cat = DB::table("posts_categories")->insert([
-                            "posts_id" => $post->id,
-                            "category_id" => $category
-                        ]);
+                        $category_arr = $request->category_id;
+                        $category_arr = explode(',', $category_arr);
+                        for ($category = 0; $category < count($category_arr); $category++) {
+                            // dd($category_arr[$category]);
+                            $post->categories()->attach($category_arr[$category]);
+
+                        }
+                        // $created_cat = DB::table("posts_categories")->insert([
+                        //     "posts_id" => $post->id,
+                        //     "category_id" => $category
+                        // ]);
+
                         // if ($created_cat == false) {
                             // $post->categories()->attach($category);
                         // }
 
-                    }
+                        }
 
 
 
@@ -136,7 +141,7 @@ class PostController extends Controller
                         "attachments" => $attachments
                     ], 201);
                 }
-                } catch (\Exception $exception) {
+                catch (\Exception $exception) {
                     return response()->json([
                         "message" => $exception->getMessage(),
                         "error" => "Error in PostController"

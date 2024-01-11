@@ -192,6 +192,7 @@ const setCroppedImageData = (data) => {
 let register = async() => {
     console.log(activeCategoriesId.value[0])
     let data = new FormData();
+    let categories_id = [];
 
     data.append('name', name.value || '')
     data.append('surname', surname.value || '')
@@ -199,8 +200,13 @@ let register = async() => {
     data.append('email', email.value || '')
     data.append('password', password.value || '')
     data.append('password_confirmation', confirmPassword.value || '')
-    data.append('categoryId', activeCategoriesId.value[0] || '')
+    // data.append('categoryId', activeCategoriesId || '')
     data.append('image', image.value || '')
+    for (let index = 0; index < activeCategoriesId.value.length; index++) {
+        categories_id.push(activeCategoriesId.value[index]);
+        data.append('categoryId', categories_id || '')
+
+    }
 
     console.log(image.value);
 
