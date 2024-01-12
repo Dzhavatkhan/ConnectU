@@ -17,6 +17,8 @@ class AuthController extends Controller
 {
     public function register(ReqisterRequest $request) {
         try {
+
+            $categories = explode(",", $request->categoryId);
             $user = User::create([
                 'name' => $request->get('name'),
                 'surname' => $request->get('surname'),
@@ -26,10 +28,13 @@ class AuthController extends Controller
                 'role_id' => 2
             ]);
 
-            User_category::create([
-                'user_id' => $user->id,
-                'category_id' => $request->get('categoryId')
-            ]);
+            for ($category=0; $category < count($categories); $category++) {
+                User_category::create([
+                    'user_id' => $user->id,
+                    'category_id' => $categories[$category]
+                ]);
+            }
+
 
             (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
 

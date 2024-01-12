@@ -28,7 +28,7 @@
                     {{ post.text }}
                 </div>
 
-                <img v-for="attachment in post.attachment" :key="attachment" :src="attachment" alt="" class="block w-full mt-4 lg:mt-10 rounded-md lg:rounded-xl">
+                <img v-for="attachment in post.attachment" :key="attachment" :src="'http://127.0.0.1:8000/images/attachments/' + attachment" alt="" class="block w-72 mt-4 lg:mt-10 rounded-md lg:rounded-xl">
 
                 <div class="flex gap-2 lg:gap-3 mt-4 lg:mt-10 lg:text-3xl">
                     <svg viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10">
@@ -83,6 +83,7 @@ import {ref, watch, onMounted} from 'vue'
 import PostModal from '../../modals/PostModal.vue'
 import { useUserStore } from '../../../store/user-store';
 let userStore = useUserStore()
+import eventBus from '@/eventBus';
 
 let open = ref(false)
 
@@ -97,7 +98,12 @@ watch(open, (newValue) => {
 })
 
 onMounted(async() => {
+    eventBus.on('addPost', async()=>{
+        await getPosts()
+    })
+
     await getPosts()
+
 })
 
 let getPosts = async() => {

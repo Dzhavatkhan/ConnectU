@@ -11,6 +11,7 @@ use App\Models\Posts;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Nette\Utils\Random;
 
 class PostController extends Controller
@@ -65,8 +66,16 @@ class PostController extends Controller
     {
             try {
                 $user_id = Auth::id();
-                $attachment = $request->image;
+                // dd($request->file('attachment0'));
+
+
+
+                // $attachment =
+                // $attachment = "$attachment".".".$attachment->extension();
                 $category_id = $request->category_id;
+
+
+
 
                 $link = $request->get('link');
 
@@ -77,17 +86,44 @@ class PostController extends Controller
 
                 if ($post) {
 
-                    $post->categories()->attach($category_id);
-                    if (isset($attachment)) {
+                        $category_arr = $request->category_id;
+                        $category_arr = explode(',', $category_arr);
+                        for ($category = 0; $category < count($category_arr); $category++) {
+                            // dd($category_arr[$category]);
+                            $post->categories()->attach($category_arr[$category]);
+
+                        }
+                        // $created_cat = DB::table("posts_categories")->insert([
+                        //     "posts_id" => $post->id,
+                        //     "category_id" => $category
+                        // ]);
+
+                        // if ($created_cat == false) {
+                            // $post->categories()->attach($category);
+                        // }
+
+                        }
 
 
-                        (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
-                        
-                        Attachment::create([
-                            "post_id" => $post->id,
-                            "name" => $attachment,
-                            "type" => "photo"
-                        ]);
+
+
+                    $attachments = $request->file('attachment0');
+                    if (isset($attachments)) {
+                        for ($index = 0; $request->file('attachment' . $index); $index++) {
+                            $attachment = $request->file('attachment' . $index);
+                            $attachment = $attachment->getClientOriginalName();
+
+                            $request->file('attachment'. $index)->move(public_path('images/attachments/'), $attachment);
+                            Attachment::create([
+                                "post_id" => $post->id,
+                                "name" => $attachment,
+                                "type" => "photo"
+                            ]);
+
+                        }
+
+                        // (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store');
+
 
                     }
 
@@ -101,10 +137,11 @@ class PostController extends Controller
 
 
                     return response()->json([
-                        "post" => $post
+                        "post" => $post,
+                        "attachments" => $attachments
                     ], 201);
                 }
-                } catch (\Exception $exception) {
+                catch (\Exception $exception) {
                     return response()->json([
                         "message" => $exception->getMessage(),
                         "error" => "Error in PostController"

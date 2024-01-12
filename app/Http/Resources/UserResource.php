@@ -34,7 +34,8 @@ class UserResource extends JsonResource
                 $push = "$requester хочет добавить Вас в друзья!";            }
 
         }
-        $category = User_category::where("user_id", $this->id)->pluck("name");
+        $category = User_category::join("categories", "user_categories.id", "categories.id")
+            ->where("user_id", $this->id)->pluck("name");
 
         return [
             'id' => $id,
@@ -43,7 +44,7 @@ class UserResource extends JsonResource
             "login" => $this->login,
             'surname' => $this->surname,
             "name" => $this->name,
-            "password" => bcrypt($this->password),
+            "password" => $this->password,
             "category" => $category,
             "friends" => $friend_count,
             "chats" => $this->chats->count(),
