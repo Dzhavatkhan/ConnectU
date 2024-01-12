@@ -36,7 +36,7 @@
                             </svg>
                         </div>
 
-                        <div class="underline">
+                        <div @click="sendFriend(user.id)" class="underline">
                             <svg viewBox="0 0 40 32" fill="none" class="w-[30px] lg:w-16">
                                 <path d="M26 14H32M32 14H38M32 14V20M32 14V8M26 30V27.5C26 23.358 22.162 20 17.428 20H10.572C5.838 20 2 23.358 2 27.5V30M20 8C20 9.5913 19.3679 11.1174 18.2426 12.2426C17.1174 13.3679 15.5913 14 14 14C12.4087 14 10.8826 13.3679 9.75736 12.2426C8.63214 11.1174 8 9.5913 8 8C8 6.4087 8.63214 4.88258 9.75736 3.75736C10.8826 2.63214 12.4087 2 14 2C15.5913 2 17.1174 2.63214 18.2426 3.75736C19.3679 4.88258 20 6.4087 20 8Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -96,8 +96,26 @@ watch(input, async (newValue) => {
     // } else if (newValue.indexOf(' |') > -1) {
     //     inputComputed.value = inputComputed.value.replace(' |', '|')
     // }
-        await search()
+    await search()
 })
+
+
+let sendFriend = async(id) => {
+    try {
+        console.log(userStore.token)
+        let res = await axios.post('http://127.0.0.1:8000/api/send-friend/id' + id, {}, {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+
+        console.log(res.data)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 let search = async() => {
     try {
