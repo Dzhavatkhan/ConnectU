@@ -14,8 +14,8 @@
                     />
                 </div>
 
-                <div class="font-display lg:text-4xl overflow-auto">
-                    <div v-for="user in users" :key="user.id" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
+                <!-- <div class="font-display lg:text-4xl overflow-auto">
+                    <div v-for="user in friends" :key="user.id" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
                         <div>
                             <img :src="'http://127.0.0.1:8000/images/avatars/' + user.image" alt="" class="w-14 lg:w-24 rounded-full">
                         </div>
@@ -38,13 +38,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
         <div class="">
             <div class="last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
-                <div class="p-3 lg:p-6 lg:px-8 text-lg text-3xl font-sans flex justify-between items-center gap-3 lg:gap-8 border-light-grey border-b">
+                <div class="p-3 lg:p-6 lg:px-8 text-3xl font-sans flex justify-between items-center gap-3 lg:gap-8 border-light-grey border-b">
                     <div class="">Заявки</div>
 
                     <div class="flex gap-5 text-black">
@@ -58,19 +58,15 @@
                     </div>
                 </div>
 
-                <router-link to="/messanger/chat1" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
+                <div v-for="friend in friends" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
                     <div>
-                        <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-14 lg:w-20 rounded-full">
+                        <img :src="friend.avatar" alt="" class="w-14 lg:w-20 rounded-full">
                     </div>
 
                     <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
-                        Джаватхан Джаватханов
+                        friend.friend
                     </div>
-
-                    <div class="text-[12px] lg:text-lg">
-                        11.12.23
-                    </div>
-                </router-link>
+                </div>
 
                 <router-link to="/messanger/chat1" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
                     <div>
@@ -121,12 +117,14 @@ import Cover from '../../reusable/Cover.vue';
 let userStore = useUserStore()
 
 onMounted(async() => {
-    await search()
+    // await search()
+
+    await myFriends()
 })
 
 let input = ref('')
 
-let users = ref(null)
+let friends = ref(null)
 let open = ref(false)
 
 
@@ -153,29 +151,47 @@ watch(input, async (newValue) => {
     // } else if (newValue.indexOf(' |') > -1) {
     //     inputComputed.value = inputComputed.value.replace(' |', '|')
     // }
-        await search()
+        // await search()
 })
 
-let search = async() => {
+let myFriends = async() => {
     try {
         // console.log(userStore.token)
-        let res = await axios.post('http://127.0.0.1:8000/api/search', {
-            search: input.value,
-
-        }, {
+        let res = await axios('http://127.0.0.1:8000/api/myfriends', {
             headers:
             {
                 Authorization: `Bearer ${userStore.token}`,
             }
         })
 
-        users.value = res.data.users
+        friends.value = res.data.data
 
-        console.log(users.value)
+        console.log(friends.value)
     } catch (err) {
         console.log(err)
     }
 }
+
+// let search = async() => {
+//     try {
+//         // console.log(userStore.token)
+//         let res = await axios.post('http://127.0.0.1:8000/api/search', {
+//             search: input.value,
+
+//         }, {
+//             headers:
+//             {
+//                 Authorization: `Bearer ${userStore.token}`,
+//             }
+//         })
+
+//         users.value = res.data.users
+
+//         console.log(users.value)
+//     } catch (err) {
+//         console.log(err)
+//     }
+// }
 
 let sendFriend = async(userId) => {
     try {
