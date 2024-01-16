@@ -19,11 +19,18 @@ class FriendsResource extends JsonResource
     {
         $search = Friend::where('id', $this->id)->first();
         if ($search->recipient_id == Auth::id()) {
-            $friend = User::findOrFail($search->user_id)->where("status", "Принята");
+            $friend = User::leftJoin('friends', "users.id", "friends.user_id")
+                ->where("friends.user_id", $search->user_id)
+                ->where("friends.status", "Принята")
+                ->selectRaw("users.name AS 'name', users.image AS 'avatar', users.surname AS 'surname'")
+                ->get();
         }
         else{
-           $friend =  User::findOrFail($search->recipient_id)->where("status", "Принята");
-        }
+            $friend = User::leftJoin('friends', "users.id", "friends.recipient_id")
+                ->where("friends.recipient_id", $search->recipient_id)
+                ->where("friends.status", "Принята")
+                ->selectRaw("users.name AS 'name', users.image AS 'avatar', users.surname AS 'surname'")
+                ->get();        }
         $my_request = Friend::leftJoin("users", "friends.recipient_id", "users.id")
             ->where('recipient_id', Auth::id())
             ->where("status", "Отправлена")
@@ -32,15 +39,14 @@ class FriendsResource extends JsonResource
         $toMe = Friend::leftJoin("users", "friends.user_id", "users.id")
             ->where('user_id', Auth::id())
             ->where("status", "Отправлена")
-            ->selectRaw("users.avatar AS 'avatar', users.name AS 'name', users.surname AS 'surname'")
+            ->selectRaw("users.image AS 'avatar', users.name AS 'name', users.surname AS 'surname'")
             ->get();
         // $friend = User::where("id", "!=", Auth::id())->get();
         return [
             "id" => $this->id,
             "recipient_id" => $this->recipient_id,
             "user_id" => $this->user_id,
-            "avatar" => $friend->image,
-            "friend" => $friend->name,
+            "friend" => $friend,
             "status" => $this->status,
             "me" => $toMe,
             "my" => $my_request
