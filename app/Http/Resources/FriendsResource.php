@@ -24,8 +24,16 @@ class FriendsResource extends JsonResource
         else{
            $friend =  User::findOrFail($search->recipient_id)->where("status", "Принята");
         }
-        $my_request = Friend::where('recipient_id', Auth::id())->where("status", "Отправлена")->get();
-        $toMe = Friend::where('user_id', Auth::id())->where("status", "Отправлена")->get();
+        $my_request = Friend::leftJoin("users", "friends.recipient_id", "users.id")
+            ->where('recipient_id', Auth::id())
+            ->where("status", "Отправлена")
+            ->selectRaw("users.avatar, users.name, users.surname")
+            ->get();
+        $toMe = Friend::leftJoin("users", "friends.user_id", "users.id")
+            ->where('user_id', Auth::id())
+            ->where("status", "Отправлена")
+            ->selectRaw("users.avatar, users.name, users.surname")
+            ->get();
         // $friend = User::where("id", "!=", Auth::id())->get();
         return [
             "id" => $this->id,
