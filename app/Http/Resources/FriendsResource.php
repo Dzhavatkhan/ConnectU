@@ -30,14 +30,15 @@ class FriendsResource extends JsonResource
                 ->where("friends.recipient_id", $search->recipient_id)
                 ->where("friends.status", "Принята")
                 ->selectRaw("users.name AS 'name', users.image AS 'avatar', users.surname AS 'surname'")
-                ->get();        }
+                ->get();
+            }
         $my_request = Friend::leftJoin("users", "friends.recipient_id", "users.id")
-            ->where('recipient_id', Auth::id())
+            ->where('user_id', Auth::id())
             ->where("status", "Отправлена")
             ->selectRaw("users.image AS 'avatar', users.name AS 'name', users.surname AS 'surname'")
             ->get();
         $toMe = Friend::leftJoin("users", "friends.user_id", "users.id")
-            ->where('user_id', Auth::id())
+            ->where('recipient_id', Auth::id())
             ->where("status", "Отправлена")
             ->selectRaw("users.image AS 'avatar', users.name AS 'name', users.surname AS 'surname'")
             ->get();
