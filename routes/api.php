@@ -64,5 +64,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('profile/friends', [UserController::class, 'friends']);
     Route::put('profile/id{id}/update/', [UserController::class, 'update']);
     Route::post("send-friend/id{id}", [UserController::class, 'store'])->name("addFriend");
+    Route::get("delete-friend/id{id}", [UserController::class, "delete_friend"]);
     Route::get('logout', [AuthController::class, 'logout']);
 });
