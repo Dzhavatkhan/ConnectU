@@ -29,18 +29,18 @@ class FriendsResource extends JsonResource
             $friend = User::leftJoin('friends', "users.id", "friends.recipient_id")
                 ->where("friends.recipient_id", $search->recipient_id)
                 ->where("friends.status", "Принята")
-                ->selectRaw("users.name AS 'name', users.image AS 'avatar', users.surname AS 'surname'")
+                ->selectRaw("friends.id AS 'id', users.id AS 'friend_id', users.name AS 'name', users.image AS 'avatar', users.surname AS 'surname'")
                 ->get();
             }
         $my_request = Friend::leftJoin("users", "friends.recipient_id", "users.id")
             ->where('user_id', Auth::id())
             ->where("status", "Отправлена")
-            ->selectRaw("users.image AS 'avatar', users.name AS 'name', users.surname AS 'surname'")
+            ->selectRaw("friends.id AS 'id', users.id AS 'friend_id', users.image AS 'avatar', users.name AS 'name', users.surname AS 'surname'")
             ->get();
         $toMe = Friend::leftJoin("users", "friends.user_id", "users.id")
             ->where('recipient_id', Auth::id())
             ->where("status", "Отправлена")
-            ->selectRaw("users.image AS 'avatar', users.name AS 'name', users.surname AS 'surname'")
+            ->selectRaw("friends.id AS 'id', users.id AS 'friend_id', users.image AS 'avatar', users.name AS 'name', users.surname AS 'surname'")
             ->get();
         // $friend = User::where("id", "!=", Auth::id())->get();
         return [
