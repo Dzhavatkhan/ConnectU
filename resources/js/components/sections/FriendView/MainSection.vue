@@ -257,7 +257,7 @@ let sendFriend = async(userId) => {
 
 let deleteFriend = async(userId) => {
     try {
-        let res = await axios('http://127.0.0.1:8000/api/delete-friend/id' + userId, {
+        let res = await axios.delete('http://127.0.0.1:8000/api/delete-friend/id' + userId, {
             headers: {
                 Authorization: `Bearer ${userStore.token}`,
             }
