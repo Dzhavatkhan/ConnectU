@@ -69,7 +69,7 @@ class UserController extends Controller
         return  FriendsResource::collection(Friend::where("user_id", Auth::id())->orWhere("recipient_id", Auth::id())->get());
     }
     public function delete_friend($id){
-        $friend = Friend::findOrFail($id);
+        $friend = Friend::where("id", $id)->first();
         $delete = $friend->delete();
         if ($delete) {
             return response()->json([
