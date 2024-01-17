@@ -68,27 +68,6 @@ class UserController extends Controller
     public function friends(){
         return  FriendsResource::collection(Friend::where("user_id", Auth::id())->orWhere("recipient_id", Auth::id())->get());
     }
-<<<<<<< HEAD
-    public function accept($id){
-        $user = User::findOrFail($id);
-        $accept = Friend::where("recipient_id",$id)
-                ->where("user_id", Auth::id())
-                ->first()
-                ->update([
-                    "status" => "Принята"
-                ]);
-
-        if ($accept) {
-            return response()->json(["message" => "$user->name добавлен в друзья"]);
-        }
-    }
-    public function cancel($id){
-        $cancel = Friend::where("recipient_id",$id)
-                    ->where("user_id", Auth::id())->first()->delete();
-        if ($cancel != null) {
-            $user = User::findOrFail($id);
-            return response()->json(["message" => "$user->name отклонен"]);
-=======
     public function delete_friend($id){
         $friend = Friend::findOrFail($id);
         $delete = $friend->delete();
@@ -96,7 +75,6 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Удален(а) из друзей"
             ], 201);
->>>>>>> ebe424f040cece4d5159a8ae6214ead5454f636c
         }
     }
     public function search( Request $request)
