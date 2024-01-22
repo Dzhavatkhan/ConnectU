@@ -68,6 +68,29 @@ class UserController extends Controller
     public function friends(){
         return  FriendsResource::collection(Friend::where("user_id", Auth::id())->orWhere("recipient_id", Auth::id())->get());
     }
+    public function accept($id){
+        $accept = Friend::where("id", $id)
+        ->first()
+        ->update([
+            "status" => "Принята"
+        ]);
+
+        if ($accept) {
+            return response()
+                    ->json("Добавлен(а) в друзья", 201);
+        }
+
+    }
+    public function cancel($id){
+        $cancel = Friend::where("id", $id)
+        ->first()
+        ->delete();
+
+        if ($cancel) {
+            return response()
+                    ->json("Вы отклонили заявку", 201);
+        }
+    }
     public function delete_friend($id){
         $friend = Friend::where("recipient_id", $id)->first();
         $delete = $friend->delete();
