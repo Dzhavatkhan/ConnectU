@@ -162,7 +162,15 @@ class UserController extends Controller
 
 
         $update = User::where('id', $id)->update($data);
-
+        $checking_cat = User_category::where("user_id", Auth::id());
+        if ($checking_cat == null) {
+            for ($category=0; $category < count($categories); $category++) {
+                User_category::create([
+                    'user_id' => $user->id,
+                    'category_id' => $categories[$category]
+                ]);
+            }
+        }
         for ($category=0; $category < count($categories); $category++) {
             User_category::where("user_id", Auth::id())
             ->update([
