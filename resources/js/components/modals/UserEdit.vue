@@ -210,9 +210,9 @@ let register = async() => {
     data.append('login', login.value)
     data.append('email', email.value)
     data.append('password', password.value)
-    // data.append('categoryId', activeCategoriesId.value[0])
+    data.append('categoryId', activeCategoriesId.value)
     data.append('image', image.value || userStore.image)
-
+    console.log(activeCategoriesId.value)
     if (imageData) {
         data.append('image', imageData.file)
         data.append('height', imageData.height)
