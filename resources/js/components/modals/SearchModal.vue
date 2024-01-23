@@ -58,6 +58,7 @@ import Cover from '../reusable/Cover.vue';
 import TextInput from '../reusable/TextInput.vue';
 import { useUserStore } from '../../store/user-store';
 import SendMessage from './SendMessage.vue';
+import eventBus from '@/eventBus';
 
 let userStore = useUserStore()
 
@@ -111,6 +112,8 @@ let sendFriend = async(id) => {
         })
 
         console.log(res.data)
+        eventBus.emit('addApplication', '')
+
     } catch (err) {
         console.log(err)
     }

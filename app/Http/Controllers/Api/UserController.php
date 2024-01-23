@@ -144,7 +144,7 @@ class UserController extends Controller
             'login' => $request->get('login'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'image' => $request->file('email'),
+            // 'image' => $request->file('email'),
         ];
 
         (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');

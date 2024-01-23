@@ -2,7 +2,7 @@
     <div class="w-full flex max-lg:flex-col gap-10">
         <div class="">
             <div class=" font-display text-white bg-grey rounded-xl lg:rounded-2xl">
-                <div class="p-3 lg:p-4 lg:px-8 flex items-center gap-3 lg:gap-8 border-light-grey ">
+                <div class="p-3 lg:p-4 lg:px-8 flex items-center gap-3 lg:gap-8 border-light-grey border-b-2">
                     <svg viewBox="0 0 30 30" fill="none" class="w-[30px] lg:w-12">
                         <path d="M21.6667 21.6667L27 27M3 13.6667C3 16.4956 4.12381 19.2088 6.12419 21.2091C8.12458 23.2095 10.8377 24.3333 13.6667 24.3333C16.4956 24.3333 19.2088 23.2095 21.2091 21.2091C23.2095 19.2088 24.3333 16.4956 24.3333 13.6667C24.3333 10.8377 23.2095 8.12458 21.2091 6.12419C19.2088 4.12381 16.4956 3 13.6667 3C10.8377 3 8.12458 4.12381 6.12419 6.12419C4.12381 8.12458 3 10.8377 3 13.6667Z" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -38,6 +38,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div v-else class="p-3 lg:p-6 text-center">
+                    У вас нет друзей
                 </div>
             </div>
         </div>
@@ -81,7 +85,7 @@
                 </div>
 
                 <div v-if="openMy" class="">
-                    <div v-if="myApplications" v-for="application in myApplications" class="flex items-center gap-4 lg:gap-8 p-3 lg:p-6  border-light-grey border-b last:border-b-0">
+                    <div v-if="myApplications" v-for="application in myApplications" :key="application.id" class="flex items-center gap-4 lg:gap-8 p-3 lg:p-6  border-light-grey border-b last:border-b-0">
                         <div>
                             <img :src="application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
                         </div>
@@ -97,8 +101,8 @@
                                 </svg>
                             </div>
 
-                            <div @click="sendFriend(user.id)" >
-                                <svg width="43" height="43" viewBox="0 0 43 43" fill="none" class="w-[22px]">
+                            <div @click="cancelApplication(2, application.id)" >
+                                <svg viewBox="0 0 43 43" fill="none" class="w-[22px]">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M0.697705 0.697705C1.14503 0.250942 1.75139 0 2.3836 0C3.01581 0 3.62218 0.250942 4.0695 0.697705L42.2407 38.8689C42.4751 39.0873 42.6631 39.3507 42.7935 39.6433C42.9239 39.936 42.994 40.2519 42.9996 40.5722C43.0053 40.8925 42.9464 41.2107 42.8264 41.5078C42.7064 41.8049 42.5278 42.0747 42.3012 42.3012C42.0747 42.5278 41.8049 42.7064 41.5078 42.8264C41.2107 42.9464 40.8925 43.0053 40.5722 42.9996C40.2519 42.994 39.936 42.9239 39.6433 42.7935C39.3507 42.6631 39.0873 42.4751 38.8689 42.2407L0.697705 4.0695C0.250942 3.62218 0 3.01581 0 2.3836C0 1.75139 0.250942 1.14503 0.697705 0.697705Z" fill="white"/>
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M42.2408 0.697705C42.6875 1.14503 42.9385 1.75139 42.9385 2.3836C42.9385 3.01581 42.6875 3.62218 42.2408 4.0695L4.06958 42.2407C3.61733 42.6621 3.01917 42.8915 2.40111 42.8806C1.78305 42.8697 1.19335 42.6193 0.75625 42.1822C0.319149 41.7451 0.0687717 41.1554 0.0578668 40.5374C0.0469619 39.9193 0.27638 39.3211 0.69779 38.8689L38.869 0.697705C39.3163 0.250942 39.9227 0 40.5549 0C41.1871 0 41.7935 0.250942 42.2408 0.697705Z" fill="white"/>
                                 </svg>
@@ -155,11 +159,15 @@ import axios from 'axios';
 import { useUserStore } from '../../../store/user-store.js'
 import SendMessage from '../../modals/SendMessage.vue';
 import Cover from '../../reusable/Cover.vue';
+import eventBus from '@/eventBus';
 
 let userStore = useUserStore()
 
 onMounted(async() => {
     // await search()
+    eventBus.on('addApplication', async()=>{
+        await friendsAPI()
+    })
 
     await friendsAPI()
 })
@@ -248,7 +256,7 @@ let toggleModal = async(id) => {
         openMy.value = false
         openMe.value = true
     } else {
-        console.log(applications.value[0].my)
+        // console.log(applications.value[0].my)
 
         openMe.value = false
         openMy.value = true
@@ -310,6 +318,38 @@ let deleteFriend = async(userId) => {
         }
 
         console.log(res.data)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+let cancelApplication = async(number, applicationId) => {
+    try {
+        let res = await axios('http://127.0.0.1:8000/api/cancel-friend/id' + applicationId, {
+            headers: {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+
+        console.log(res.data)
+        
+        await friendsAPI()
+
+
+        if (number == 2) {
+            for (let index = 0; index < myApplications.value.length; index++) {
+                if (myApplications.value[index].id == applicationId) {
+                    myApplications.value.splice(index, 1)
+                }
+            }
+        }
+
+        if (!myApplications.value.length) {
+            myApplications.value = null
+        }
+
+        console.log(meApplications.value);
+
     } catch (err) {
         console.log(err)
     }
