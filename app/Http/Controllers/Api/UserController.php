@@ -8,6 +8,7 @@ use App\Http\Resources\FriendsResource;
 use App\Http\Resources\UserResource;
 use App\Models\Friend;
 use App\Models\User;
+use App\Models\User_category;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -137,7 +138,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
-
+        $categories = explode(",", $request->categoryId);
         $data = [
             'name' => $request->get('name'),
             'surname' => $request->get('surname'),
@@ -159,9 +160,22 @@ class UserController extends Controller
         //     }
         // }
 
+
         $update = User::where('id', $id)->update($data);
+
+        for ($category=0; $category < count($categories); $category++) {
+            User_category::where("user_id", Auth::id())
+            ->update([
+                'user_id' => $user->id,
+                'category_id' => $categories[$category]
+            ]);
+        }
+
+
         $user->save();
         $user = User::findOrFail($id);
+
+
 
         if ($update) {
             return response()
