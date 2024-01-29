@@ -38,6 +38,7 @@ import { ref } from 'vue';
 import TextInput from '../reusable/TextInput.vue';
 import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
+import eventBus from '@/eventBus';
 
 const userStore = useUserStore()
 
@@ -57,6 +58,8 @@ let signIn = async() => {
         userStore.setUserDetails(res)
 
         console.log(res)
+        eventBus.emit('login', '')
+
     } catch (err) {
         console.log(err)
         errors.value = err.response.data.errors
