@@ -8,6 +8,7 @@ use App\Models\User_category;
 use App\Models\UserChats;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserResource extends JsonResource
@@ -25,6 +26,27 @@ class UserResource extends JsonResource
         foreach ($counts as $friend_count) {
             $friend_count = $friend_count->friends;
         }
+        $isFriend = 0;
+        //2 - принята
+        //1 - отправлена
+        //0 - нет заявки
+        $check_fr = Friend::where("recipient_id", $id)->where("user_id", Auth::id())->where("status", "Принята")->count();
+        if ($check_fr != null) {
+            $isFriend = 2;
+        }
+        $check_fr2 = Friend::where("recipient_id", Auth::id())->where("user_id", $id)->where("status", "Принята")->count();
+        if ($check_fr2 != null) {
+            $isFriend = 2;
+        }
+        $check_req = Friend::where("recipient_id", $id)->where("user_id", Auth::id())->where("status", "Отправлена")->count();
+        if ($check_req != null) {
+            $isFriend = 1;
+        }
+        $check_req2 = Friend::where("recipient_id", Auth::id())->where("user_id", $id)->where("status", "Отправлена")->count();
+        if ($check_req2 != null) {
+            $isFriend = 1;
+        }
+
         $push = Friend::query()->where("recipient_id", $id)->where("status", "Отправлена")->latest();
         if ($push->count() > 0) {
 
@@ -48,7 +70,8 @@ class UserResource extends JsonResource
             "category" => $category,
             "friends" => $friend_count,
             "chats" => $this->chats->count(),
-            "push" => $push
+            "push" => $push,
+            "check" => $isFriend
         ];
     }
 }
