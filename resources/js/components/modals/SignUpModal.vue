@@ -127,6 +127,7 @@ import CroppedImage from '../reusable/CroppedImage.vue';
 import CropperModal from '../modals/CropperModal.vue';
 import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
+import eventBus from '@/eventBus';
 
 const userStore = useUserStore()
 
@@ -223,6 +224,8 @@ let register = async() => {
         userStore.setUserDetails(res)
 
         console.log(res)
+        eventBus.emit('register', '')
+
     } catch (err) {
         console.log(err)
         errors.value = err.response.data.errors

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\Friend;
 use App\Models\User;
 use App\Models\UserChats;
@@ -18,9 +19,10 @@ class SearchController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $users = User::with('chats')->where(DB::raw("concat(name,' ',surname)"), "like", "%" . $request->get('search') . "%")->where('id', '<>', Auth::id())->get();
+        $users = UserResource::collection(User::where(DB::raw("concat(name,' ',surname)"), "like", "%" . $request->get('search') . "%")->where('id', '<>', Auth::id())->get());
         $findChats = DB::table('users')->where(DB::raw("concat(name,' ',surname)"), "like", "%" . $request->get('search') . "%")->where('id', '<>', Auth::id())
         ->pluck('id');
+        $check_friend = 0;
         if ($findChats != null) {
         $findChats = $findChats[0];
         $findChats = UserChats::where('user_id', $findChats)
