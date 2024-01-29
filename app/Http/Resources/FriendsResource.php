@@ -22,7 +22,7 @@ class FriendsResource extends JsonResource
             $friend = User::leftJoin('friends', "users.id", "friends.user_id")
                 ->where("friends.user_id", $search->user_id)
                 ->where("friends.status", "Принята")
-                ->selectRaw("users.name AS 'name', users.image AS 'avatar', users.surname AS 'surname'")
+                ->selectRaw("users.name AS 'name', users.image AS 'avatar', users.surname AS 'surname', users.id AS 'id'")
                 ->get();
         }
         else{
