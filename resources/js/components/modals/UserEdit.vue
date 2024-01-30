@@ -36,13 +36,6 @@
                     :error="errors.email ? errors.email[0] : ''"
                 />
 
-                <TextInput
-                    placeholder="Пароль"
-                    v-model:input="password"
-                    inputType="password"
-                    :error="errors.password ? errors.password[0] : ''"
-                />
-
                 <div>
                     <div @click="(openCategories = !openCategories) && (openCategories ? getCategories() : '')" class="flex justify-center gap-4 p-2 lg:py-5 text-center lg:text-3xl  text-white border-white border-2 rounded-lg">
                         Интересные темы
@@ -140,14 +133,12 @@ onMounted(() => {
     surname.value = userStore.surname
     login.value = userStore.login
     email.value = userStore.email
-    password.value = userStore.password
 })
 
 let name = ref(null)
 let surname = ref(null)
 let login = ref(null)
 let email = ref(null)
-let password = ref(null)
 
 let errors = ref([])
 
@@ -209,7 +200,6 @@ let register = async() => {
     data.append('surname', surname.value)
     data.append('login', login.value)
     data.append('email', email.value)
-    data.append('password', password.value)
     data.append('categoryId', activeCategoriesId.value)
     data.append('image', image.value || userStore.image)
     console.log(activeCategoriesId.value)

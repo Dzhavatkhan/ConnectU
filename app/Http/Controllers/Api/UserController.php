@@ -181,7 +181,7 @@ class UserController extends Controller
             if ($checking_cat == null) {
                 for ($category=0; $category < count($categories); $category++) {
                     User_category::create([
-                        'user_id' => $user->id,
+                        'user_id' => $id,
                         'category_id' => $categories[$category]
                     ]);
                 }
@@ -190,12 +190,12 @@ class UserController extends Controller
                 User_category::where("user_id", Auth::id())->delete();
                 for ($category=0; $category < count($categories); $category++) {
                     User_category::create([
-                        'user_id' => $user->id,
+                        'user_id' => $id,
                         'category_id' => $categories[$category]
                     ]);
                 }
             }
-
+            $user = UserResource::collection(User::where("id", $user->id)->get());
             return response()
             ->json([
                 'user' => $user,

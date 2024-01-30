@@ -58,6 +58,7 @@ class UserResource extends JsonResource
         }
         $category = User_category::leftJoin("categories", "user_categories.id", "categories.id")
             ->where("user_categories.user_id", $id)->pluck("name");
+        $category = DB::select("SELECT categories.name FROM user_categories LEFT JOIN categories ON user_categories.category_id = categories.id WHERE user_categories.user_id = $id;");
 
         return [
             'id' => $id,

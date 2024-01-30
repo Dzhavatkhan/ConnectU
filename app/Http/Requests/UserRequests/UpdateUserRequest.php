@@ -18,7 +18,6 @@ class UpdateUserRequest extends FormRequest
             'surname' => 'required|string|alpha_dash',
             'login' => 'required|string|alpha',
             'email' => 'required|email',
-            'password' => 'required',
             // 'image' => 'required'
         ];
     }
