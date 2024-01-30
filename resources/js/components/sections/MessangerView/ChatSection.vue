@@ -86,7 +86,7 @@ onMounted(async() => {
     })
 
     scrollToBottom()
-    setInterval(scrollToBottom, 1000);
+    setInterval(scrollToBottom, 750);
 
 })
 
@@ -135,7 +135,7 @@ let sendMessage = async () => {
         console.log(res.data)
         await getMessages()
         scrollToBottom()
-        setInterval(scrollToBottom, 1000);
+        setInterval(scrollToBottom, 750);
         message.value = ''
     } catch (err) {
         console.log(err)
