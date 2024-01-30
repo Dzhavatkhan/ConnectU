@@ -25,7 +25,7 @@ class AuthController extends Controller
                 'login' => $request->get('login'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->get('password')),
-                'role_id' => 2
+                'role_id' => 1
             ]);
 
             for ($category=0; $category < count($categories); $category++) {

@@ -48,9 +48,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post("message/chat/id{id}", [ChatController::class, 'message']);
     Route::get("message/delete/id{id}", [ChatController::class, 'destroy']);
 
-    Route::post('categories/delete/id{id}', [AdminController::class, 'destroy']);
-    Route::post('categories/update/id{id}', [AdminController::class, 'destroy']);
-    Route::post('categories/create/id{id}', [AdminController::class, 'destroy']);
+    Route::delete('categories/delete/id{id}', [AdminController::class, 'destroy']);
+    Route::put('categories/update/id{id}', [AdminController::class, 'update']);
+    Route::post('categories/create', [AdminController::class, 'create']);
 
     Route::get('myfriends', [UserController::class, 'friends']);
 

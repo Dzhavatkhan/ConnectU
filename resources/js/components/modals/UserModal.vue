@@ -1,12 +1,22 @@
 <template>
     <div v-if="!idOpenModal && userStore.id" class="absolute max-lg:inset-x-0 z-10 lg:right-0 lg:text-2xl px-3 lg:p-10 py-6  bg-light-black rounded-b-xl">
-        <router-link to="" class="block py-3 lg:py-4 lg:px-5 text-white text-center border-white border rounded-lg">Настройки</router-link>
+        <div @click="toggleModal(3)" class=" py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg">Создать категорию</div>
+
+        <div @click="toggleModal(4)" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg">Обновить категорию</div>
+
+        <div @click="toggleModal(5)" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg">Удалить категорию</div>
+
+        <router-link to="/profile/setting" class="mt-5 lg:mt-7 block py-3 lg:py-4 lg:px-5 text-white text-center border-white border rounded-lg">Настройки</router-link>
 
         <div @click="logout()" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg">Выйти</div>
     </div>
 
     <SignInModal v-if="modals[0].visible" @closeModal="toggleModal(1, true)" />
     <SignUpModal v-if="modals[1].visible" @closeModal="toggleModal(2, true)" />
+
+    <CreateCategory v-if="modals[2].visible" @closeModal="toggleModal(3, true)"/>
+    <UpdateCategory v-if="modals[3].visible" @closeModal="toggleModal(4, true)"/>
+    <DeleteCategory v-if="modals[4].visible" @closeModal="toggleModal(5, true)"/>
 
     <Cover @click="idOpenModal ? toggleModal(idOpenModal, true) : $emit('closeModal')" :stylesInput="idOpenModal ? 'inset-y-0' : ''" />
 </template>
@@ -18,6 +28,9 @@ import SignInModal from './SignInModal.vue';
 import SignUpModal from './SignUpModal.vue';
 import { useUserStore } from '@/store/user-store';
 import axios from 'axios';
+import CreateCategory from './CreateCategory.vue';
+import UpdateCategory from './UpdateCategory.vue';
+import DeleteCategory from './DeleteCategory.vue';
 
 const userStore = useUserStore()
 
@@ -32,6 +45,21 @@ let modals = ref([
     {
         id: 2,
         name: 'signUp',
+        visible: false
+    },
+    {
+        id: 3,
+        name: 'create',
+        visible: false
+    },
+    {
+        id: 4,
+        name: 'update',
+        visible: false
+    },
+    {
+        id: 5,
+        name: 'delete',
         visible: false
     }
 ])

@@ -1,11 +1,11 @@
 <template>
     <div v-if="!idOpenModal" class="fixed lg:max-w-[35%] lg:max-h-[80%] lg:m-auto flex flex-col inset-0 z-10 bg-grey lg:rounded-xl">
         <div class="flex flex-col gap-4 h-full px-3 pb-8 lg:p-10 max-lg:pt-16">
-            <div @click="toggleModal(1)" class="flex justify-center items-center gap-3 lg:gap-6 border-white border p-2 lg:p-4 lg:text-3xl text-white rounded-lg lg:rounded-xl">
+            <div @click="toggleModal(1)" class="flex justify-center items-center gap-3 lg:gap-6 border-white border p-2 lg:p-4 lg:text-3xl text-white rounded-lg lg:rounded-xl cursor-pointer">
                 Вход
             </div>
 
-            <div @click="toggleModal(2)" class="flex justify-center items-center gap-3 lg:gap-6 border-white border p-2 lg:p-4 lg:text-3xl text-white rounded-lg lg:rounded-xl">
+            <div @click="toggleModal(2)" class="flex justify-center items-center gap-3 lg:gap-6 border-white border p-2 lg:p-4 lg:text-3xl text-white rounded-lg lg:rounded-xl cursor-pointer">
                 Регистрация
             </div>
         </div>

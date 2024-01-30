@@ -43,7 +43,7 @@
                         </div>
 
                         <div v-else class="flex items-center">
-                            <svg width="20" height="17" viewBox="0 0 20 17" fill="none" class="w-[30px]">
+                            <svg width="20" height="17" viewBox="0 0 20 17" fill="none" class="w-[30px] lg:w-16 lg:h-9">
                                 <path d="M19 1L6.4 16L1 10.375" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>

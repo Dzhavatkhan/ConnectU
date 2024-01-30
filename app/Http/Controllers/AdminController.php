@@ -25,12 +25,19 @@ class AdminController extends Controller
     public function create(Request $request)
     {
         $name = $request->name;
-        $check_unique = Category::where('name', $name)->get();
+
+        if (!$name) {
+            return response()->json([
+                "error" => "Ничего не введено"
+            ], 502);
+        }
+
+        $check_unique = Category::where('name', $name)->first();
 
         if ($check_unique) {
             return response()->json([
                 "error" => "Такая категория уже есть."
-            ], 502);        
+            ], 502);
         }
 
         $category_created = Category::create([

@@ -33,7 +33,7 @@
                     <div class="font-sans lg:text-3xl">Категории</div>
 
                     <div class="flex gap-3 lg:gap-5 mt-2 lg:mt-4 lg:text-2xl">
-                        <div v-for="category in profile[0].category" class=" w-max px-2  bg-white text-black rounded-[4px]">
+                        <div v-if="profile" v-for="category in profile[0].category"  class=" w-max px-2  bg-white text-black rounded-[4px]">
                             {{category}}
                         </div>
                     </div>
