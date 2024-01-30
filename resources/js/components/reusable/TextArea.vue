@@ -1,6 +1,6 @@
 <template>
     <div class="w-full">
-        <textarea :type="inputType" :placeholder="placeholder" v-model="inputComputed" :class="'flex h-72 w-full p-2 lg:p-4 lg:text-3xl text-white placeholder:text-white border-light-grey  rounded-md bg-light-black focus:outline-none ' + stylesInput"></textarea>
+        <textarea :type="inputType" :placeholder="placeholder" v-model="inputComputed" :class="'flex h-72 w-full p-2 lg:p-4 lg:text-2xl text-white placeholder:text-white border-light-grey  rounded-md bg-light-black focus:outline-none ' + stylesInput"></textarea>
         <div class="text-red-500 text-sm lg:text-2xl">{{ error }}</div>
     </div>
 </template>

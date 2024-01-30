@@ -7,7 +7,7 @@
         </div>
 
         <div class="flex flex-col h-full p-3 lg:p-10 max-lg:pt-16">
-            <div class="text-center text-2xl lg:text-5xl text-white">
+            <div class="text-center text-2xl lg:text-4xl text-white">
                 Создание поста
             </div>
 
@@ -19,7 +19,7 @@
                 />
 
                 <div>
-                    <div @click="(openCategories = !openCategories) && (openCategories ? getCategories() : '')" class="flex justify-center gap-4 p-2 lg:py-5 text-center lg:text-3xl  text-white border-white border-2 rounded-lg cursor-pointer">
+                    <div @click="(openCategories = !openCategories) && (openCategories ? getCategories() : '')" class="flex justify-center gap-4 p-2 lg:py-4 text-center lg:text-2xl text-white border-white border-2 rounded-lg cursor-pointer">
                         Выбор категорий
 
                         <svg viewBox="0 0 50 26" fill="none" class="w-[17px] lg:w-7">

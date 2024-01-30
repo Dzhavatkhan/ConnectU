@@ -18,7 +18,7 @@ export const useUserStore = defineStore('user', {
   // could also be defined as
   // state: () => ({ count: 0 })
   actions: {
-    async setUserDetails(res) {
+    async setUserDetails(res, noImage) {
         if (!this.$state.id) {
             this.$state.token = res.data.token
         }
@@ -35,7 +35,7 @@ export const useUserStore = defineStore('user', {
 
         if (res.data.user.image) {
           this.$state.image = 'http://127.0.0.1:8000/images/avatars/' + res.data.user.image
-        } else {
+        } else if (!noImage) {
           this.$state.image = 'http://127.0.0.1:8000/images/avatars/default.jpg'
         }
     },

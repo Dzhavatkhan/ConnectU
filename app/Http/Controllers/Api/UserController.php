@@ -154,7 +154,9 @@ class UserController extends Controller
             // 'image' => $request->file('email'),
         ];
 
-        (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
+        if ($request->file('image')) {
+            (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
+        }
         // else{
         //     if (file_exists(storage_path('images/avatars/'.$user->image))) {
         //         $data['image'] = $user->image;

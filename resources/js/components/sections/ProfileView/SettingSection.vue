@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <UserEdit v-if="open" @closeModal="open=false" />
+    <UserEdit v-if="open" @closeModal="open=false" :categoriesRef="profile[0].category" :categoriesIdRef="categoriesId" :imageRef="userStore.image"/>
 </template>
 
 <script setup>
@@ -70,11 +70,15 @@ let userStore = useUserStore()
 
 let open = ref(false)
 
+let categoriesId = ref([])
+
 let profile = ref(null)
 
 onMounted(async() => {
     await getUser()
 })
+
+
 
 watch(open, (newValue) => {
     if (newValue) {
@@ -97,6 +101,10 @@ let getUser = async () => {
 
         console.log(res.data.profile)
 
+        for (let index = 0; index < profile.value[0].category.length; index++) {
+            console.log(profile.value[0].category[index].id)
+            categoriesId.value.push(profile.value[0].category[index].id)
+        }
     } catch (err) {
         console.log(err)
     }

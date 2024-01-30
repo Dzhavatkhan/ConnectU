@@ -120,12 +120,17 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import TextInput from '../reusable/TextInput.vue';
-// import CroppedImage from '../reusable/CroppedImage.vue';
+import CroppedImage from '../reusable/CroppedImage.vue';
 import CropperModal from '../modals/CropperModal.vue';
 import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
 import Cover from '../reusable/Cover.vue';
+import { toRefs, defineProps } from 'vue'
+let props = defineProps([
+   'categoriesRef', 'categoriesIdRef', 'imageRef'
+])
 
+let { categoriesRef, categoriesIdRef, imageRef } = toRefs(props)
 const userStore = useUserStore()
 
 onMounted(() => {
@@ -145,11 +150,11 @@ let errors = ref([])
 let open = ref(false)
 
 let categories = ref(null)
-let activeCategories = ref([])
+let activeCategories = ref(categoriesRef.value)
 
 let openCategories = ref(false)
 
-let activeCategoriesId = ref([])
+let activeCategoriesId = ref(ref(categoriesIdRef.value))
 
 let getCategories = async() => {
     try {
@@ -172,6 +177,7 @@ let getCategories = async() => {
 let activeCategoriesPush = (category) => {
     try {
         if (!activeCategoriesId.value.includes(category.id)) {
+            console.log(activeCategories.value)
             activeCategories.value.push(category)
 
             activeCategoriesId.value.push(category.id)
@@ -185,10 +191,11 @@ let activeCategoriesPush = (category) => {
 }
 
 let imageData = null
-let image = ref(null)
+let image = ref(imageRef.value)
 
 const setCroppedImageData = (data) => {
     imageData = data
+    console.log(imageData)
     image.value = data.imageUrl
 }
 
@@ -201,7 +208,8 @@ let register = async() => {
     data.append('login', login.value)
     data.append('email', email.value)
     data.append('categoryId', activeCategoriesId.value)
-    data.append('image', image.value || userStore.image)
+    console.log(image.value);
+    data.append('image', image.value)
     console.log(activeCategoriesId.value)
     if (imageData) {
         data.append('image', imageData.file)
@@ -220,7 +228,7 @@ let register = async() => {
                 Authorization: `Bearer ${userStore.token}`,
             }
         })
-        userStore.setUserDetails(res)
+        userStore.setUserDetails(res, true)
 
         console.log(res)
     } catch (err) {
@@ -229,6 +237,7 @@ let register = async() => {
         console.log(errors.value)
     }
 }
+
 
 
 </script>

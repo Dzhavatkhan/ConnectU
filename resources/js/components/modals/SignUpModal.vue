@@ -123,7 +123,7 @@
 <script setup>
 import { ref } from 'vue';
 import TextInput from '../reusable/TextInput.vue';
-// import CroppedImage from '../reusable/CroppedImage.vue';
+import CroppedImage from '../reusable/CroppedImage.vue';
 import CropperModal from '../modals/CropperModal.vue';
 import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
