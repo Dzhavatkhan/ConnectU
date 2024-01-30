@@ -79,8 +79,8 @@ let emit = defineEmits(['closeModal'])
 
 let openModal = (userIdVal, imageVal, nameVal, surnameVal) => {
     open.value = true
-
     userId.value = userIdVal
+    console.log(userId.value);
     image.value = imageVal
     name.value = nameVal
     surname.value = surnameVal

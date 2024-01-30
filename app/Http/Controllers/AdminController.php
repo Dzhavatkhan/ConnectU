@@ -81,9 +81,19 @@ class AdminController extends Controller
         $name = $request->name;
         $category = Category::findOrFail($id);
         if (isset($name)) {
-            $category->update([
-                "name" => $name
-            ]);
+            $uniq_category = Category::where("name", $name)->count();
+            if ($uniq_category > 0) {
+                return response()
+                ->json([
+                    "message" => "Такая категория уже есть"
+                ]);
+            } else {
+                $category->update([
+                    "name" => $name
+                ]);
+            }
+
+
 
             return response()
             ->json([

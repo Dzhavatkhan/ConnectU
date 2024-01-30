@@ -91,12 +91,16 @@ class ChatController extends Controller
     public function message(Request $request, $id)
     {
         $recipient_id = $id;
+
         $user_id = Auth::id();
         $check = UserChats::whereIn('user_chats.user_id', [$id])
             ->where('user_id', '!=', $user_id)
             ->first();
         if ($check) {
             $chat_id = $check->chat_id;
+            if (isset($request->chat_id)) {
+                $chat_id = $request->chat_id;
+            }
             $data = $request->only([
                 "message",
             ]);

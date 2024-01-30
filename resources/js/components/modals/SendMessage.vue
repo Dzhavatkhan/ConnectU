@@ -53,7 +53,7 @@ let { user_id, image, name, surname } = toRefs(props)
 
 
 let sendMessage = async () => {
-    console.log(user_id.value)
+    console.log(message.value)
     try {
         let res = await axios.post('http://127.0.0.1:8000/api/message/chat/id' + user_id.value, {
             message: message.value

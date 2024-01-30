@@ -79,13 +79,13 @@ let msgs = ref(null)
 
 onMounted(async() => {
     await getMessages()
-    await document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', async function(e) {
         if(e.code == 'Enter'){
-            sendMessage()
+           await sendMessage()
         }
     })
 
-    await scrollToBottom()
+    scrollToBottom()
 })
 
 onUnmounted(() => {
@@ -116,9 +116,12 @@ let getMessages = async(e) => {
 }
     console.log("user_id " + route.query.sel_user);
 let sendMessage = async () => {
+    console.log(message.value)
+
     try {
         let res = await axios.post('http://127.0.0.1:8000/api/message/chat/id' + route.query.sel_user, {
-            message: message.value
+            message: message.value,
+            chat_id: route.query.sel
         },
         {
             headers:
