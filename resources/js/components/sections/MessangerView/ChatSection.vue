@@ -86,6 +86,8 @@ onMounted(async() => {
     })
 
     scrollToBottom()
+    setInterval(scrollToBottom, 1000);
+
 })
 
 onUnmounted(() => {
@@ -132,15 +134,12 @@ let sendMessage = async () => {
 
         console.log(res.data)
         await getMessages()
+        scrollToBottom()
+        setInterval(scrollToBottom, 1000);
         message.value = ''
     } catch (err) {
         console.log(err)
     }
-}
-
-const key_press = (e) => {
-    e.preventDefault();
-    sendMessage();
 }
 
 
