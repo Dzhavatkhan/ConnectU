@@ -156,8 +156,7 @@ class PostController extends Controller
         $user = Auth::user();
         $checkLike = Like::where('user_id', $user->id)
         ->where('post_id', $id)
-        ->get();
-
+        ->count();
         if ($checkLike == null) {
             $post_like = Like::create([
                 "user_id" => $user->id,
@@ -165,12 +164,14 @@ class PostController extends Controller
             ]);
         }
         else{
-            $checkLike->delete();
+            Like::where('user_id', $user->id)
+            ->where('post_id', $id)
+            ->first()
+            ->delete();
         }
-
         return response()->json([
-            "post" => $post_like
-        ])->header("Content-type", "application/json");
+            "message" => "like"
+        ]);
     }
 
     /**

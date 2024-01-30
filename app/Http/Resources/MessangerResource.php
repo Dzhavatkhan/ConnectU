@@ -22,7 +22,7 @@ class MessangerResource extends JsonResource
                 //work with date
                 $msg_day = date('d', strtotime($msg_date));
                 $msg_month = date('F', strtotime($msg_date));
-                $msg_time = date('H:m', strtotime($msg_date));
+                $msg_time = date('H:i', strtotime($msg_date));
                 if ($msg_month == "January") {
                     $msg_month = "января";
                 }

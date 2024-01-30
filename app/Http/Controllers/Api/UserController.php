@@ -195,7 +195,7 @@ class UserController extends Controller
                     ]);
                 }
             }
-            $user = UserResource::collection(User::where("id", $user->id)->get());
+            $user = User::with("categories")->findOrFail($id);
             return response()
             ->json([
                 'user' => $user,

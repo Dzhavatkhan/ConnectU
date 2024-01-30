@@ -76,20 +76,19 @@ class PostResources extends JsonResource
             $cur_dat = new DateTime(date('d.m.Y H:i:s'));
             $post_date = new DateTime(date('d.m.Y H:i:s', strtotime($this->created_at)));
             $interval = $cur_dat->diff($post_date);
-
-            if ($interval->format("%i") <60 ) {
+            if ($interval->format("%h") < 1 && $interval->format("%d") < 1 && $interval->format("%m") < 1) {
                 $interval = $interval->format("%i");
                 $date = "$interval минут назад";
             }
-            elseif ( $interval->format("%i") >60 && $interval->format("%h") <60 ) {
+            elseif ($interval->format("%h")> 0  && $interval->format("%d") == 0 ) {
                 $interval = $interval->format("%h");
                 $date = "$interval часов назад";
             }
-            elseif ($interval->format("%h") >60 && $interval->format("%d") <30) {
+            elseif ($interval->format("%d")> 0  && $interval->format("%m") == 0 ) {
                 $interval = $interval->format("%d");
                 $date = "$interval дней назад";
             }
-            elseif ($interval->format("%d") <30 && $interval->format("%m") <12) {
+            elseif ($interval->format("%m") >= 1 && $interval->format("%m") <12) {
                 $interval = $interval->format("%m");
                 $date = "$interval месяцев назад";
             }
