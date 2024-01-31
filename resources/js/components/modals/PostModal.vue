@@ -27,8 +27,6 @@
                         </svg>
                     </div>
 
-
-
                     <div v-if="openCategories" class="mt-2 bg-white rounded-lg text-center">
                         <div v-for="category in categories" :key="category.id" @click="activeCategoriesPush(category)" class="relative flex justify-center items-center py-2 lg:text-2xl border-grey border-b-2 last:border-b-0 cursor-pointer">
                             {{ category.name }}
@@ -117,14 +115,15 @@ let link = ref(null)
 let categories = ref(null)
 let activeCategories = ref([])
 
-// watch(link.value, (newValue) => {
-//     if (newValue) {
-//         link.value = newValue.replace('youte.be', 'www.youtube.com/embed')
-//     console.log(link.value)
+watch(link, (newValue) => {
+    if (newValue) {
+        link.value = newValue.replace('youtu.be', 'www.youtube.com/embed')
+        console.log(link.value)
+    }
+    console.log(link.value)
 
-//     }
 
-// })
+ })
 
 let openCategories = ref(false)
 

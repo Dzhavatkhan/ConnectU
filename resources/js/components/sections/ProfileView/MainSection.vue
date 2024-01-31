@@ -144,7 +144,7 @@ let getUser = async () => {
         console.log(res.data.profile)
 
     } catch (err) {
-        consoloe.log(err)
+        console.log(err)
     }
 }
 
