@@ -27,17 +27,18 @@ class DatabaseSeeder extends Seeder
             'id' => 2,
             'name' => 'user',
         ]);
-        \App\Models\User::factory(10)->create();
-        \App\Models\Like::factory(10)->create();
-        \App\Models\Friend::factory(10)->create();
-        \App\Models\Posts::factory(10)->create();
+        // \App\Models\User::factory(10)->create();
+        // \App\Models\Like::factory(10)->create();
+        // \App\Models\Friend::factory(10)->create();
+        // \App\Models\Posts::factory(10)->create();
         \App\Models\Category::factory(10)->create();
-        \App\Models\User_category::factory(10)->create();
-        \App\Models\Chat::factory(10)->create();
-        \App\Models\Message::factory(100)->create();
+        // \App\Models\User_category::factory(10)->create();
+        // \App\Models\Chat::factory(10)->create();
+        // \App\Models\Message::factory(100)->create();
 
         \App\Models\User::factory()->create([
             'login' => 'Artem',
+            "image" => "default.png",
             'password' => bcrypt('artem'),
         ]);
     }

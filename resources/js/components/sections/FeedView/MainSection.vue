@@ -28,19 +28,19 @@
                     {{ post.text }}
                 </div>
 
-                <!-- <div class="flex flex-wrap gap-6" v-for="type in post.type" :key="type">
-                    <img v-for="attachment in post.attachment" :key="attachment" :src="'http://127.0.0.1:8000/images/attachments/' + attachment" alt="" class="block w-full lg:w-96 h-max mt-4 lg:mt-10 rounded-md lg:rounded-xl">
-                    <iframe allowfullscreen v-for="attachment in post.attachment" :key="attachment" :src="attachment" class="lg:w-[600px] lg:h-[300px]"></iframe>
-                </div> -->
+                <div class="flex flex-wrap gap-6" v-for="attachment in post.attachment" :key="attachment">
+                    <img v-if="attachment.type == 'photo'" :src="'http://127.0.0.1:8000/images/attachments/' + attachment.name" alt="" class="block w-full lg:w-96 h-max mt-4 lg:mt-10 rounded-md lg:rounded-xl">
+                    <iframe v-else allowfullscreen :src="attachment.name" class="lg:w-[600px] lg:h-[300px]"></iframe>
+                </div>
 
-                <div class="flex flex-wrap gap-6" v-if="post.type.indexOf('photo')">
+                <!-- <div class="flex flex-wrap gap-6" v-if="post.type.indexOf('photo')">
                     <img v-for="attachment in post.attachment" :key="attachment" :src="'http://127.0.0.1:8000/images/attachments/' + attachment" alt="" class="block w-full lg:w-96 h-max mt-4 lg:mt-10 rounded-md lg:rounded-xl">
                 </div>
                 <div class="flex flex-wrap gap-6" v-if="post.type.indexOf('video')">
                     <iframe allowfullscreen v-for="attachment in post.attachment" :key="attachment" :src="attachment" class="lg:w-[600px] lg:h-[300px]"></iframe>
-                </div>
+                </div> -->
 
-                <div class="flex gap-2 lg:gap-3 mt-4 lg:mt-10 lg:text-3xl" v-if="post.likes == 0">
+                <div class="flex gap-2 lg:gap-3 mt-4 lg:mt-10 lg:text-3xl" v-if="post.likes.likes == 0">
                     <svg @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
                         <path d="M18.18 27.9646L18 28.1444L17.802 27.9646C9.252 20.2136 3.6 15.0883 3.6 9.89101C3.6 6.29428 6.3 3.59673 9.9 3.59673C12.672 3.59673 15.372 5.3951 16.326 7.84087H19.674C20.628 5.3951 23.328 3.59673 26.1 3.59673C29.7 3.59673 32.4 6.29428 32.4 9.89101C32.4 15.0883 26.748 20.2136 18.18 27.9646ZM26.1 0C22.968 0 19.962 1.45668 18 3.7406C16.038 1.45668 13.032 0 9.9 0C4.356 0 0 4.33406 0 9.89101C0 16.6708 6.12 22.2278 15.39 30.6262L18 33L20.61 30.6262C29.88 22.2278 36 16.6708 36 9.89101C36 4.33406 31.644 0 26.1 0Z" fill="white"/>
                     </svg>
@@ -49,7 +49,7 @@
                     <svg @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
                         <path d="M18.18 27.9646L18 28.1444L17.802 27.9646C9.252 20.2136 3.6 15.0883 3.6 9.89101C3.6 6.29428 6.3 3.59673 9.9 3.59673C12.672 3.59673 15.372 5.3951 16.326 7.84087H19.674C20.628 5.3951 23.328 3.59673 26.1 3.59673C29.7 3.59673 32.4 6.29428 32.4 9.89101C32.4 15.0883 26.748 20.2136 18.18 27.9646ZM26.1 0C22.968 0 19.962 1.45668 18 3.7406C16.038 1.45668 13.032 0 9.9 0C4.356 0 0 4.33406 0 9.89101C0 16.6708 6.12 22.2278 15.39 30.6262L18 33L20.61 30.6262C29.88 22.2278 36 16.6708 36 9.89101C36 4.33406 31.644 0 26.1 0Z" fill="white"/>
                     </svg>
-                    {{ post.likes }}
+                    {{ post.likes.likes }}
                 </div>
             </div>
         </div>
@@ -71,7 +71,8 @@
 
             <div class="p-3 lg:p-8">
                 <div class="text-sm lg:text-3xl">
-                    Aывфывфывыфвыфвфы Aывфывфывыфвыфвфы Aывфывфывыфвыфвфыв Aывфывфывыфвыфвфывaw
+                    Aывфывфывыфвыфвфы Aывфывфывыфвыфвфы
+                    Aывфывфывыфвыфвфы Aывфывфывыфвыфвфы
                     Aывфывфывыфвыфвфы Aывфывфывыфвыфвфы
                     Aывфывфывыфвыфвфы Aывфывфывыфвыфвфы
                 </div>

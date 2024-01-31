@@ -93,14 +93,17 @@ class ChatController extends Controller
         $recipient_id = $id;
 
         $user_id = Auth::id();
-        $check = UserChats::whereIn('user_chats.user_id', [$id])
+        $check = UserChats::where('user_chats.user_id', [$id])
             ->where('user_id', '!=', $user_id)
             ->first();
+        // dd($check->user_id, $check->chat_id,UserChats::where('user_chats.user_id',$id )
+        // ->where('user_id', '!=', $user_id)->count());
         if ($check) {
             $chat_id = $check->chat_id;
             if (isset($request->chat_id)) {
                 $chat_id = $request->chat_id;
             }
+            // dd("user_id =>$user_id\nrecipient => $id\n chat_id => $chat_id");
             $data = $request->only([
                 "message",
             ]);

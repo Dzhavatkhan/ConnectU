@@ -9,6 +9,7 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class PostResources extends JsonResource
 {
@@ -21,10 +22,15 @@ class PostResources extends JsonResource
     {
         $user = User::findOrFail($this->user_id);
 
-        $attachment = Attachment::where('post_id', $this->id)->pluck('name');
-        $type_attachment = Attachment::where('post_id', $this->id)->pluck('type');
+        $attachment = Attachment::where('post_id', $this->id)->selectRaw("name, type")->get();
 
         $likes = Like::where('post_id', $this->id)->count();
+
+        $my_like = Like::where('post_id', $this->id)->where("user_id", Auth::id())->get();
+        $likes = [
+            "likes" => $likes,
+            "my_like" => $my_like
+        ];
 
         $day = date('d', strtotime($this->created_at));
         $month = date('F', strtotime($this->created_at));
@@ -110,7 +116,6 @@ class PostResources extends JsonResource
             "avatar" => $user->image,
             "text" => $this->text,
             "attachment" => $attachment,
-            "type" => $type_attachment,
             "category" => $category,
             "likes" => $likes,
             "created_at" => $date
