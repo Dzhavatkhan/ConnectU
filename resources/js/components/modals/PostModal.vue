@@ -133,7 +133,7 @@ let uploadedImages = ref([])
 let viewImages = ref([])
 
 import eventBus from '@/eventBus';
-
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 let getPostById = () => {
     try {
         text.value = post.value.text
@@ -227,6 +227,15 @@ let sendPost = async() => {
     } catch(err) {
         console.log(err)
         errors.value = err.response.data.errors
+        Swal.fire({
+        title: 'Ошибка',
+        theme: "dark",
+        text: err,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 2500,
+        icon: 'error',
+        })
     }
 }
 

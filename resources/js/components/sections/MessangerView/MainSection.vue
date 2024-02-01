@@ -36,10 +36,15 @@ import { onMounted, ref } from 'vue';
 import TextInput from '../../reusable/TextInput.vue';
 import axios from 'axios';
 import { useUserStore } from '../../../store/user-store.js'
+import eventBus from '@/eventBus';
+
 
 let userStore = useUserStore()
 
 onMounted(async() => {
+    eventBus.on("sendMessage",async()=>{
+        await getChats();
+    })
     await getChats()
 })
 let chats = ref(null)

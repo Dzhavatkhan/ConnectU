@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "../../node_modules/@sweetalert2/theme-dark/dark.css";
+@import "../../node_modules/@sweetalert2/theme-dark/dark.min.css";
+
 
 @layer base {
     body {

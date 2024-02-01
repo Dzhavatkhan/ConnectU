@@ -20,14 +20,14 @@ class ChatResource extends JsonResource
     public function toArray(Request $request)
     {
         $msg = Message::where("chat_id", $this->id)->latest()->limit(1)->pluck('message');
-        $msg_date = Message::where("chat_id", $this->id)->orderByDesc('created_at')->pluck('created_at');
-        // $msg_date = Message::where("chat_id", $this->id)->orderByDesc('created_at')->first()->created_at;
+        // $msg_date = Message::where("chat_id", $this->id)->orderByDesc('created_at')->pluck('created_at');
+        $msg_date = Message::where("chat_id", $this->id)->orderByDesc('created_at')->first()->created_at;
 
 
         //work with date
         $msg_day = date('d', strtotime($msg_date));
         $msg_month = date('F', strtotime($msg_date));
-        $msg_time = date('H:m', strtotime($msg_date));
+        $msg_time = date('H:i', strtotime($msg_date));
         if ($msg_month == "January") {
             $msg_month = "января";
         }
@@ -82,13 +82,14 @@ class ChatResource extends JsonResource
         $user = User::findOrFail($chat);
         $avatar = $user->image;
         // if ($avatar == null) {
-        //     $avatar = 
+        //     $avatar =
         // }
         // $msgs = Message::all();
 
         // for ($index = 0; $index < count($msgs); $index++) {
         //     $user_name[] = $msgs[$index]->user->name;
         // }
+
 
         return [
             "id" => $this->id,

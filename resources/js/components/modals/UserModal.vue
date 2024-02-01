@@ -31,7 +31,7 @@ import axios from 'axios';
 import CreateCategory from './CreateCategory.vue';
 import UpdateCategory from './UpdateCategory.vue';
 import DeleteCategory from './DeleteCategory.vue';
-
+import Swal from "sweetalert2"
 const userStore = useUserStore()
 
 let idOpenModal = ref(0)
@@ -91,7 +91,15 @@ let logout = async() => {
 
         console.log(res)
     } catch (err) {
-        console.log(err)
+        Swal.fire({
+            title: "Ошибка",
+            icon: "error",
+            text: Error,
+            position: "bottom-end",
+            color: "dark",
+            timer: 2000,
+            showConfirmButton: false,
+        })
     }
 }
 </script>

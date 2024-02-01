@@ -34,11 +34,31 @@
 </template>
 
 <script setup>
-import { ref, toRefs, defineProps } from 'vue';
+import { ref, toRefs, defineProps, onMounted } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
 import TextArea from '../reusable/TextArea.vue';
+import eventBus from '@/eventBus';
 
+onMounted(async()=> {
+    eventBus.on("getChats", async() => {
+        await getChats();
+    })
+    await getChats();
+})
+let getChats = async() => {
+    try {
+        let res = await axios('http://127.0.0.1:8000/api/chats', {
+            headers: {
+                Authorization: `Bearer ${userStore.token}`
+            }
+        })
+
+        console.log(res.data.chats)
+    } catch (err) {
+        console.log(err)
+    }
+}
 const userStore = useUserStore()
 
 let message = ref(null)

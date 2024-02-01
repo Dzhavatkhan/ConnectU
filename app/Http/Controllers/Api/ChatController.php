@@ -75,18 +75,7 @@ class ChatController extends Controller
     }
 
 
-    public function createChat($id)
-    {
-        $user = Auth::user();
-        $chat_user = User::query()->where("id", $id)->first();
-        $createChat = Chat::create([
-            "name" => "$user->name,$chat_user->name",
-            "participants" => "$user->id,$chat_user->id"
-        ]);
-        return response()->json([
-            "chat" => $createChat
-        ])->header("Content-type", "application/json");
-    }
+
 
     public function message(Request $request, $id)
     {
@@ -96,14 +85,18 @@ class ChatController extends Controller
         $check = UserChats::where('user_chats.user_id', [$id])
             ->where('user_id', '!=', $user_id)
             ->first();
-        // dd($check->user_id, $check->chat_id,UserChats::where('user_chats.user_id',$id )
-        // ->where('user_id', '!=', $user_id)->count());
+        $check = DB::select("SELECT *, COUNT(*) AS 'count'
+        FROM   user_chats
+        WHERE user_id IN ($id,$user_id)
+        GROUP BY chat_id
+        HAVING COUNT(*) > 1");
+
         if ($check) {
+            $check = $check[0];
             $chat_id = $check->chat_id;
             if (isset($request->chat_id)) {
                 $chat_id = $request->chat_id;
             }
-            // dd("user_id =>$user_id\nrecipient => $id\n chat_id => $chat_id");
             $data = $request->only([
                 "message",
             ]);

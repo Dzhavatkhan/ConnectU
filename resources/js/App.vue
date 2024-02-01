@@ -16,6 +16,7 @@
 </template>
 
 <script setup>
+import Swal from "sweetalert2"
 import NavBarAside from './components/structure/NavBarAside.vue';
 import NavBarHeader from './components/structure/NavBarHeader.vue';
 </script>
