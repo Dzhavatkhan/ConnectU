@@ -46,6 +46,7 @@ onMounted(async()=> {
     })
     await getChats();
 })
+
 let getChats = async() => {
     try {
         let res = await axios('http://127.0.0.1:8000/api/chats', {
@@ -59,6 +60,7 @@ let getChats = async() => {
         console.log(err)
     }
 }
+
 const userStore = useUserStore()
 
 let message = ref(null)
@@ -70,7 +72,6 @@ let props = defineProps([
 ])
 
 let { user_id, image, name, surname } = toRefs(props)
-
 
 let sendMessage = async () => {
     console.log(message.value)
@@ -86,6 +87,7 @@ let sendMessage = async () => {
         })
 
         console.log(res.data)
+        eventBus.emit('sendMessage', '')
 
     } catch (err) {
         console.log(err)

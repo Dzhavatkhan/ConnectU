@@ -46,12 +46,22 @@
                     </svg>
                 </div>
                 <div class="flex gap-2 lg:gap-3 mt-4 lg:mt-10 lg:text-3xl" v-else>
-                    <svg @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
+                    <svg v-if="!post.likes.my_like.length"  viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
                         <path d="M18.18 27.9646L18 28.1444L17.802 27.9646C9.252 20.2136 3.6 15.0883 3.6 9.89101C3.6 6.29428 6.3 3.59673 9.9 3.59673C12.672 3.59673 15.372 5.3951 16.326 7.84087H19.674C20.628 5.3951 23.328 3.59673 26.1 3.59673C29.7 3.59673 32.4 6.29428 32.4 9.89101C32.4 15.0883 26.748 20.2136 18.18 27.9646ZM26.1 0C22.968 0 19.962 1.45668 18 3.7406C16.038 1.45668 13.032 0 9.9 0C4.356 0 0 4.33406 0 9.89101C0 16.6708 6.12 22.2278 15.39 30.6262L18 33L20.61 30.6262C29.88 22.2278 36 16.6708 36 9.89101C36 4.33406 31.644 0 26.1 0Z" fill="white"/>
                     </svg>
+
+                    <svg v-else @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
+                        <path d="M18 33L15.39 30.6262C6.12 22.2278 0 16.6708 0 9.89101C0 4.33406 4.356 0 9.9 0C13.032 0 16.038 1.45668 18 3.7406C19.962 1.45668 22.968 0 26.1 0C31.644 0 36 4.33406 36 9.89101C36 16.6708 29.88 22.2278 20.61 30.6262L18 33Z" fill="white"/>
+                    </svg>
+
+
                     {{ post.likes.likes }}
                 </div>
             </div>
+        </div>
+
+        <div v-if="!posts" class="text-white text-5xl text-center mt-10">
+            Загрузка постов...
         </div>
 
         <div class="mt-4 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">

@@ -352,6 +352,9 @@ let deleteFriend = async(userId) => {
         }
 
         console.log(res.data)
+
+        await friendsAPI()
+
     } catch (err) {
         console.log(err)
     }

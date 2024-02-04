@@ -12,7 +12,7 @@
                 />
             </div>
 
-            <router-link v-for="chat in chats" :key="chat" :to="{name: 'chat', path: '/messanger', query: { sel: chat.id,sel_user: chat.sel_user }}" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b">
+            <router-link v-for="chat in chats" :key="chat" :to="{name: 'chat', path: '/messanger', query: { sel: chat.id,sel_user: chat.sel_user }}" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b last:border-b-0">
                 <div>
                     <img :src="'http://127.0.0.1:8000/images/avatars/' + chat.avatar" alt="" class="w-14 lg:w-20 rounded-full">
                 </div>
@@ -27,6 +27,9 @@
                 </div>
             </router-link>
 
+            <div v-if="!chats" class="text-white text-5xl text-center py-10">
+                Загрузка чатов...
+            </div>
         </div>
     </div>
 </template>

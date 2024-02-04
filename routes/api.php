@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get('posts', [PostController::class, 'index'])->name('posts');
 Route::get('like/{id}', [PostController::class, 'like'])->name('like');
 Route::get('post/id{id}', [PostController::class, 'show'])->name('post');
 
@@ -39,6 +38,8 @@ Route::get('categories', [AdminController::class, 'index']);
 
 
 Route::middleware('auth:sanctum')->group(function() {
+    Route::get('posts', [PostController::class, 'index'])->name('posts');
+
     Route::get('chats', [ChatController::class, 'index'])->name("chats");
     Route::get('chat/id{id}', [ChatController::class, 'show'])->name("chat");
 
