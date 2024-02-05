@@ -10,6 +10,7 @@ import './axios.js'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import VueSweetalert2 from 'vue-sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 import 'sweetalert2/dist/sweetalert2.all.js';
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)

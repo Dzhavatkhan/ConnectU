@@ -162,6 +162,11 @@ class PostController extends Controller
                 "user_id" => $user->id,
                 "post_id" => $id
             ]);
+            if (!$post_like) {
+                return response()->json([
+                    "message" => "error"
+                ]);
+            }
         }
         else{
             Like::where('user_id', $user->id)

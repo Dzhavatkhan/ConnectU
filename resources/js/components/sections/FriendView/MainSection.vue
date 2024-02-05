@@ -17,7 +17,7 @@
                 <div v-if="friends" class="font-display lg:text-4xl overflow-auto">
                     <div  v-for="friend in friends" :key="friend" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b last:border-b-0">
                         <div>
-                            <img :src="'http://127.0.0.1:8000/images/avatars/' + friend.image" alt="" class="w-14 lg:w-24 rounded-full">
+                            <img :src="'http://127.0.0.1:8000/images/avatars/' + friend.avatar" alt="" class="w-14 lg:w-24 rounded-full">
                         </div>
 
                         <div class="lg:text-2xl max-lg:w-2/3 grow font-medium">
@@ -31,7 +31,7 @@
                                 </svg>
                             </div>
 
-                            <div @click="deleteFriend(friend.id)" class="">
+                            <div @click="deleteFriend(friend.friend_id)" class="">
                                 <svg viewBox="0 0 76 81" fill="none" class="w-6">
                                     <path d="M54.7788 55.0922C57.2278 53.7693 60.0309 53.0163 63.0163 53.0163H63.0264C63.33 53.0163 63.4717 52.65 63.249 52.4465C60.1444 49.6448 56.5979 47.382 52.7548 45.7508C52.7143 45.7304 52.6738 45.7202 52.6334 45.6999C58.9178 41.1106 63.0062 33.6516 63.0062 25.2362C63.0062 11.2952 51.7934 0 37.9596 0C24.1259 0 12.9232 11.2952 12.9232 25.2362C12.9232 33.6516 17.0116 41.1106 23.3062 45.6999C23.2657 45.7202 23.2252 45.7304 23.1847 45.7508C18.6612 47.674 14.6031 50.4317 11.1118 53.9525C7.64063 57.4366 4.87713 61.5668 2.97548 66.1127C1.10446 70.5642 0.0946859 75.3337 0.000253056 80.1656C-0.00244797 80.2742 0.0164966 80.3822 0.055971 80.4834C0.0954454 80.5845 0.154651 80.6767 0.230098 80.7544C0.305546 80.8322 0.395709 80.894 0.495275 80.9361C0.594841 80.9783 0.701797 81 0.809838 81H6.8716C7.30675 81 7.67107 80.6438 7.68119 80.2063C7.88358 72.3505 11.0106 64.9933 16.5461 59.417C22.2638 53.6472 29.8739 50.4724 37.9698 50.4724C43.7077 50.4724 49.2129 52.07 53.9591 55.0617C54.081 55.1387 54.2209 55.1821 54.3648 55.1875C54.5087 55.1928 54.6515 55.16 54.7788 55.0922ZM37.9698 42.7387C33.3349 42.7387 28.9733 40.9172 25.6843 37.6101C24.0661 35.9871 22.7833 34.0582 21.9096 31.9345C21.036 29.8109 20.5889 27.5344 20.5941 25.2362C20.5941 20.5655 22.4055 16.1695 25.6843 12.8623C28.9631 9.55515 33.3248 7.73367 37.9698 7.73367C42.6148 7.73367 46.9663 9.55515 50.2552 12.8623C51.8734 14.4853 53.1563 16.4141 54.0299 18.5378C54.9035 20.6615 55.3506 22.938 55.3455 25.2362C55.3455 29.9069 53.534 34.3029 50.2552 37.6101C46.9663 40.9172 42.6046 42.7387 37.9698 42.7387ZM75.1904 66.9573H50.9029C50.4576 66.9573 50.0933 67.3236 50.0933 67.7714V73.4698C50.0933 73.9176 50.4576 74.2839 50.9029 74.2839H75.1904C75.6357 74.2839 76 73.9176 76 73.4698V67.7714C76 67.3236 75.6357 66.9573 75.1904 66.9573Z" fill="white"/>
                                 </svg>
@@ -65,11 +65,11 @@
                 <div v-if="openMe" class="">
                     <div v-if="meApplications" v-for="application in meApplications" class="flex items-center gap-4 lg:gap-8 p-3 lg:p-6 border-light-grey border-b last:border-b-0">
                         <div>
-                            <img :src="application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
+                            <img :src="'http://127.0.0.1:8000/images/avatars/' + application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
                         </div>
 
                         <div class="max-lg:w-2/3 lg:text-2xl grow font-medium">
-                            {{ application.name + application.surname }}
+                            {{ application.name + ' ' + application.surname }}
                         </div>
 
                         <div class=" flex justify-between items-center gap-6 lg:gap-10">
@@ -100,11 +100,11 @@
                 <div v-if="openMy" class="">
                     <div v-if="myApplications" v-for="application in myApplications" :key="application.id" class="flex items-center gap-4 lg:gap-8 p-3 lg:p-6  border-light-grey border-b last:border-b-0">
                         <div>
-                            <img :src="application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
+                            <img :src="'http://127.0.0.1:8000/images/avatars/' + application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
                         </div>
 
                         <div class="max-lg:w-2/3 lg:text-2xl grow font-medium">
-                            {{ application.name + application.surname }}
+                            {{ application.name + ' ' + application.surname }}
                         </div>
 
                         <div class=" flex justify-between items-center gap-7 lg:gap-10">
@@ -348,12 +348,16 @@ let deleteFriend = async(userId) => {
             console.log(friends.value[index].friend_id)
             if (friends.value[index].friend_id == userId) {
                 friends.value.splice(index, 1)
+
+                console.log(friends.value)
+
             }
         }
 
         console.log(res.data)
+        console.log(friends.value)
 
-        await friendsAPI()
+         friendsAPI()
 
     } catch (err) {
         console.log(err)
