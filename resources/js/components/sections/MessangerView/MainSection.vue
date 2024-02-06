@@ -12,14 +12,13 @@
                 />
             </div>
 
-            <router-link v-for="chat in chats" :key="chat" :to="{name: 'chat', path: '/messanger', query: { sel: chat.id,sel_user: chat.sel_user }}" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b last:border-b-0">
+            <router-link v-if="chats" v-for="chat in chats" :key="chat" :to="{name: 'chat', path: '/messanger', query: { sel: chat.id, sel_user: chat.sel_user }}" class="p-3 lg:p-6 flex items-center gap-4 lg:gap-8 border-light-grey border-b last:border-b-0">
                 <div>
                     <img :src="'http://127.0.0.1:8000/images/avatars/' + chat.avatar" alt="" class="w-14 lg:w-20 rounded-full">
                 </div>
 
                 <div class="max-lg:w-2/3 lg:text-3xl grow font-medium">
                     {{chat.name}}
-
                 </div>
 
                 <div class="text-[12px] lg:text-lg">
@@ -27,8 +26,8 @@
                 </div>
             </router-link>
 
-            <div v-if="!chats" class="text-white text-5xl text-center py-10">
-                Загрузка чатов...
+            <div v-if="!chats" class="text-white lg:text-2xl text-center py-10">
+                У вас нет чатов
             </div>
         </div>
     </div>
@@ -50,10 +49,12 @@ onMounted(async() => {
     })
     await getChats()
 })
+
 let chats = ref(null)
 
 let getChats = async() => {
     try {
+
         let res = await axios('http://127.0.0.1:8000/api/chats', {
             headers: {
                 Authorization: `Bearer ${userStore.token}`
@@ -63,6 +64,13 @@ let getChats = async() => {
         chats.value = res.data.chats
 
         console.log(res.data.chats)
+
+        if(!chats.value.length) {
+            chats.value = null
+        }
+
+        console.log(chats.value.length)
+
     } catch (err) {
         console.log(err)
     }

@@ -10,7 +10,7 @@
                     <TextInput
                         placeholder="Поиск"
                         v-model:input="input"
-                        stylesInput="border-b-0 font-sans text-xl"
+                        stylesInput="border-b-0 font-sans text-xl lg:text-3xl"
                     />
                 </div>
 
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <div v-else class="p-3 lg:p-6 text-center">
+                <div v-else class="p-3 lg:p-6 lg:text-2xl text-center">
                     У вас нет друзей
                 </div>
             </div>
@@ -92,7 +92,7 @@
                         </div>
                     </div>
 
-                    <div v-else class="p-3 lg:p-6 text-center">
+                    <div v-else class="p-3 lg:p-6 lg:text-2xl text-center">
                         Вам никто не отправил заявки
                     </div>
                 </div>
@@ -124,7 +124,7 @@
 
                     </div>
 
-                    <div v-else class="p-3 lg:p-6 text-center">
+                    <div v-else class="p-3 lg:p-6 lg:text-2xl text-center">
                         Вы никому не отправляли заявок
                     </div>
                 </div>
