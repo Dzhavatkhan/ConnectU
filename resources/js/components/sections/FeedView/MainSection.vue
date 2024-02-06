@@ -27,11 +27,13 @@
                 <div class="text-sm lg:text-3xl">
                     {{ post.text }}
                 </div>
-
-                <div class="flex flex-wrap gap-6" v-for="attachment in post.attachment" :key="attachment">
-                    <img v-if="attachment.type == 'photo'" :src="'http://127.0.0.1:8000/images/attachments/' + attachment.name" alt="" class="block w-full lg:w-96 h-max mt-4 lg:mt-10 rounded-md lg:rounded-xl">
-                    <iframe v-else allowfullscreen :src="attachment.name" class="lg:w-[600px] lg:h-[300px]"></iframe>
+                <div class="flex flex-wrap gap-6">
+                    <div  v-for="attachment in post.attachment" :key="attachment">
+                        <img v-if="attachment.type == 'photo'" :src="'http://127.0.0.1:8000/images/attachments/' + attachment.name" alt="" class="block w-full lg:w-96 h-max mt-4 lg:mt-10 rounded-md lg:rounded-xl">
+                        <iframe v-else allowfullscreen :src="attachment.name" class="lg:w-[600px] lg:h-[300px]"></iframe>
+                    </div>
                 </div>
+
 
                 <!-- <div class="flex flex-wrap gap-6" v-if="post.type.indexOf('photo')">
                     <img v-for="attachment in post.attachment" :key="attachment" :src="'http://127.0.0.1:8000/images/attachments/' + attachment" alt="" class="block w-full lg:w-96 h-max mt-4 lg:mt-10 rounded-md lg:rounded-xl">
