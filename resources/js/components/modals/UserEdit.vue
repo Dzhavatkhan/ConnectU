@@ -1,6 +1,6 @@
 <template>
     <div v-if="!open" class="fixed lg:max-w-[35%] lg:max-h-[80%] lg:m-auto flex flex-col inset-0 z-30 bg-grey lg:rounded-xl">
-        <div @click="$emit('closeModal')" class="absolute lg:-right-24 lg:w-max max-lg:inset-x-0 p-2 lg:p-4 bg-light-black lg:bg-grey lg:rounded-lg">
+        <div @click="$emit('closeModal')" class="absolute lg:-right-24 lg:w-max max-lg:inset-x-0 p-2 lg:p-4 bg-light-black lg:bg-grey lg:rounded-lg cursor-pointer">
             <svg viewBox="0 0 18 18" fill="none" class="w-[25px] lg:w-10 m-auto">
                 <path d="M15.072 17.3952L9.26367 11.5868L3.4553 17.3952C3.1472 17.7033 2.72933 17.8764 2.29362 17.8764C1.8579 17.8764 1.44004 17.7033 1.13194 17.3952C0.823848 17.0871 0.650761 16.6692 0.650761 16.2335C0.650761 15.7978 0.823849 15.3799 1.13194 15.0718L6.94032 9.26346L1.13194 3.45508C0.823848 3.14698 0.650762 2.72912 0.650762 2.2934C0.650762 1.85769 0.823848 1.43982 1.13194 1.13173C1.44004 0.823633 1.85791 0.650547 2.29362 0.650547C2.72933 0.650547 3.1472 0.823633 3.45529 1.13173L9.26367 6.94011L15.072 1.13173C15.3801 0.823633 15.798 0.650546 16.2337 0.650546C16.6694 0.650546 17.0873 0.823632 17.3954 1.13173C17.7035 1.43982 17.8766 1.85769 17.8766 2.2934C17.8766 2.72912 17.7035 3.14698 17.3954 3.45508L11.587 9.26346L17.3954 15.0718C17.7035 15.3799 17.8766 15.7978 17.8766 16.2335C17.8766 16.6692 17.7035 17.0871 17.3954 17.3952C17.0873 17.7033 16.6694 17.8764 16.2337 17.8764C15.798 17.8764 15.3801 17.7033 15.072 17.3952Z" class="fill-grey lg:fill-white" />
             </svg>
@@ -37,7 +37,7 @@
                 />
 
                 <div>
-                    <div @click="(openCategories = !openCategories) && (openCategories ? getCategories() : '')" class="flex justify-center gap-4 p-2 lg:py-5 text-center lg:text-3xl  text-white border-white border-2 rounded-lg">
+                    <div @click="(openCategories = !openCategories) && (openCategories ? getCategories() : '')" class="flex justify-center gap-4 p-2 lg:py-5 text-center lg:text-3xl  text-white border-white border-2 rounded-lg cursor-pointer">
                         Интересные темы
 
                         <svg viewBox="0 0 50 26" fill="none" class="w-[17px] lg:w-7">
@@ -47,8 +47,8 @@
 
 
 
-                    <div v-if="openCategories" class="mt-2 bg-white rounded-lg text-center">
-                        <div v-for="category in categories" :key="category.id" @click="activeCategoriesPush(category)" class="relative flex justify-center items-center py-2 border-grey border-b-2 last:border-b-0">
+                    <div v-if="openCategories" class="mt-2 bg-white rounded-lg text-center text-xl">
+                        <div v-for="category in categories" :key="category.id" @click="activeCategoriesPush(category)" class="relative flex justify-center items-center py-2 border-grey border-b-2 last:border-b-0 cursor-pointer">
                             {{ category.name }}
 
                             <svg v-if="activeCategoriesId.includes(category.id)" viewBox="0 0 20 17" fill="none" class="absolute right-5 w-3 lg:w-4">
@@ -66,11 +66,11 @@
                         </div>
                     </div> -->
 
-                    <div v-if="activeCategories.length" class="mt-5 flex flex-wrap gap-2 cursor-pointer">
-                        <div v-for="category in activeCategories" :key="category.id" class="flex gap-2 p-2 border-white border-2 text-white rounded-md">
+                    <div v-if="activeCategories.length" class="mt-5 flex flex-wrap gap-2 ">
+                        <div v-for="category in activeCategories" :key="category.id" class="flex gap-2 p-2 border-white border-2 text-white lg:text-xl rounded-md">
                             {{ category.name }}
 
-                            <svg @click="activeCategoriesPush(category)" viewBox="0 0 18 18" fill="none" class="w-4 lg:w-10 m-auto">
+                            <svg @click="activeCategoriesPush(category)" viewBox="0 0 18 18" fill="none" class="w-4 lg:w-4 m-auto cursor-pointer">
                                 <path d="M15.072 17.3952L9.26367 11.5868L3.4553 17.3952C3.1472 17.7033 2.72933 17.8764 2.29362 17.8764C1.8579 17.8764 1.44004 17.7033 1.13194 17.3952C0.823848 17.0871 0.650761 16.6692 0.650761 16.2335C0.650761 15.7978 0.823849 15.3799 1.13194 15.0718L6.94032 9.26346L1.13194 3.45508C0.823848 3.14698 0.650762 2.72912 0.650762 2.2934C0.650762 1.85769 0.823848 1.43982 1.13194 1.13173C1.44004 0.823633 1.85791 0.650547 2.29362 0.650547C2.72933 0.650547 3.1472 0.823633 3.45529 1.13173L9.26367 6.94011L15.072 1.13173C15.3801 0.823633 15.798 0.650546 16.2337 0.650546C16.6694 0.650546 17.0873 0.823632 17.3954 1.13173C17.7035 1.43982 17.8766 1.85769 17.8766 2.2934C17.8766 2.72912 17.7035 3.14698 17.3954 3.45508L11.587 9.26346L17.3954 15.0718C17.7035 15.3799 17.8766 15.7978 17.8766 16.2335C17.8766 16.6692 17.7035 17.0871 17.3954 17.3952C17.0873 17.7033 16.6694 17.8764 16.2337 17.8764C15.798 17.8764 15.3801 17.7033 15.072 17.3952Z" class="fill-white" />
                             </svg>
                         </div>
@@ -154,7 +154,7 @@ let activeCategories = ref(categoriesRef.value)
 
 let openCategories = ref(false)
 
-let activeCategoriesId = ref(ref(categoriesIdRef.value))
+let activeCategoriesId = ref(categoriesIdRef.value)
 
 let getCategories = async() => {
     try {
@@ -176,15 +176,26 @@ let getCategories = async() => {
 
 let activeCategoriesPush = (category) => {
     try {
-        if (!activeCategoriesId.value.includes(category.id)) {
-            console.log(activeCategories.value)
+        if (category.category_id) {
+            if (!activeCategoriesId.value.includes(category.category_id)) {
             activeCategories.value.push(category)
 
             activeCategoriesId.value.push(category.id)
+            } else {
+                activeCategories.value.splice(activeCategories.value.indexOf(category), 1)
+                activeCategoriesId.value.splice(activeCategoriesId.value.indexOf(category.id), 1)
+            }
         } else {
-            activeCategories.value.splice(activeCategories.value.indexOf(category), 1)
-            activeCategoriesId.value.splice(activeCategoriesId.value.indexOf(category.id), 1)
+            if (!activeCategoriesId.value.includes(category.id)) {
+            activeCategories.value.push(category)
+
+            activeCategoriesId.value.push(category.id)
+            } else {
+                activeCategories.value.splice(activeCategories.value.indexOf(category), 1)
+                activeCategoriesId.value.splice(activeCategoriesId.value.indexOf(category.id), 1)
+            }
         }
+
     } catch (err) {
         console.log(err)
     }

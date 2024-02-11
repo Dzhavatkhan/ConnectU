@@ -133,7 +133,8 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 let getPostById = () => {
     try {
         text.value = post.value.text
-        console.log(text.value)
+        link.value = post.value.link
+        console.log(post.value)
         // activeCategories.value = post.categories
     } catch (err) {
 console.log(err)

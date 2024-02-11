@@ -201,36 +201,180 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         $post = Posts::findOrFail($id);
-        $post_img = Attachment::where("post_id", $post->id)
-        ->where("type", "photo")
-        ->first()->name;
-        //примерно
-        $attachments = $request->image;
-        $link = $request->link;
-        $upd_content = $request->validate([
-            "text" => ['string', 'sometimes'],
-            "link" => ['string', 'sometimes', "active_url"]
-        ]);
-            $update = $post->update([
-                "text" => $upd_content['text'],
-            ]);
-            if (isset($attachments)) {
-                if (file_exists(public_path("posts/". $post_img))) {
-                    unlink(public_path("posts/". $post_img));
-                    (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
-                    $post->update([
-                        "name" => $attachments,
-                        "type" => "photo"
 
+        $categories = explode(",", $request->categoryId);
+
+        $checking_attachs = Attachment::where('post_id', $post->id)->count();
+        // $originAttachments = explode(",", $request->originAttachments);
+        $attachments = $request->file('attachment0');
+        if (isset($attachments)) {
+            if ($checking_attachs == null) {
+                for ($index = 0; $request->file('attachment' . $index); $index++) {
+                    $attachment = $request->file('attachment' . $index);
+                    $attachment = $attachment->getClientOriginalName();
+
+                    $request->file('attachment'. $index)->move(public_path('images/attachments/'), $attachment);
+                    Attachment::create([
+                        "post_id" => $post->id,
+                        "name" => $attachment,
+                        "type" => "photo"
                     ]);
+
                 }
+            } else {
+
+                $deleteImages = explode(",", $request->deleteImages);
+                // dd($deleteAttachments);
+                if (isset($deleteImages)) {
+                    for ($i=0; $i < count($deleteImages); $i++) {
+                        Attachment::where("post_id", $id)->where("name", $deleteImages[$i])->delete();
+                    }
+                }
+
+                for ($index = 0; $request->file('attachment' . $index); $index++) {
+                    $attachment = $request->file('attachment' . $index);
+                    $attachment = $attachment->getClientOriginalName();
+
+                    $request->file('attachment'. $index)->move(public_path('images/attachments/'), $attachment);
+                    Attachment::create([
+                        "post_id" => $post->id,
+                        "name" => $attachment,
+                        "type" => "photo"
+                    ]);
+
+                }
+            }
+
+            // (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store');
+
+
+        }
+
+        $deleteImages = explode(",", $request->deleteImages);
+        // dd($deleteAttachments);
+        if (isset($deleteImages)) {
+            for ($i=0; $i < count($deleteImages); $i++) {
+                Attachment::where("post_id", $id)->where("name", $deleteImages[$i])->delete();
+            }
         }
 
 
+        $videos = explode(",", $request->videos);
+        if (isset($videos)) {
+            if ($checking_attachs == null) {
+                for ($index = 0; $index < count($videos); $index++) {
+                    Attachment::create([
+                        "post_id" => $post->id,
+                        "name" => $videos[$index],
+                        "type" => "video"
+                    ]);
+                }
+            } else {
+                Attachment::where("post_id", $id)->where("type", 'video')->delete();
+
+                for ($index = 0; $index < count($videos); $index++) {
+                    Attachment::create([
+                        "post_id" => $post->id,
+                        "name" => $videos[$index],
+                        "type" => "video"
+                    ]);
+                }
+            }
+        }
+
+        $data = [
+            'text' => $request->get('text'),
+        ];
+
+        // if ($request->file('image')) {
+        //     (new ImageService)->updateImage($post, $request, '/images/avatars/', 'store');
+        // }
+
+        $update = Posts::where('id', $id)->update($data);
+
+        $post->save();
+        $post = Posts::findOrFail($id);
+
+        if ($update) {
+            // $checking_attachs = Attachment::where('post_id', $post->id)->count();
+            // if ($checking_attachs == null) {
+            //         (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store', true);
+
+            //         // DB::insert('insert into attachments (post_id, name, type) values (?, ?, ?)', [$id, $attachments[$attach], 'photo']);
+            //         // DB::table('posts_categories')->create([
+            //         //     'posts_id' => $id,
+            //         //     'category_id' => $categories[$category]
+            //         // ]);
+            // }
+            // else {
+            //     Attachment::where("post_id", $id)->delete();
+
+            //         (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store', true);
+
+            //         // DB::insert('insert into attachments (post_id, name, type) values (?, ?, ?)', [$id, $attachments[$attach], 'photo']);
+
+            //         // DB::table('posts_categories')->create([
+            //         //     'posts_id' => $id,
+            //         //     'category_id' => $categories[$category]
+            //         // ]);
+            // }
 
 
 
+            $checking_cat = DB::table('posts_categories')->where('posts_id', $post->id)->count();
+            if ($checking_cat == null) {
+                for ($category=0; $category < count($categories); $category++) {
+                    DB::insert('insert into posts_categories (posts_id, category_id) values (?, ?)', [$id, $categories[$category]]);
+                    // DB::table('posts_categories')->create([
+                    //     'posts_id' => $id,
+                    //     'category_id' => $categories[$category]
+                    // ]);
+                }
+            }
+            else {
+                DB::table('posts_categories')->where("posts_id", $id)->delete();
 
+                for ($category=0; $category < count($categories); $category++) {
+                    DB::insert('insert into posts_categories (posts_id, category_id) values (?, ?)', [$id, $categories[$category]]);
+
+                    // DB::table('posts_categories')->create([
+                    //     'posts_id' => $id,
+                    //     'category_id' => $categories[$category]
+                    // ]);
+                }
+            }
+            $post = Posts::with("categories")->findOrFail($id);
+            return response()
+            ->json([
+                'user' => $post,
+                "update" => "Ваш профиль отредактирован"
+            ], 201)
+            ->header("content-type", 'application/json');
+        }
+        // $post_img = Attachment::where("post_id", $post->id)
+        // ->where("type", "photo")
+        // ->first()->name;
+        // //примерно
+        // $attachments = $request->image;
+        // $link = $request->link;
+        // $upd_content = $request->validate([
+        //     "text" => ['string', 'sometimes'],
+        //     "link" => ['string', 'sometimes', "active_url"]
+        // ]);
+        //     $update = $post->update([
+        //         "text" => $upd_content['text'],
+        //     ]);
+        //     if (isset($attachments)) {
+        //         if (file_exists(public_path("posts/". $post_img))) {
+        //             unlink(public_path("posts/". $post_img));
+        //             (new ImageService)->updateImage($post, $request, '/images/posts/', 'store');
+        //             $post->update([
+        //                 "name" => $attachments,
+        //                 "type" => "photo"
+
+        //         ]);
+        //     }
+        // }
     }
 
     /**

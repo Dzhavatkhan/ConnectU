@@ -153,7 +153,7 @@ class UserController extends Controller
             'surname' => $request->get('surname'),
             'login' => $request->get('login'),
             'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
+            // 'password' => Hash::make($request->get('password')),
             // 'image' => $request->file('email'),
         ];
 
@@ -173,13 +173,8 @@ class UserController extends Controller
 
         $update = User::where('id', $id)->update($data);
 
-
-
-
         $user->save();
         $user = User::findOrFail($id);
-
-
 
         if ($update) {
             $checking_cat = User_category::where("user_id", Auth::id())->count();

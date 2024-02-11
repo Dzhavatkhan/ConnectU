@@ -51,13 +51,13 @@
                     <div class="mt-1 lg:mt-3 lg:text-2xl">{{userStore.email}}</div>
                 </div>
 
-                <div @click="open = !open" class="mt-6 lg:mt-10 text-center text-grey lg:text-3xl p-2 lg:p-3 font-sans bg-white rounded-lg cursor-pointer">Редактировать</div>
+                <div @click="profileProp" class="mt-6 lg:mt-10 text-center text-grey lg:text-3xl p-2 lg:p-3 font-sans bg-white rounded-lg cursor-pointer">Редактировать</div>
             </div>
 
         </div>
     </div>
 
-    <UserEdit v-if="open" @closeModal="open=false" :categoriesRef="profile[0].category" :categoriesIdRef="categoriesId" :imageRef="userStore.image"/>
+    <UserEdit v-if="open" @closeModal="closeModal" :categoriesRef="categoriesRef" :categoriesIdRef="categoriesId" :imageRef="userStore.image"/>
 </template>
 
 <script setup>
@@ -71,14 +71,31 @@ let userStore = useUserStore()
 let open = ref(false)
 
 let categoriesId = ref([])
-
+let categoriesRef = ref(null)
 let profile = ref(null)
 
 onMounted(async() => {
     await getUser()
 })
 
+let profileProp = () => {
+    categoriesRef.value = null
+    categoriesId.value = []
+    for (let index = 0; index < profile.value[0].category.length; index++) {
+        console.log(profile.value[0].category[index].id)
+        categoriesId.value.push(profile.value[0].category[index].id)
+    }
 
+    categoriesRef.value = profile.value[0].category
+    console.log(profile.value)
+
+    open.value = true
+}
+
+let closeModal = async() => {
+    await getUser()
+    open.value = false
+}
 
 watch(open, (newValue) => {
     if (newValue) {
@@ -101,10 +118,7 @@ let getUser = async () => {
 
         console.log(res.data.profile)
 
-        for (let index = 0; index < profile.value[0].category.length; index++) {
-            console.log(profile.value[0].category[index].id)
-            categoriesId.value.push(profile.value[0].category[index].id)
-        }
+
     } catch (err) {
         console.log(err)
     }

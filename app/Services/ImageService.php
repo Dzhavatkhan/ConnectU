@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -9,6 +10,7 @@ class ImageService {
     public function updateImage($model, $request, $path, $methodType) {
         // return 'aweaeaweawe';
         $manager = new ImageManager(new Driver());
+
         $file = $request->file('image');
 
         if (!isset($file)){
@@ -18,10 +20,8 @@ class ImageService {
 
             $model->save();
 
-        } 
+        }
         else {
-
-        
 
             $image = $manager->read($file);
             // return print_r($image);
