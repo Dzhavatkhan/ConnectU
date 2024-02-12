@@ -58,12 +58,21 @@
                     </div>
                 </div>
 
-                <TextInput
-                    placeholder="Добавить ссылку на видео"
-                    v-model:input="link"
-                    stylesInput="p-2 border-white border-2 rounded-lg"
-                    :error="errors.link ? errors.link[0] : ''"
-                />
+                <div class="relative">
+                    <TextInput
+                        placeholder="Добавить ссылку на видео"
+                        v-model:input="link"
+                        stylesInput="p-2 border-white border-2 rounded-lg"
+                        :error="errors.link ? errors.link[0] : ''"
+                    />
+
+                    <div @click="addVideo" class="flex items-center p-2 absolute top-1 right-1 bottom-1 cursor-pointer bg-grey">
+                        <svg v-if="link" viewBox="0 0 20 17" fill="none" class="w-6 lg:w-8">
+                            <path d="M19 1L6.4 16L1 10.375" stroke="#8B8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+
 
                 <div class="">
                     <input id="img" type="file" ref="fileInput" @change="getUploadedImage" multiple class="hidden">
@@ -79,8 +88,21 @@
 
                 <!-- <iframe src="https://rutube.ru/video/248f13df0be8ccec31485acea6b4926d/?r=plwd" frameborder="0"></iframe> -->
 <!-- https://www.youtube.com/embed/_LiT7YQTX_o -->
-                <iframe id="my-iframe" height="1200" :src="link" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe v-if="link" id="my-iframe" :src="link" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+                <div v-for="video in viewVideosOrigin" :key="video" class="relative">
+                    <iframe id="my-iframe" :src="video" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <svg @click="cancelAttachments(1, false, video)" viewBox="0 0 18 18" fill="none" class="w-6 lg:w-8 absolute top-0 right-0 cursor-pointer">
+                        <path d="M15.072 17.3952L9.26367 11.5868L3.4553 17.3952C3.1472 17.7033 2.72933 17.8764 2.29362 17.8764C1.8579 17.8764 1.44004 17.7033 1.13194 17.3952C0.823848 17.0871 0.650761 16.6692 0.650761 16.2335C0.650761 15.7978 0.823849 15.3799 1.13194 15.0718L6.94032 9.26346L1.13194 3.45508C0.823848 3.14698 0.650762 2.72912 0.650762 2.2934C0.650762 1.85769 0.823848 1.43982 1.13194 1.13173C1.44004 0.823633 1.85791 0.650547 2.29362 0.650547C2.72933 0.650547 3.1472 0.823633 3.45529 1.13173L9.26367 6.94011L15.072 1.13173C15.3801 0.823633 15.798 0.650546 16.2337 0.650546C16.6694 0.650546 17.0873 0.823632 17.3954 1.13173C17.7035 1.43982 17.8766 1.85769 17.8766 2.2934C17.8766 2.72912 17.7035 3.14698 17.3954 3.45508L11.587 9.26346L17.3954 15.0718C17.7035 15.3799 17.8766 15.7978 17.8766 16.2335C17.8766 16.6692 17.7035 17.0871 17.3954 17.3952C17.0873 17.7033 16.6694 17.8764 16.2337 17.8764C15.798 17.8764 15.3801 17.7033 15.072 17.3952Z" class="fill-white" />
+                    </svg>
+                </div>
+
+                <div v-for="video in viewVideos" :key="video" class="relative">
+                    <iframe id="my-iframe" :src="video" title="как правильно вставить вилку в розетку" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <svg @click="cancelAttachments(2, false, video)" viewBox="0 0 18 18" fill="none" class="w-6 lg:w-8 absolute top-0 right-0 cursor-pointer">
+                        <path d="M15.072 17.3952L9.26367 11.5868L3.4553 17.3952C3.1472 17.7033 2.72933 17.8764 2.29362 17.8764C1.8579 17.8764 1.44004 17.7033 1.13194 17.3952C0.823848 17.0871 0.650761 16.6692 0.650761 16.2335C0.650761 15.7978 0.823849 15.3799 1.13194 15.0718L6.94032 9.26346L1.13194 3.45508C0.823848 3.14698 0.650762 2.72912 0.650762 2.2934C0.650762 1.85769 0.823848 1.43982 1.13194 1.13173C1.44004 0.823633 1.85791 0.650547 2.29362 0.650547C2.72933 0.650547 3.1472 0.823633 3.45529 1.13173L9.26367 6.94011L15.072 1.13173C15.3801 0.823633 15.798 0.650546 16.2337 0.650546C16.6694 0.650546 17.0873 0.823632 17.3954 1.13173C17.7035 1.43982 17.8766 1.85769 17.8766 2.2934C17.8766 2.72912 17.7035 3.14698 17.3954 3.45508L11.587 9.26346L17.3954 15.0718C17.7035 15.3799 17.8766 15.7978 17.8766 16.2335C17.8766 16.6692 17.7035 17.0871 17.3954 17.3952C17.0873 17.7033 16.6694 17.8764 16.2337 17.8764C15.798 17.8764 15.3801 17.7033 15.072 17.3952Z" class="fill-white" />
+                    </svg>
+                </div>
 
                 <div v-for="img in viewImagesOrigin" :key="img" class="relative">
                     <img :src="'http://127.0.0.1:8000/images/attachments/' + img" alt="" class="w-full rounded-lg">
@@ -136,7 +158,10 @@ let text = ref(null)
 let link = ref(null)
 let categories = ref(null)
 let activeCategories = ref(categoriesRef.value)
-
+let viewVideos = ref([])
+let viewVideosOrigin = ref([])
+let deleteViewVideos = ref([])
+let videosToPush = ref([])
 watch(link, (newValue) => {
     if (newValue) {
         link.value = newValue.replace('youtu.be', 'www.youtube.com/embed')
@@ -165,7 +190,7 @@ let getPostById = () => {
             if (post.value.attachment[index].type == 'photo') {
                 viewImagesOrigin.value.push(post.value.attachment[index].name)
             } else {
-                link.value = post.value.attachment[index].name
+                viewVideosOrigin.value.push(post.value.attachment[index].name)
             }
         }
 
@@ -193,29 +218,38 @@ let getUploadedImage = (e) => {
     console.log(uploadedImages.value)
 }
 
-let cancelAttachments = (number, img) => {
+let addVideo = () => {
+    viewVideos.value.push(link.value)
+    link.value = null
+}
+
+let cancelAttachments = (number, img, video) => {
     if (number == 1) {
-        viewImagesOrigin.value.splice(viewImagesOrigin.value.indexOf(img), 1)
-        deleteViewImages.value.push(img)
-
+        if (img) {
+            viewImagesOrigin.value.splice(viewImagesOrigin.value.indexOf(img), 1)
+            deleteViewImages.value.push(img)
+        } else if (video) {
+            viewVideosOrigin.value.splice(viewVideosOrigin.value.indexOf(video), 1)
+            deleteViewVideos.value.push(video)
+        }
     } else {
-        viewImages.value.splice(viewImages.value.indexOf(img), 1)
+        if (img) {
+            viewImages.value.splice(viewImages.value.indexOf(img), 1)
+        } else if (video) {
+            viewVideos.value.splice(viewVideos.value.indexOf(video), 1)
+        }
     }
-
     // for (let index = 0; index < viewImagesOrigin.value.length; index++) {
     //     if (viewImagesOrigin.value[index] == img) {
     //         console.log(deleteViewImages.value)
     //     }
     // }
-
     for (let index = 0; index < uploadedImages.value.length; index++) {
         console.log(img)
-
         if (uploadedImages.value[index].name == img) {
             uploadedImages.value.splice(index, 1)
         }
     }
-
 }
 
 let errors = ref([])
@@ -324,12 +358,26 @@ for (let index = 0; index < uploadedImages.value.length; index++) {
     data.append(`attachment${index}`, uploadedImages.value[index])
 }
 
+for (let index = 0; index < viewVideosOrigin.value.length; index++) {
+    videosToPush.value.push(viewVideosOrigin.value[index])
+}
+for (let index = 0; index < viewVideos.value.length; index++) {
+    videosToPush.value.push(viewVideos.value[index])
+}
+
+data.append(`videos`, videosToPush.value)
+
+
 // if (viewImagesOrigin.value.length) {
 //     data.append('originAttachments', viewImagesOrigin.value)
 // }
 
 if (deleteViewImages.value.length) {
     data.append('deleteAttachments', deleteViewImages.value)
+}
+
+if (deleteViewVideos.value.length) {
+    data.append('deleteVideos', deleteViewVideos.value)
 }
 
 console.log(uploadedImages.value)
