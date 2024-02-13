@@ -202,8 +202,17 @@ class ChatController extends Controller
      */
     public function destroy(string $id)
     {
+        $chat =  Message::where("id", $id)->first()->chat_id;
+        $count_msg = Message::where("id", $id)->first()->chat_id;
+        $count_msg_in_chat = Message::where("chat_id", $count_msg)->where("user_id", "!=", Auth::id())->count();
+        $count_ur_msg_in_chat = Message::where("chat_id", $count_msg)->where("user_id", Auth::id())->count();      
+        // $count_msg = Chat::where("id")
         $message = Message::findOrFail($id);
         $message->delete();
+        if ($count_msg_in_chat == 0 && $count_ur_msg_in_chat == 1) {
+            Chat::where("id", $chat)->delete();
+            UserChats::where("chat_id", $chat)->delete();
+        }
         return response()->json([
             "message" => "Сообщение удалено"
         ]);

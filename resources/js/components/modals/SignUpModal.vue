@@ -100,7 +100,7 @@
                 />
             </form>
 
-            <div @click="register()" class="mt-7 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey  rounded-lg  border-white border-[4px] transition-all duration-100 hover:bg-grey hover:text-white " :class="isBut ? 'bg-white cursor-pointer' : 'bg-gray-400 cursor-default'">
+            <div @click="register()" class="mt-7 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey  rounded-lg    " :class="isBut ? 'bg-white cursor-pointer transition-all duration-100 hover:bg-grey hover:text-white border-white border-[4px]' : 'bg-gray-400 cursor-default'">
                 Зарегистрироваться
             </div>
 
@@ -121,7 +121,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import TextInput from '../reusable/TextInput.vue';
 import CroppedImage from '../reusable/CroppedImage.vue';
 import CropperModal from '../modals/CropperModal.vue';

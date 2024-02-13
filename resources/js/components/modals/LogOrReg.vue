@@ -5,7 +5,7 @@
                 Вход
             </div>
 
-            <div @click="toggleModal(2)" class="flex justify-center items-center gap-3 lg:gap-6 border-white border p-2 lg:p-4 lg:text-3xl text-white rounded-lg lg:rounded-xl cursor-pointer">
+            <div @click="toggleModal(2)" class="flex justify-center items-center gap-3 lg:gap-6 border-white border p-2 lg:p-4 lg:text-3xl text-white rounded-lg lg:rounded-xl cursor-pointer transition-all duration-100 hover:bg-white hover:text-light-black">
                 Регистрация
             </div>
         </div>

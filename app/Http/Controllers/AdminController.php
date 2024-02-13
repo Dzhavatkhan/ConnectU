@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\User_category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -108,6 +109,7 @@ class AdminController extends Controller
     public function destroy(string $id)
     {
         $category = Category::findOrFail($id);
+        DB::table("posts_categories")->where("category_id", $id)->delete();
         User_category::where("category_id", $id)->delete();
         $category->delete();
         return response()->json(

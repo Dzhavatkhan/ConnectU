@@ -57,7 +57,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::get('posts/my', [PostController::class, 'my']);
     Route::post('posts/create', [PostController::class, 'store']);
-    Route::post('posts/delete/id{id}', [PostController::class, 'destroy']);
+    Route::delete('posts/delete/id{id}', [PostController::class, 'destroy']);
     Route::put('update/post/id{id}', [PostController::class, 'update']);
     Route::get('like-post/id{id}', [PostController::class, 'like']);
 

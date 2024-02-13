@@ -101,7 +101,7 @@ class PostController extends Controller
 
 
 
-
+                    
                 $attachments = $request->file('attachment0');
                 if (isset($attachments)) {
                     for ($index = 0; $request->file('attachment' . $index); $index++) {
@@ -119,7 +119,9 @@ class PostController extends Controller
                     // (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store');
                 }
 
-                $videos = explode(",", $request->videos);
+                if ($request->videos) {
+                    $videos = explode(",", $request->videos);
+                }
                 if (isset($videos)) {
                     for ($index = 0; $index < count($videos); $index++) {
                         Attachment::create([
@@ -385,13 +387,20 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        Attachment::where("post_id", $id)->delete();
-        Like::where("post_id",$id)->delete();
-        Posts::findOrFail($id)->categories()->detach();
-        Posts::findOrFail($id)->delete();
-
-        return response()->json([
-            "post" => "post is delete."
-        ], 200);
+        try {
+            Attachment::where("post_id", $id)->delete();
+            Like::where("post_id",$id)->delete();
+            Posts::findOrFail($id)->categories()->detach();
+            Posts::findOrFail($id)->delete();
+            return response()->json([
+                "post" => "post is delete."
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "error" => $e->getMessage(),
+                "message" => "Error"
+            ]);
+        }
+        
     }
 }

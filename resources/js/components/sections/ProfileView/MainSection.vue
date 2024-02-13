@@ -52,8 +52,8 @@
 
         <div v-for="post in posts" :key="post" class="mt-4 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
             <div class="p-3 lg:p-6 lg:px-8 flex justify-between items-center gap-3 lg:gap-5 border-light-grey border-b">
-                <div class="flex gap-3">
-                    <img :src="userStore.image" alt="" class="w-10 lg:w-20 block rounded-full">
+                <div class="flex items-center gap-3">
+                    <img :src="userStore.image" alt="" class="w-10 lg:w-20 max-lg:h-10 block rounded-full">
 
                     <div class="">
                         <div class="text-sm lg:text-3xl font-medium">
@@ -61,23 +61,24 @@
                         </div>
 
                         <div class="mt-2 lg:mt-3 flex items-center gap-2 lg:gap-4 font-regular text-[10px] lg:text-xl">
-                            <div>
-                                {{ post.created_at }}
-                            </div>
-
-                            <div v-for="cat in post.category" :key="cat" class="p-1 bg-white text-light-black rounded-[4px]">
-                                {{ cat.name }}
-                            </div>
+                            {{ post.created_at }}
                         </div>
                     </div>
                 </div>
 
 
-                <div @click="postProp(post)" class="">
-                    <svg viewBox="0 0 28 26" fill="none" class="w-[28px] cursor-pointer">
-                        <path d="M0 24H28V26H0V24ZM23.4 7C24.2 6.2 24.2 5 23.4 4.2L19.8 0.6C19 -0.2 17.8 -0.2 17 0.6L2 15.6V22H8.4L23.4 7ZM18.4 2L22 5.6L19 8.6L15.4 5L18.4 2ZM4 20V16.4L14 6.4L17.6 10L7.6 20H4Z" fill="white"/>
+                <div class="flex gap-4 lg:gap-8">
+                    <div @click="postProp(post)" class="">
+                        <svg viewBox="0 0 28 26" fill="none" class="w-[28px] cursor-pointer">
+                            <path d="M0 24H28V26H0V24ZM23.4 7C24.2 6.2 24.2 5 23.4 4.2L19.8 0.6C19 -0.2 17.8 -0.2 17 0.6L2 15.6V22H8.4L23.4 7ZM18.4 2L22 5.6L19 8.6L15.4 5L18.4 2ZM4 20V16.4L14 6.4L17.6 10L7.6 20H4Z" fill="white"/>
+                        </svg>
+                    </div>
+    
+                    <svg @click="deleteMessage(post.id)" viewBox="0 0 16 18" fill="none" class="w-6 cursor-pointer">
+                        <path d="M2.98857 18C2.4781 18 2.04267 17.8204 1.68229 17.4613C1.32267 17.1021 1.14286 16.6672 1.14286 16.1566V2.02029H0V0.878884H4.57143V0H11.4286V0.878884H16V2.02029H14.8571V16.1566C14.8571 16.6817 14.6811 17.12 14.3291 17.4715C13.9764 17.8238 13.5371 18 13.0114 18H2.98857ZM13.7143 2.02029H2.28571V16.1566C2.28571 16.3613 2.35162 16.5295 2.48343 16.6611C2.61524 16.7928 2.78362 16.8586 2.98857 16.8586H13.0114C13.1867 16.8586 13.3478 16.7855 13.4949 16.6394C13.6411 16.4926 13.7143 16.3316 13.7143 16.1566V2.02029ZM5.49486 14.5758H6.63771V4.30311H5.49486V14.5758ZM9.36229 14.5758H10.5051V4.30311H9.36229V14.5758Z" fill="white"/>
                     </svg>
                 </div>
+                
             </div>
 
             <div class="p-3 lg:p-8">
@@ -88,27 +89,36 @@
                 <div class="flex flex-wrap gap-6">
                     <div  v-for="attachment in post.attachment" :key="attachment">
                         <img v-if="attachment.type == 'photo'" :src="'http://127.0.0.1:8000/images/attachments/' + attachment.name" alt="" class="block w-full lg:w-96 h-max mt-4 lg:mt-10 rounded-md lg:rounded-xl">
-                        <iframe v-else allowfullscreen :src="attachment.name" class="lg:w-[600px] lg:h-[300px]"></iframe>
+                        <iframe v-else allowfullscreen :src="attachment.name" class="lg:w-[600px] lg:h-[300px] mt-4 lg:mt-10"></iframe>
                     </div>
                 </div>
 
-                <div class="flex gap-2 lg:gap-3 mt-4 lg:mt-10 lg:text-3xl" v-if="post.likes.likes == 0">
-                    <svg @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
-                        <path d="M18.18 27.9646L18 28.1444L17.802 27.9646C9.252 20.2136 3.6 15.0883 3.6 9.89101C3.6 6.29428 6.3 3.59673 9.9 3.59673C12.672 3.59673 15.372 5.3951 16.326 7.84087H19.674C20.628 5.3951 23.328 3.59673 26.1 3.59673C29.7 3.59673 32.4 6.29428 32.4 9.89101C32.4 15.0883 26.748 20.2136 18.18 27.9646ZM26.1 0C22.968 0 19.962 1.45668 18 3.7406C16.038 1.45668 13.032 0 9.9 0C4.356 0 0 4.33406 0 9.89101C0 16.6708 6.12 22.2278 15.39 30.6262L18 33L20.61 30.6262C29.88 22.2278 36 16.6708 36 9.89101C36 4.33406 31.644 0 26.1 0Z" fill="white"/>
-                    </svg>
-                </div>
+                <div class="flex items-center justify-between mt-4 lg:mt-10">
+                    <div class="flex gap-2 lg:gap-3  lg:text-3xl" v-if="post.likes.likes == 0">
+                        <svg @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
+                            <path d="M18.18 27.9646L18 28.1444L17.802 27.9646C9.252 20.2136 3.6 15.0883 3.6 9.89101C3.6 6.29428 6.3 3.59673 9.9 3.59673C12.672 3.59673 15.372 5.3951 16.326 7.84087H19.674C20.628 5.3951 23.328 3.59673 26.1 3.59673C29.7 3.59673 32.4 6.29428 32.4 9.89101C32.4 15.0883 26.748 20.2136 18.18 27.9646ZM26.1 0C22.968 0 19.962 1.45668 18 3.7406C16.038 1.45668 13.032 0 9.9 0C4.356 0 0 4.33406 0 9.89101C0 16.6708 6.12 22.2278 15.39 30.6262L18 33L20.61 30.6262C29.88 22.2278 36 16.6708 36 9.89101C36 4.33406 31.644 0 26.1 0Z" fill="white"/>
+                        </svg>
+                    </div>
 
-                <div class="flex gap-2 lg:gap-3 mt-4 lg:mt-10 lg:text-3xl" v-else>
-                    <svg v-if="!post.likes.my_like.length" @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
-                        <path d="M18.18 27.9646L18 28.1444L17.802 27.9646C9.252 20.2136 3.6 15.0883 3.6 9.89101C3.6 6.29428 6.3 3.59673 9.9 3.59673C12.672 3.59673 15.372 5.3951 16.326 7.84087H19.674C20.628 5.3951 23.328 3.59673 26.1 3.59673C29.7 3.59673 32.4 6.29428 32.4 9.89101C32.4 15.0883 26.748 20.2136 18.18 27.9646ZM26.1 0C22.968 0 19.962 1.45668 18 3.7406C16.038 1.45668 13.032 0 9.9 0C4.356 0 0 4.33406 0 9.89101C0 16.6708 6.12 22.2278 15.39 30.6262L18 33L20.61 30.6262C29.88 22.2278 36 16.6708 36 9.89101C36 4.33406 31.644 0 26.1 0Z" fill="white"/>
-                    </svg>
+                    <div class="flex gap-2 lg:gap-3 lg:text-3xl" v-else>
+                        <svg v-if="!post.likes.my_like.length" @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
+                            <path d="M18.18 27.9646L18 28.1444L17.802 27.9646C9.252 20.2136 3.6 15.0883 3.6 9.89101C3.6 6.29428 6.3 3.59673 9.9 3.59673C12.672 3.59673 15.372 5.3951 16.326 7.84087H19.674C20.628 5.3951 23.328 3.59673 26.1 3.59673C29.7 3.59673 32.4 6.29428 32.4 9.89101C32.4 15.0883 26.748 20.2136 18.18 27.9646ZM26.1 0C22.968 0 19.962 1.45668 18 3.7406C16.038 1.45668 13.032 0 9.9 0C4.356 0 0 4.33406 0 9.89101C0 16.6708 6.12 22.2278 15.39 30.6262L18 33L20.61 30.6262C29.88 22.2278 36 16.6708 36 9.89101C36 4.33406 31.644 0 26.1 0Z" fill="white"/>
+                        </svg>
 
-                    <svg v-else @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
-                        <path d="M18 33L15.39 30.6262C6.12 22.2278 0 16.6708 0 9.89101C0 4.33406 4.356 0 9.9 0C13.032 0 16.038 1.45668 18 3.7406C19.962 1.45668 22.968 0 26.1 0C31.644 0 36 4.33406 36 9.89101C36 16.6708 29.88 22.2278 20.61 30.6262L18 33Z" fill="white"/>
-                    </svg>
+                        <svg v-else @click="like(post.id)" viewBox="0 0 36 33" fill="none" class="w-[22px] lg:w-10 cursor-pointer">
+                            <path d="M18 33L15.39 30.6262C6.12 22.2278 0 16.6708 0 9.89101C0 4.33406 4.356 0 9.9 0C13.032 0 16.038 1.45668 18 3.7406C19.962 1.45668 22.968 0 26.1 0C31.644 0 36 4.33406 36 9.89101C36 16.6708 29.88 22.2278 20.61 30.6262L18 33Z" fill="white"/>
+                        </svg>
 
 
-                    {{ post.likes.likes }}
+                        {{ post.likes.likes }}
+                    </div>
+
+                    <div class="flex gap-2 lg:gap-4">
+                        <div v-for="cat in post.category" :key="cat" class=" h-max p-2 bg-light-black text-white rounded-[4px]">
+                            {{ cat.name }}
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -232,6 +242,22 @@ let getPosts = async() => {
         console.log(res.data)
     } catch (err) {
         console.log(err)
+    }
+}
+
+let deleteMessage = async(id) => {
+    try {
+        let res = await axios.delete('http://127.0.0.1:8000/api/posts/delete/id' + id,
+        {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+        await getPosts();
+        console.log(res.data)
+    } catch (error) {
+        console.log(error)
     }
 }
 </script>

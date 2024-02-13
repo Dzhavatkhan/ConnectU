@@ -57,7 +57,7 @@
                             Мне
                         </div>
 
-                        <div @click="toggleModal(2)" class="py-1 px-2 bg-white rounded-lg">
+                        <div @click="toggleModal(2)" class="py-1 px-2 border-white border-[4px] rounded-lg cursor-pointer" :class="openMy ? 'text-white bg-grey' : 'bg-white'">
                             Мои
                         </div>
                     </div>
@@ -66,7 +66,8 @@
                 <div v-if="openMe" class="">
                     <div v-if="meApplications" v-for="application in meApplications" class="flex items-center gap-4 lg:gap-8 p-3 lg:p-6 border-light-grey border-b last:border-b-0" >
                         <div>
-                            <img :src="'http://127.0.0.1:8000/images/avatars/' + application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
+                            <img v-if="application.avatar" :src="'http://127.0.0.1:8000/images/avatars/' + application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
+                            <img v-else :src="'http://127.0.0.1:8000/images/avatars/default.jpg'" alt="" class="w-14 lg:w-20 rounded-full">
                         </div>
 
                         <div class="max-lg:w-2/3 lg:text-2xl grow font-medium">
@@ -101,7 +102,8 @@
                 <div v-if="openMy" class="">
                     <div v-if="myApplications" v-for="application in myApplications" :key="application.id" class="flex items-center gap-4 lg:gap-8 p-3 lg:p-6  border-light-grey border-b last:border-b-0">
                         <div>
-                            <img :src="'http://127.0.0.1:8000/images/avatars/' + application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
+                            <img v-if="application.avatar" :src="'http://127.0.0.1:8000/images/avatars/' + application.avatar" alt="" class="w-14 lg:w-20 rounded-full">
+                            <img v-else :src="'http://127.0.0.1:8000/images/avatars/default.jpg'" alt="" class="w-14 lg:w-20 rounded-full">
                         </div>
 
                         <div class="max-lg:w-2/3 lg:text-2xl grow font-medium">
