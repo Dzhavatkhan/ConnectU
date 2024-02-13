@@ -123,7 +123,7 @@
                 Опубликовать
             </div>
 
-            <div v-else @click="editPost(post.id)" class="cursor-pointer mt-5 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg">
+            <div v-else @click="editPost(post.id)" class="cursor-pointer mt-5 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg border-white border-[4px] transition-all duration-100 hover:bg-grey hover:text-white">
                 Редактировать
             </div>
         </div>

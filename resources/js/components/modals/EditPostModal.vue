@@ -78,7 +78,7 @@
                 <img v-for="img in viewImages" :key="img" :src="img" alt="" class="rounded-lg">
             </form>
 
-            <div @click="sendPost()" class="cursor-pointer mt-5 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg">
+            <div @click="sendPost()" class="cursor-pointer mt-5 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg  border-white border-[4px] transition-all duration-100 hover:bg-grey hover:text-white">
                 Редактировать
             </div>
         </div>

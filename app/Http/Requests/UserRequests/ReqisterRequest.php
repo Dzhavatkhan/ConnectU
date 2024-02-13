@@ -18,7 +18,7 @@ class ReqisterRequest extends FormRequest
             'surname' => 'required|string|alpha_dash',
             'login' => 'required|string|alpha|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
+            'password' => 'required|confirmed|min:6',
             // 'image' => 'required'
         ];
     }

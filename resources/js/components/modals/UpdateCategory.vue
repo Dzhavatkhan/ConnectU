@@ -25,7 +25,7 @@
                 />
             </form>
 
-            <div @click="update()" class="mt-7 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey  rounded-lg bg-white cursor-pointer">
+            <div @click="update()" class="mt-7 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey  rounded-lg bg-white cursor-pointer border-white border-[4px] transition-all duration-100 hover:bg-grey hover:text-white">
                 Обновить
             </div>
         </div>

@@ -1,14 +1,14 @@
 <template>
     <div v-if="!idOpenModal && userStore.id" class="absolute max-lg:inset-x-0 z-10 lg:right-0 lg:text-2xl px-3 lg:p-10 py-6  bg-light-black rounded-b-xl">
-        <div @click="toggleModal(3)" class=" py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg cursor-pointer">Создать категорию</div>
+        <div @click="toggleModal(3)" class=" py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg transition-all duration-100 hover:bg-white hover:text-light-black cursor-pointer">Создать категорию</div>
 
-        <div @click="toggleModal(4)" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg cursor-pointer">Обновить категорию</div>
+        <div @click="toggleModal(4)" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg transition-all duration-100 hover:bg-white hover:text-light-black cursor-pointer">Обновить категорию</div>
 
-        <div @click="toggleModal(5)" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg cursor-pointer">Удалить категорию</div>
+        <div @click="toggleModal(5)" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg transition-all duration-100 hover:bg-white hover:text-light-black cursor-pointer">Удалить категорию</div>
 
-        <router-link to="/profile/setting" class="mt-5 lg:mt-7 block py-3 lg:py-4 lg:px-5 text-white text-center border-white border rounded-lg">Настройки</router-link>
+        <router-link to="/profile/setting" class="mt-5 lg:mt-7 block py-3 lg:py-4 lg:px-5 text-white text-center border-white transition-all duration-100 hover:bg-white hover:text-light-black border rounded-lg">Настройки</router-link>
 
-        <div @click="logout()" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg cursor-pointer">Выйти</div>
+        <div @click="logout()" class="mt-5 lg:mt-7 py-3 lg:py-4 lg:px-8 text-white text-center border-white border rounded-lg transition-all duration-100 hover:bg-white hover:text-light-black cursor-pointer">Выйти</div>
     </div>
 
     <SignInModal v-if="modals[0].visible" @closeModal="toggleModal(1, true)" />

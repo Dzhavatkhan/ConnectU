@@ -35,8 +35,15 @@
                             {{ msg.message }}
                         </div>
 
-                        <div class="mt-2 flex justify-end text-[12px] lg:text-lg text-light-grey font-medium">
-                            {{ msg.time }}
+
+                        <div class="mt-2 flex justify-end items-center text-[12px] gap-4 lg:text-lg text-light-grey font-medium">
+                            <div>
+                                {{ msg.time }}
+                            </div>
+
+                            <svg @click="deleteMessage(msg.id)" viewBox="0 0 16 18" fill="none" class="w-5">
+                                <path d="M2.98857 18C2.4781 18 2.04267 17.8204 1.68229 17.4613C1.32267 17.1021 1.14286 16.6672 1.14286 16.1566V2.02029H0V0.878884H4.57143V0H11.4286V0.878884H16V2.02029H14.8571V16.1566C14.8571 16.6817 14.6811 17.12 14.3291 17.4715C13.9764 17.8238 13.5371 18 13.0114 18H2.98857ZM13.7143 2.02029H2.28571V16.1566C2.28571 16.3613 2.35162 16.5295 2.48343 16.6611C2.61524 16.7928 2.78362 16.8586 2.98857 16.8586H13.0114C13.1867 16.8586 13.3478 16.7855 13.4949 16.6394C13.6411 16.4926 13.7143 16.3316 13.7143 16.1566V2.02029ZM5.49486 14.5758H6.63771V4.30311H5.49486V14.5758ZM9.36229 14.5758H10.5051V4.30311H9.36229V14.5758Z" fill="grey"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -142,6 +149,20 @@ let sendMessage = async () => {
     }
 }
 
+let deleteMessage = async(id) => {
+    try {
+        let res = await axios('http://127.0.0.1:8000/api/message/delete/id' + id,
+        {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
 
+        console.log(res.data)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 </script>

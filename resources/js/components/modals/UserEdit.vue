@@ -100,7 +100,7 @@
 
             </form>
 
-            <div @click="register" class="mt-7 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg cursor-pointer">
+            <div @click="register" class="mt-7 lg:mt-16 p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg cursor-pointer border-white border-[4px] transition-all duration-100 hover:bg-grey hover:text-white">
                 Сохранить
             </div>
         </div>

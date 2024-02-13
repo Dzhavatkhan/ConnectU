@@ -35,12 +35,12 @@
                 </div>
 
                 <div class="flex items-center gap-6 lg:gap-16">
-                    <div @click="toggleModal(1)" class="cursor-pointer lg:flex lg:items-center lg:gap-3 lg:bg-white lg:rounded-lg lg:py-3 lg:px-5">
+                    <div @click="toggleModal(1)" class="cursor-pointer lg:flex lg:items-center lg:gap-3 lg:bg-white transition-all duration-100 text-light-black  lg:hover:bg-light-black lg:hover:text-white border-[4px] border-white group lg:rounded-lg lg:py-3 lg:px-5">
                         <svg viewBox="0 0 30 30" fill="none" class="w-[30px]">
-                            <path d="M21.6667 21.6667L27 27M3 13.6667C3 16.4956 4.12381 19.2088 6.12419 21.2091C8.12458 23.2095 10.8377 24.3333 13.6667 24.3333C16.4956 24.3333 19.2088 23.2095 21.2091 21.2091C23.2095 19.2088 24.3333 16.4956 24.3333 13.6667C24.3333 10.8377 23.2095 8.12458 21.2091 6.12419C19.2088 4.12381 16.4956 3 13.6667 3C10.8377 3 8.12458 4.12381 6.12419 6.12419C4.12381 8.12458 3 10.8377 3 13.6667Z" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="lg:stroke-light-black"/>
+                            <path d="M21.6667 21.6667L27 27M3 13.6667C3 16.4956 4.12381 19.2088 6.12419 21.2091C8.12458 23.2095 10.8377 24.3333 13.6667 24.3333C16.4956 24.3333 19.2088 23.2095 21.2091 21.2091C23.2095 19.2088 24.3333 16.4956 24.3333 13.6667C24.3333 10.8377 23.2095 8.12458 21.2091 6.12419C19.2088 4.12381 16.4956 3 13.6667 3C10.8377 3 8.12458 4.12381 6.12419 6.12419C4.12381 8.12458 3 10.8377 3 13.6667Z" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="lg:stroke-light-black lg:group-hover:stroke-white"/>
                         </svg>
 
-                        <div class="max-lg:hidden text-2xl text-light-black ">
+                        <div class="max-lg:hidden text-2xl ">
                             Поиск
                         </div>
                     </div>
