@@ -25,7 +25,7 @@
             </form>
 
             <div @click="sendMessage" class="p-3 lg:p-10 ">
-                <div  class="max-lg:mt-5 p-2 lg:py-5 text-center cursor-pointer  lg:text-3xl text-grey bg-white rounded-lg">
+                <div  class="max-lg:mt-5 p-2 lg:py-5 text-center cursor-pointer  lg:text-3xl text-grey bg-white rounded-lg border-white border-[4px] transition-all duration-100 hover:bg-grey hover:text-white">
                     Отправить
                 </div>
             </div>

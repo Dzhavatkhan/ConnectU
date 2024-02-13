@@ -1,7 +1,7 @@
 <template>
     <div v-if="!idOpenModal" class="fixed lg:max-w-[35%] lg:max-h-[80%] lg:m-auto flex flex-col inset-0 z-10 bg-grey lg:rounded-xl">
         <div class="flex flex-col gap-4 h-full px-3 pb-8 lg:p-10 max-lg:pt-16">
-            <div @click="toggleModal(1)" class="flex justify-center items-center gap-3 lg:gap-6 border-white border p-2 lg:p-4 lg:text-3xl text-white rounded-lg lg:rounded-xl cursor-pointer">
+            <div @click="toggleModal(1)" class="flex justify-center items-center gap-3 lg:gap-6 border-white border p-2 lg:p-4 lg:text-3xl text-white rounded-lg lg:rounded-xl cursor-pointer transition-all duration-100 hover:bg-white hover:text-light-black">
                 Вход
             </div>
 
@@ -20,10 +20,10 @@
 
 <script setup>
 import { ref } from 'vue';
-import TextInput from '../reusable/TextInput.vue';
-import CroppedImage from '../reusable/CroppedImage.vue';
-import CropperModal from '../modals/CropperModal.vue';
-import axios from 'axios';
+// import TextInput from '../reusable/TextInput.vue';
+// import CroppedImage from '../reusable/CroppedImage.vue';
+// import CropperModal from '../modals/CropperModal.vue';
+// import axios from 'axios';
 import { useUserStore } from '@/store/user-store';
 import Cover from '../reusable/Cover.vue';
 import SignInModal from './SignInModal.vue';

@@ -35,7 +35,7 @@
                 </div>
             </form>
 
-            <div v-if="uploadedImage" @click="crop" class="mt-8 lg:mt-[60px] p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg cursor-pointer">
+            <div v-if="uploadedImage" @click="crop" class="mt-8 lg:mt-[60px] p-2 lg:py-5 text-center lg:text-3xl text-grey bg-white rounded-lg cursor-pointer border-white border-[4px] transition-all duration-100 hover:bg-grey hover:text-white">
                 Сохранить
             </div>
         </div>

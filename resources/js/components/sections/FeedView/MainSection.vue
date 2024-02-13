@@ -1,8 +1,8 @@
 <template>
     <div class="grow">
-        <div @click="open = !open" class="flex justify-center gap-3 lg:gap-5 p-2 lg:py-4 text-white lg:text-3xl border-white border-2 lg:border-[3px] rounded-lg lg:rounded-xl cursor-pointer">
+        <div @click="open = !open" class="flex justify-center gap-3 lg:gap-5 p-2 lg:py-4 text-white lg:text-3xl border-white border-2 lg:border-[3px] rounded-lg lg:rounded-xl cursor-pointer transition-all hover:text-light-black hover:bg-white duration-100 group">
             <svg viewBox="0 0 43 43" fill="none" class="w-5 lg:w-7">
-                <path d="M39.9286 24.5714H24.5714V39.9286C24.5714 40.7432 24.2478 41.5244 23.6718 42.1004C23.0958 42.6764 22.3146 43 21.5 43C20.6854 43 19.9042 42.6764 19.3282 42.1004C18.7522 41.5244 18.4286 40.7432 18.4286 39.9286V24.5714H3.07143C2.25683 24.5714 1.47561 24.2478 0.899601 23.6718C0.323597 23.0958 0 22.3146 0 21.5C0 20.6854 0.323597 19.9042 0.899601 19.3282C1.47561 18.7522 2.25683 18.4286 3.07143 18.4286H18.4286V3.07143C18.4286 2.25684 18.7522 1.4756 19.3282 0.8996C19.9042 0.323595 20.6854 0 21.5 0C22.3146 0 23.0958 0.323595 23.6718 0.8996C24.2478 1.4756 24.5714 2.25684 24.5714 3.07143V18.4286H39.9286C40.7432 18.4286 41.5244 18.7522 42.1004 19.3282C42.6764 19.9042 43 20.6854 43 21.5C43 22.3146 42.6764 23.0958 42.1004 23.6718C41.5244 24.2478 40.7432 24.5714 39.9286 24.5714Z" fill="white"/>
+                <path d="M39.9286 24.5714H24.5714V39.9286C24.5714 40.7432 24.2478 41.5244 23.6718 42.1004C23.0958 42.6764 22.3146 43 21.5 43C20.6854 43 19.9042 42.6764 19.3282 42.1004C18.7522 41.5244 18.4286 40.7432 18.4286 39.9286V24.5714H3.07143C2.25683 24.5714 1.47561 24.2478 0.899601 23.6718C0.323597 23.0958 0 22.3146 0 21.5C0 20.6854 0.323597 19.9042 0.899601 19.3282C1.47561 18.7522 2.25683 18.4286 3.07143 18.4286H18.4286V3.07143C18.4286 2.25684 18.7522 1.4756 19.3282 0.8996C19.9042 0.323595 20.6854 0 21.5 0C22.3146 0 23.0958 0.323595 23.6718 0.8996C24.2478 1.4756 24.5714 2.25684 24.5714 3.07143V18.4286H39.9286C40.7432 18.4286 41.5244 18.7522 42.1004 19.3282C42.6764 19.9042 43 20.6854 43 21.5C43 22.3146 42.6764 23.0958 42.1004 23.6718C41.5244 24.2478 40.7432 24.5714 39.9286 24.5714Z" fill="white" class="group-hover:fill-light-black"/>
             </svg>
 
             Создать пост
@@ -10,15 +10,22 @@
 
         <div v-for="post in posts" :key="post" class="mt-4 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
             <div class="p-3 lg:p-6 lg:px-8 flex items-center gap-3 lg:gap-5 border-light-grey border-b">
-                <img :src="'http://127.0.0.1:8000/images/avatars/' + post.avatar    " alt="" class="w-10 lg:w-20 block rounded-full">
+                <img v-if="post.avatar" :src="'http://127.0.0.1:8000/images/avatars/' + post.avatar" alt="" class="w-10 lg:w-20 block rounded-full">
+                <img v-else :src="'http://127.0.0.1:8000/images/avatars/default.jpg'" alt="" class="w-10 lg:w-20 block rounded-full">
 
                 <div class="">
                     <div class="text-sm lg:text-3xl font-medium">
                         {{ post.author }}
                     </div>
 
-                    <div class="mt-1 lg:mt-2 font-regular text-[10px] lg:text-xl">
-                        {{ post.created_at }}
+                    <div class="mt-2 lg:mt-3 flex items-center gap-2 lg:gap-4 font-regular text-[10px] lg:text-xl">
+                        <div>
+                            {{ post.created_at }}
+                        </div>
+
+                        <div v-for="cat in post.category" :key="cat" class="p-1 bg-white text-light-black rounded-[4px]">
+                            {{ cat.name }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,7 +73,7 @@
             Загрузка постов...
         </div>
 
-        <div class="mt-4 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
+        <!-- <div class="mt-4 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
             <div class="p-3 lg:p-6 lg:px-8 flex items-center gap-3 lg:gap-5 border-light-grey border-b">
                 <img src="../../../../../storage/app/public/avatars/Avatar.jpg" alt="" class="w-10 lg:w-20 block rounded-full">
 
@@ -99,7 +106,7 @@
                     123
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <PostModal v-if="open" @closeModal="open = false" />
     </div>
