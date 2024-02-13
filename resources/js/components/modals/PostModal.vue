@@ -157,7 +157,7 @@ onMounted(() => {
 let text = ref(null)
 let link = ref(null)
 let categories = ref(null)
-let activeCategories = ref(categoriesRef.value)
+let activeCategories = ref(categoriesRef.value || [])
 let viewVideos = ref([])
 let viewVideosOrigin = ref([])
 let deleteViewVideos = ref([])
@@ -174,7 +174,7 @@ watch(link, (newValue) => {
 
 let openCategories = ref(false)
 
-let activeCategoriesId = ref(categoriesIdRef.value)
+let activeCategoriesId = ref(categoriesIdRef.value || [])
 console.log(activeCategoriesId.value)
 let uploadedImages = ref([])
 let viewImages = ref([])
@@ -305,10 +305,20 @@ let sendPost = async() => {
     let data = new FormData();
 
     data.append('text', text.value || '')
-    data.append('link', link.value || '')
+    // data.append('link', link.value || '')
     for (let index = 0; index < uploadedImages.value.length; index++) {
         data.append(`attachment${index}`, uploadedImages.value[index])
     }
+
+    for (let index = 0; index < viewVideosOrigin.value.length; index++) {
+        videosToPush.value.push(viewVideosOrigin.value[index])
+    }
+
+    for (let index = 0; index < viewVideos.value.length; index++) {
+        videosToPush.value.push(viewVideos.value[index])
+    }
+
+    data.append(`videos`, videosToPush.value)
     console.log(uploadedImages.value)
     let cat = [];
     for (let category = 0; category < activeCategories.value.length; category++) {
@@ -350,74 +360,75 @@ let sendPost = async() => {
 
 let editPost = async(idPost) => {
 
-let data = new FormData();
+    let data = new FormData();
 
-data.append('text', text.value || '')
-// data.append('link', link.value || '')
-for (let index = 0; index < uploadedImages.value.length; index++) {
-    data.append(`attachment${index}`, uploadedImages.value[index])
-}
+    data.append('text', text.value || '')
+    // data.append('link', link.value || '')
+    for (let index = 0; index < uploadedImages.value.length; index++) {
+        data.append(`attachment${index}`, uploadedImages.value[index])
+    }
 
-for (let index = 0; index < viewVideosOrigin.value.length; index++) {
-    videosToPush.value.push(viewVideosOrigin.value[index])
-}
-for (let index = 0; index < viewVideos.value.length; index++) {
-    videosToPush.value.push(viewVideos.value[index])
-}
+    for (let index = 0; index < viewVideosOrigin.value.length; index++) {
+        videosToPush.value.push(viewVideosOrigin.value[index])
+    }
+    for (let index = 0; index < viewVideos.value.length; index++) {
+        videosToPush.value.push(viewVideos.value[index])
+    }
 
-data.append(`videos`, videosToPush.value)
+    data.append(`videos`, videosToPush.value)
 
+    // if (viewImagesOrigin.value.length) {
+    //     data.append('originAttachments', viewImagesOrigin.value)
+    // }
 
-// if (viewImagesOrigin.value.length) {
-//     data.append('originAttachments', viewImagesOrigin.value)
-// }
+    if (deleteViewImages.value.length) {
+        data.append('deleteImages', deleteViewImages.value)
+    }
 
-if (deleteViewImages.value.length) {
-    data.append('deleteAttachments', deleteViewImages.value)
-}
+    console.log(deleteViewImages.value);
 
-if (deleteViewVideos.value.length) {
-    data.append('deleteVideos', deleteViewVideos.value)
-}
+    if (deleteViewVideos.value.length) {
+        data.append('deleteVideos', deleteViewVideos.value)
+    }
 
-console.log(uploadedImages.value)
+    console.log(uploadedImages.value)
 
-let cat = [];
-for (let category = 0; category < activeCategories.value.length; category++) {
+    let cat = [];
+    for (let category = 0; category < activeCategories.value.length; category++) {
 
-    // data.append(`category_id${category}`, activeCategoriesId.value[category] || '')
-    cat.push(activeCategoriesId.value[category])
-    console.log(cat)
-    data.append('categoryId', cat || '')
+        // data.append(`category_id${category}`, activeCategoriesId.value[category] || '')
+        cat.push(activeCategoriesId.value[category])
+        console.log(cat)
+        data.append('categoryId', cat || '')
 
-}
-// data.append('category_id', activeCategoriesId.value[0] || '')
+    }
+    // data.append('category_id', activeCategoriesId.value[0] || '')
 
-try {
-    console.log(uploadedImages.value);
-    let res = await axios.post('http://127.0.0.1:8000/api/update/post/id' + idPost + '?_method=PUT', data, {
-        headers:
-        {
-            Authorization: `Bearer ${userStore.token}`,
-            'Content-Type': 'multipart/form-data'
-        }
-    })
+    try {
+        console.log(uploadedImages.value);
+        let res = await axios.post('http://127.0.0.1:8000/api/update/post/id' + idPost + '?_method=PUT', data, {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        })
 
-    console.log(res.data)
-    eventBus.emit('addPost', '')
-} catch(err) {
-    console.log(err)
-    errors.value = err.response.data.errors
-    Swal.fire({
-    title: 'Ошибка',
-    theme: "dark",
-    text: err,
-    position: "bottom-end",
-    showConfirmButton: false,
-    timer: 2500,
-    icon: 'error',
-    })
-}
+        console.log(res.data)
+        eventBus.emit('addPost', '')
+    } catch(err) {
+        console.log(err)
+        errors.value = err.response.data.errors
+        Swal.fire({
+        title: 'Ошибка',
+        theme: "dark",
+        text: err,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 2500,
+        icon: 'error',
+        })
+    }
 }
 
 

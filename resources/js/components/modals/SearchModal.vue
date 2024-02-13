@@ -22,7 +22,9 @@
             <div class="font-display lg:text-4xl overflow-auto">
                 <div v-for="user in users" :key="user.id" class="p-3 lg:p-6 flex items-center gap-3 lg:gap-8 border-light-grey border-b">
                     <div>
-                        <img :src="'http://127.0.0.1:8000/images/avatars/' + user.image" alt="" class="w-14 lg:w-20 rounded-full">
+                        <img v-if="user.image" :src="'http://127.0.0.1:8000/images/avatars/' + user.image" alt="" class="w-14 lg:w-20 rounded-full">
+                        <img v-else :src="'http://127.0.0.1:8000/images/avatars/default.jpg'" alt="" class="w-14 lg:w-20 rounded-full">
+
                     </div>
 
                     <div class="max-lg:w-1/2 lg:text-2xl grow font-medium">

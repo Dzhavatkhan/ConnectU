@@ -93,15 +93,16 @@ class UserController extends Controller
         }
     }
     public function delete_friend($id){
-        $del_fr = Friend::where("recipient_id", $id)->where("user_id", Auth::id())->first();
-        if($del_fr == null) {
-            $del_fr = Friend::where("recipient_id", Auth::id())->where("user_id", $id)->first();
-            $delete = $del_fr->delete();
+        $del_fr = Friend::where("id", $id)->first();
+        $delete = $del_fr->delete();
+        // if($del_fr == null) {
+        //     $del_fr = Friend::where("recipient_id", Auth::id())->where("user_id", $id)->first();
+        //     $delete = $del_fr->delete();
 
-        }
-        else{
-            $delete = $del_fr->delete();
-        }
+        // }
+        // else{
+        //     $delete = $del_fr->delete();
+        // }
 
         if ($delete) {
             return response()->json([

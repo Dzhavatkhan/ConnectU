@@ -64,89 +64,92 @@ class PostController extends Controller
      */
     public function store(postreq $request)
     {
-            try {
-                $user_id = Auth::id();
-                // dd($request->file('attachment0'));
+        try {
+            $user_id = Auth::id();
+            // dd($request->file('attachment0'));
 
+            // $attachment =
+            // $attachment = "$attachment".".".$attachment->extension();
+            $category_id = $request->category_id;
 
+            $link = $request->get('link');
 
-                // $attachment =
-                // $attachment = "$attachment".".".$attachment->extension();
-                $category_id = $request->category_id;
+            $post = Posts::create([
+                "user_id" => $user_id,
+                "text" => $request->get('text'),
+            ]);
 
+            if ($post) {
 
+                    $category_arr = $request->category_id;
+                    $category_arr = explode(',', $category_arr);
+                    for ($category = 0; $category < count($category_arr); $category++) {
+                        // dd($category_arr[$category]);
+                        $post->categories()->attach($category_arr[$category]);
 
+                    }
+                    // $created_cat = DB::table("posts_categories")->insert([
+                    //     "posts_id" => $post->id,
+                    //     "category_id" => $category
+                    // ]);
 
-                $link = $request->get('link');
-
-                $post = Posts::create([
-                    "user_id" => $user_id,
-                    "text" => $request->get('text'),
-                ]);
-
-                if ($post) {
-
-                        $category_arr = $request->category_id;
-                        $category_arr = explode(',', $category_arr);
-                        for ($category = 0; $category < count($category_arr); $category++) {
-                            // dd($category_arr[$category]);
-                            $post->categories()->attach($category_arr[$category]);
-
-                        }
-                        // $created_cat = DB::table("posts_categories")->insert([
-                        //     "posts_id" => $post->id,
-                        //     "category_id" => $category
-                        // ]);
-
-                        // if ($created_cat == false) {
-                            // $post->categories()->attach($category);
-                        // }
-
-                        }
-
-
-
-
-                    $attachments = $request->file('attachment0');
-                    if (isset($attachments)) {
-                        for ($index = 0; $request->file('attachment' . $index); $index++) {
-                            $attachment = $request->file('attachment' . $index);
-                            $attachment = $attachment->getClientOriginalName();
-
-                            $request->file('attachment'. $index)->move(public_path('images/attachments/'), $attachment);
-                            Attachment::create([
-                                "post_id" => $post->id,
-                                "name" => $attachment,
-                                "type" => "photo"
-                            ]);
-
-                        }
-
-                        // (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store');
-
+                    // if ($created_cat == false) {
+                        // $post->categories()->attach($category);
+                    // }
 
                     }
 
-                    if (isset($link)) {
+
+
+
+                $attachments = $request->file('attachment0');
+                if (isset($attachments)) {
+                    for ($index = 0; $request->file('attachment' . $index); $index++) {
+                        $attachment = $request->file('attachment' . $index);
+                        $attachment = $attachment->getClientOriginalName();
+
+                        $request->file('attachment'. $index)->move(public_path('images/attachments/'), $attachment);
                         Attachment::create([
                             "post_id" => $post->id,
-                            "name" => $link,
+                            "name" => $attachment,
+                            "type" => "photo"
+                        ]);
+
+                    }
+                    // (new ImageService)->updateImage($post, $request, '/images/attachments/', 'store');
+                }
+
+                $videos = explode(",", $request->videos);
+                if (isset($videos)) {
+                    for ($index = 0; $index < count($videos); $index++) {
+                        Attachment::create([
+                            "post_id" => $post->id,
+                            "name" => $videos[$index],
                             "type" => "video"
                         ]);
                     }
-
-
-                    return response()->json([
-                        "post" => $post,
-                        "attachments" => $attachments
-                    ], 201);
                 }
-                catch (\Exception $exception) {
-                    return response()->json([
-                        "message" => $exception->getMessage(),
-                        "error" => "Error in PostController"
-                    ], 201);
-            }
+
+                // if (isset($link)) {
+                //     Attachment::create([
+                //         "post_id" => $post->id,
+                //         "name" => $link,
+                //         "type" => "video"
+                //     ]);
+                // }
+
+
+                return response()->json([
+                    "post" => $post,
+                    "attachments" => $attachments
+                ], 201);
+        }
+        catch (\Exception $exception) {
+            return response()->json([
+                "message" => $exception->getMessage(),
+                "error" => "Error in PostController"
+            ], 201);
+        }
 
 
 

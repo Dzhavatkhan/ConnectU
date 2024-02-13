@@ -93,11 +93,12 @@ onUnmounted(() => {
     clearInterval(timerId)
 })
 
-let timerId = setInterval(async() => await getMessages(), 2000);
+let timerId = setInterval(async() => await getMessages(), 2500);
 
-function scrollToBottom(){
+function scrollToBottom() {
     let block = document.getElementById("chat")
     block.scrollTop = block.scrollHeight;
+    console.log('asdasdasd');
 }
 
 let getMessages = async(e) => {
@@ -132,8 +133,8 @@ let sendMessage = async () => {
         })
 
         console.log(res.data)
-        scrollToBottom()
-        setInterval(scrollToBottom, 2000);
+        // scrollToBottom()
+        setTimeout(scrollToBottom, 3000);
         await getMessages()
 
         message.value = ''
