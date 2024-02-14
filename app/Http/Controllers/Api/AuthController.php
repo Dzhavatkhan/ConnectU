@@ -60,6 +60,7 @@ class AuthController extends Controller
             if(!Hash::check($request->get('password'), $user->password)) {
 
                 return response()->json([
+                    'error_code' => 'password',
                     'error' => 'Password wrong! :(',
                     'message' => 'Error in AuthController.login'
                 ], 403);

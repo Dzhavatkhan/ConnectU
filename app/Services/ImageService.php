@@ -10,8 +10,9 @@ class ImageService {
     public function updateImage($model, $request, $path, $methodType) {
         // return 'aweaeaweawe';
         $manager = new ImageManager(new Driver());
-
-        $file = $request->file('image');
+        if ($request->file('image')) {
+            $file = $request->file('image');
+        }
 
         if (!isset($file)){
             $file = "default.jpg";

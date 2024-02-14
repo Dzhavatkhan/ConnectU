@@ -54,15 +54,24 @@ let signIn = async() => {
             login: login.value,
             password: password.value
         })
+        console.log(res)
+
+
 
         userStore.setUserDetails(res)
 
-        console.log(res)
         eventBus.emit('login', '')
 
     } catch (err) {
         console.log(err)
-        errors.value = err.response.data.errors
+        if (err.response.data.error_code == 'password') {
+            errors.value = {password: ['Неверный пароль']}
+        } else if (err.response.data.error_code == 1) {
+            errors.value = {login: ['Неверный логин']}
+        }
+        else {
+            errors.value = err.response.data.errors
+        }
     }
 }
 </script>

@@ -8,6 +8,32 @@
             Создать пост
         </div>
 
+        <div @click="(openCategories = !openCategories) && (openCategories ? getCategories() : '')" class="mt-4 lg:mt-8 flex justify-center gap-3 lg:gap-5 p-2 lg:py-4 text-white lg:text-3xl border-white border-2 lg:border-[3px] rounded-lg lg:rounded-xl cursor-pointer transition-all hover:text-light-black hover:bg-white duration-100 group">
+            <span>{{activeCategory}}</span>
+
+            <svg viewBox="0 0 50 26" fill="none" class="w-[17px] lg:w-7">
+                <path d="M46.5295 0.582918L24.9978 21.3046L3.46612 0.582918C3.08142 0.211941 2.56499 0.00425292 2.02723 0.00425292C1.48946 0.00425292 0.973036 0.211941 0.588336 0.582918C0.402065 0.763102 0.254083 0.978169 0.15306 1.21553C0.0520356 1.45288 0 1.70776 0 1.96522C0 2.22268 0.0520356 2.47755 0.15306 2.7149C0.254083 2.95226 0.402065 3.16733 0.588336 3.34751L23.4943 25.3962C23.8965 25.7833 24.4361 26 24.9978 26C25.5595 26 26.099 25.7833 26.5013 25.3962L49.4073 3.35177C49.5948 3.17145 49.7439 2.95585 49.8457 2.71771C49.9476 2.47957 50 2.2237 50 1.96522C50 1.70673 49.9476 1.45086 49.8457 1.21272C49.7439 0.974578 49.5948 0.758983 49.4073 0.578663C49.0226 0.207686 48.5061 0 47.9684 0C47.4306 0 46.9142 0.207686 46.5295 0.578663V0.582918Z" fill="white" class="group-hover:fill-light-black"/>
+            </svg>
+        </div>
+
+        <div v-if="openCategories" class="mt-2  border-white border-[4px] last:border-b-0 rounded-lg text-center text-white">
+            <div v-for="category in categories" :key="category.id" @click="clickCategory(category)" class="relative flex justify-center items-center py-2 lg:py-4 lg:text-2xl border-white border-b-[4px] last:border-b-0 cursor-pointer transition-all duration-100 hover:bg-white hover:text-light-black">
+                {{ category.name }}
+
+                <!-- <svg v-if="activeCategoriesId.includes(category.id)" viewBox="0 0 20 17" fill="none" class="absolute right-5 w-3 lg:w-5">
+                    <path d="M19 1L6.4 16L1 10.375" stroke="#8B8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> -->
+            </div>
+
+            <div @click="clickCategory(false, true)" class="relative flex justify-center items-center py-2 lg:py-4 lg:text-2xl border-grey border-b-2 last:border-b-0 cursor-pointer transition-all duration-100 hover:bg-white hover:text-light-black">
+                Все
+
+                <!-- <svg v-if="activeCategoriesId.includes(category.id)" viewBox="0 0 20 17" fill="none" class="absolute right-5 w-3 lg:w-5">
+                    <path d="M19 1L6.4 16L1 10.375" stroke="#8B8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> -->
+            </div>
+        </div>
+
         <div v-for="post in posts" :key="post" class="mt-4 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
             <div class="p-3 lg:p-6 lg:px-8 flex items-center gap-3 lg:gap-5 border-light-grey border-b">
                 <img v-if="post.avatar" :src="'http://127.0.0.1:8000/images/avatars/' + post.avatar" alt="" class="w-10 lg:w-20 block rounded-full">
@@ -31,7 +57,7 @@
                 <div class="flex flex-wrap gap-6">
                     <div  v-for="attachment in post.attachment" :key="attachment">
                         <img v-if="attachment.type == 'photo'" :src="'http://127.0.0.1:8000/images/attachments/' + attachment.name" alt="" class="block w-full lg:w-96 h-max mt-4 lg:mt-10 rounded-md lg:rounded-xl">
-                        <iframe v-else allowfullscreen :src="attachment.name" class="w-full lg:w-[600px] lg:h-[300px]"></iframe>
+                        <iframe v-else allowfullscreen :src="attachment.name" class="w-full lg:w-[600px] lg:h-[300px] mt-4 lg:mt-10"></iframe>
                     </div>
                 </div>
 
@@ -64,18 +90,18 @@
                     </div>
 
                     <div class="flex gap-2 lg:gap-4">
-                        <div v-for="cat in post.category" :key="cat" class=" h-max p-2 bg-light-black text-white rounded-[4px]">
+                        <div v-for="cat in post.category" :key="cat" class="max-lg:text-[10px] lg:text-xl h-max p-2 bg-light-black text-white rounded-[4px]">
                             {{ cat.name }}
                         </div>
                     </div>
-                    
+
                 </div>
 
             </div>
         </div>
 
         <div v-if="!posts" class="text-white text-5xl text-center mt-10">
-            Загрузка постов...
+            Нет постов
         </div>
 
         <!-- <div class="mt-4 lg:mt-10 last:mb-20 font-display text-white bg-grey rounded-xl lg:rounded-2xl">
@@ -128,6 +154,49 @@ import axios from 'axios';
 let open = ref(false)
 
 let posts = ref(null)
+
+let categories = ref(null)
+let openCategories = ref(false)
+
+let activeCategory = ref('Категории')
+
+let getCategories = async() => {
+    try {
+        let res = await axios('http://127.0.0.1:8000/api/categories', {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+
+        categories.value = res.data.categories
+
+        console.log(res)
+    } catch (err) {
+        console.log(err)
+        // errors.value = err.response.data.errors
+    }
+}
+
+let clickCategory = async(category, isAll) => {
+    if (!isAll) {
+        activeCategory.value = category.name
+
+        let res = await axios('http://127.0.0.1:8000/api/sort_category/' + category.id, {
+            headers:
+            {
+                Authorization: `Bearer ${userStore.token}`,
+            }
+        })
+        posts.value = res.data.posts
+
+        console.log(res.data)
+    } else {
+        activeCategory.value = 'Категории'
+        await getPosts()
+    }
+
+}
 
 watch(open, (newValue) => {
     if (newValue) {

@@ -62,6 +62,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('like-post/id{id}', [PostController::class, 'like']);
 
     // Route::get('categories', [AdminController::class, 'index']);
+    Route::get('sort_category/{id}', [CategoryController::class, 'show']);
 
     Route::get('profile', [UserController::class, 'index']);
     Route::get('profile/friends', [UserController::class, 'friends']);

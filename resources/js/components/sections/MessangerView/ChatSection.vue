@@ -119,7 +119,6 @@ let getMessages = async() => {
 
         console.log(res.data.chat)
         msgs.value = res.data.chat
-    await scrollToBottom()
 
     } catch (err) {
         console.log(err)
@@ -145,6 +144,8 @@ let sendMessage = async () => {
         // scrollToBottom()
         // setTimeout(scrollToBottom, 3000);
         await getMessages()
+    await scrollToBottom()
+
 
         message.value = ''
     } catch (err) {

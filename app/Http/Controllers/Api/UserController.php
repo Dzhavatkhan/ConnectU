@@ -158,9 +158,7 @@ class UserController extends Controller
             // 'image' => $request->file('email'),
         ];
 
-        if ($request->file('image')) {
-            (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
-        }
+
         // else{
         //     if (file_exists(storage_path('images/avatars/'.$user->image))) {
         //         $data['image'] = $user->image;
@@ -173,7 +171,7 @@ class UserController extends Controller
         // }
 
         $update = User::where('id', $id)->update($data);
-
+            // dd($update);
         $user->save();
         $user = User::findOrFail($id);
 
@@ -196,6 +194,11 @@ class UserController extends Controller
                     ]);
                 }
             }
+
+            if ($request->file('image')) {
+                (new ImageService)->updateImage($user, $request, '/images/avatars/', 'store');
+            }
+
             $user = User::with("categories")->findOrFail($id);
             return response()
             ->json([

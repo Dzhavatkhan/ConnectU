@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResources;
 use App\Models\Category;
+use App\Models\Posts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -39,7 +42,24 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // $postsId = DB::table('posts_categories')->where('category_id', $id)->pluck('posts_id');
+        // // dd($postsWithCategories);
+        // $posts = [];
+        // for ($i = 0; $i < count($postsId); $i++) {
+        //     $posts[] = PostResources::collection(Posts::where('id', $postsId[$i])->orderByDesc('created_at')->get());
+        // }
+
+        $posts = PostResources::collection(DB::table('posts_categories')->where('category_id', $id)->join('posts', 'posts.id', 'posts_categories.posts_id')->get());
+
+        // $posts = PostResources::collection(Posts::where('')->orderByDesc('created_at')->get());
+        if (count($posts) == 0) {
+            return response()->json([
+                "posts" => "Постов нет"
+            ], 404);
+        }
+        return response()->json([
+            "posts" => $posts
+        ], 201)->header("Content-type","application/json");
     }
 
     /**
